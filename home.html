@@ -1,0 +1,148 @@
+<html>
+
+<head>
+    <title>AOTC Skill Planner</title>
+    <link rel="stylesheet" type="text/css" href="/css/skillPlanner.css" />
+</head>
+
+<body>
+    <main>
+        <header>
+            <h1>AOTC Skill Planner</h1>
+            <div class="websiteDiv">
+                <a id="linkToAOTC" href="https://www.swg-aotc.com/">AOTC Website</a>
+            </div>            
+        </header>
+
+        <article>
+            <div class="selectProfessions">
+                
+            </div>
+            <div class="skillPlannerBody">
+                <div class="skillName">
+                    Marksman                    
+                </div>
+                <div class="resetButtonContainer">
+                    <div id="resetButton" class="resetButton">
+                        Reset
+                    </div>                        
+                </div>
+
+                <div class="topMasterSkills">
+                    <div class="topMasterEliteSkillsText">
+                        <span>Bounty Hunter</span>
+                        <span>Commando</span>
+                    </div>
+                </div>
+
+                <div class="masterSkillBox">
+                    <span class="largeSkillBox masterSkillBoxLabel">Marksman</span>
+                </div>
+
+                <div class="toEliteSkills1 eliteSkillsText" data-elite-col="0">
+                    <span>Rifleman</span>
+                </div>
+                <div class="toEliteSkills2 eliteSkillsText" data-elite-col="1">
+                    <span>Pistoleer</span>
+                    <span>Smuggler</span>
+                </div>
+                <div class="toEliteSkills3 eliteSkillsText" data-elite-col="2">
+                    <span>Carbineer</span>
+                </div>
+                <div class="toEliteSkills4 eliteSkillsText" data-elite-col="3">
+                    <span>Squad Leader</span>
+                </div>
+
+                <div class="skillbox_1_1 professionSkillBox" data-row="0" data-col="0">Rifles 1</div>
+                <div class="skillbox_2_1 professionSkillBox" data-row="1" data-col="0">Rifles 2</div>
+                <div class="skillbox_3_1 professionSkillBox" data-row="2" data-col="0">Rifles 3</div>
+                <div class="skillbox_4_1 professionSkillBox" data-row="3" data-col="0">Rifles 4</div>
+
+                <div class="skillbox_1_2 professionSkillBox" data-row="0" data-col="1">Pistol 1</div>
+                <div class="skillbox_2_2 professionSkillBox" data-row="1" data-col="1">Pistol 2</div>
+                <div class="skillbox_3_2 professionSkillBox" data-row="2" data-col="1">Pistol 3</div>
+                <div class="skillbox_4_2 professionSkillBox" data-row="3" data-col="1">Pistol 4</div>
+
+                <div class="skillbox_1_3 professionSkillBox" data-row="0" data-col="2">Carbine 1</div>
+                <div class="skillbox_2_3 professionSkillBox" data-row="1" data-col="2">Carbine 2</div>
+                <div class="skillbox_3_3 professionSkillBox" data-row="2" data-col="2">Carbine 3</div>
+                <div class="skillbox_4_3 professionSkillBox" data-row="3" data-col="2">Carbine 4</div>
+
+                <div class="skillbox_1_4 professionSkillBox" data-row="0" data-col="3">Ranged 1</div>
+                <div class="skillbox_2_4 professionSkillBox" data-row="1" data-col="3">Ranged 2</div>
+                <div class="skillbox_3_4 professionSkillBox" data-row="2" data-col="3">Ranged 3</div>
+                <div class="skillbox_4_4 professionSkillBox" data-row="3" data-col="3">Ranged 4</div>
+
+                <div class="noviceSkillBox">
+                    <span class="largeSkillBox noviceSkillBoxLabel">Novice Marksman</span>
+                </div>
+
+                <div class="prerequesiteSkills">
+                    <div class="prerequesitSkillsText">
+                        <span>Artisan</span>
+                    </div>
+                </div>
+
+                <div class="skillPointsRemaining">                    
+                    <div id="skillPointsNumbers">
+                        <div>
+                            250/250
+                        </div>
+                    </div>
+                    <div id="skillPointsBar">                      
+                    </div>
+                </div>
+            </div>
+        </article>
+
+        <aside>
+            <div class="professionContainer">
+                <span class="smallTitle" style="color: #fffffa">Professions</span>
+                <ul id="listProfessions"></ul>
+            </div>
+        </aside>
+        <div class="rightSideOfPage">
+            <div class="rightTablesContainer">
+                <span class="smallTitle" style="color: #fffffa">Skill Mods</span>
+                <div class="skillMods">                
+                    <table id="tableSkillMods" class="rightTables">
+                        <thead>
+                            <tr>
+                                <th class="tableHeaders" data-table-id="tableSkillMods">Name</th>
+                                <th class="tableHeaders" data-table-id="tableSkillMods">Value</th>
+                            </tr>
+                        <tbody>                        
+                        </tbody>
+                        </thead>
+                    </table>
+                </div>
+
+                <span class="smallTitle" style="color: #fffffa">Experience Required</span>
+                <div class="experienceRequired">                
+                    <table id="tableExperienceRequired" class="rightTables">
+                        <thead>
+                            <tr>
+                                <th class="tableHeaders" data-table-id="tableExperienceRequired">Type</th>
+                                <th class="tableHeaders" data-table-id="tableExperienceRequired">Amount</th>
+                            </tr>
+                        <tbody>                     
+                        </tbody>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+            
+        </div>
+
+        <footer>
+            <p>
+                We are in no way affiliated with Sony Online Entertainment, Lucas Arts
+                or any other legal owners of Star Wars Galaxies related material.
+            </p>
+        </footer>
+    </main>
+</body>
+
+<script src="/JavaScript/SkillPlanner.js"></script>
+
+</html>

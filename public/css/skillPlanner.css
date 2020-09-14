@@ -1,0 +1,689 @@
+body {
+  display: flex;
+  background-color: #00404c;
+  margin: 0px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+main {
+  flex: 1;
+  display: grid;
+  grid-template-areas:
+    "topbar topbar topbar"
+    "leftProfessions content sidebar"
+    "footer footer footer";
+  grid-template-columns: 1fr 3fr 2fr;
+  grid-template-rows: 70px auto 70px;
+  gap: 0 10px;
+  /* align-items: center;
+  justify-items: center; */
+}
+
+header {
+  grid-area: topbar;
+  display: flex;
+  /* justify-items: center; */
+  background-color: #048da7;
+  /* opacity: 0.6; */
+  padding-left: 25px;
+}
+
+header h1 {
+  color: #a5fbfb;
+  text-shadow: 1px 2px black;
+}
+
+.websiteDiv {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-right: 50px;
+}
+
+.websiteDiv a:link {
+  color: #a5fbfb;
+}
+
+.websiteDiv a:visited {
+  color: #a5fbfb;
+}
+
+.websiteDiv a:hover {
+  color: #006074;
+}
+
+aside {
+  grid-area: leftProfessions;
+  display: inline-grid;
+  place-items: center;
+  background-color: #00404c;
+}
+
+article {
+  grid-area: content;
+  /* background-color: #acb0b1; */
+  display: inline-grid;
+  place-items: center;
+  /* border: 1px solid black; */
+  grid-template-rows: 100px auto 100px;
+}
+
+.rightSideOfPage {
+  grid-area: sidebar;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  /* place-items: center; */
+  background-color: #00404c;
+}
+
+footer {
+  grid-area: footer;
+  display: inline-grid;
+  justify-items: center;
+  background-color: #048da7;
+  color: #a5fbfb;
+}
+
+.title {
+}
+
+.selectProfessions {
+  display: flex;
+  align-items: flex-end;
+  justify-content: left;
+  width: 100%;
+  max-width: 1000px;
+  min-height: 70px;
+}
+
+.selectedProfessionBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 125px;
+  height: 40px;
+  background-color: #02ab2e;
+  margin-right: 25px;
+  position: relative;
+  color: #a5fbfb;
+  text-shadow: 2px 2px black;
+  cursor: pointer;
+  border-radius: 0px 8px 0px 8px;
+  padding: 5px;
+}
+
+.selectedProfessionBox:hover {
+  background-color: #26672a;
+}
+
+/* .cancelSelectedProfessionBox {
+  position: relative;
+  font-size: 12px;
+  right: 4px;
+  top: 4px;
+  height: 16px;
+  width: 16px;
+  padding-left: 7px;
+  padding-top: 4px;
+  border-radius: 50%;
+  background-color: #a5fbfb;
+  opacity: 45%;
+  border: 1px solid black;
+} */
+
+.cancelSelectedProfessionBox {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  cursor: pointer;
+}
+
+.skillPlannerBody {
+  display: grid;
+  grid-template-areas:
+    "skillName skillName skillName resetButtonContainer"
+    "topMasterSkills topMasterSkills topMasterSkills topMasterSkills"
+    "masterSkillBox masterSkillBox masterSkillBox masterSkillBox"
+    "toEliteSkills1 toEliteSkills2 toEliteSkills3 toEliteSkills4"
+    "skillbox_4_1 skillbox_4_2 skillbox_4_3 skillbox_4_4"
+    "skillbox_3_1 skillbox_3_2 skillbox_3_3 skillbox_3_4"
+    "skillbox_2_1 skillbox_2_2 skillbox_2_3 skillbox_2_4"
+    "skillbox_1_1 skillbox_1_2 skillbox_1_3 skillbox_1_4"
+    "noviceSkillBox noviceSkillBox noviceSkillBox noviceSkillBox"
+    "prerequesiteSkills prerequesiteSkills prerequesiteSkills prerequesiteSkills"
+    "skillPointsRemaining skillPointsRemaining skillPointsRemaining skillPointsRemaining";
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: 1fr 0.5fr 1.5fr 1fr 1.5fr 1.5fr 1.5fr 1.5fr 1.5fr 0.25fr 0.5fr;
+  gap: 3px 5px;
+  border-radius: 10px;
+  padding: 15px 5px;
+  background-color: #048da7;
+  height: 95%;
+  width: 100%;
+  max-width: 1000px;
+  max-height: 800px;
+  border: 1px solid #a5fbfb;
+}
+
+/* Skill Planner Grid */
+.skillName {
+  grid-area: skillName;
+  font-size: 2.5rem;
+  color: #a5fbfb;
+  text-shadow: 2px 1px black;
+}
+
+.topMasterSkills {
+  grid-area: topMasterSkills;
+  display: inline-grid;
+  justify-items: center;
+}
+
+.prerequesiteSkills {
+  grid-area: prerequesiteSkills;
+  display: inline-grid;
+  justify-items: center;
+}
+
+.masterSkillBox {
+  grid-area: masterSkillBox;
+  display: inline-grid;
+  place-items: center;
+}
+
+.toEliteSkills1 {
+  grid-area: toEliteSkills1;
+  display: inline-grid;
+  justify-items: center;
+}
+
+.toEliteSkills2 {
+  grid-area: toEliteSkills2;
+  display: inline-grid;
+  justify-items: center;
+}
+
+.toEliteSkills3 {
+  grid-area: toEliteSkills3;
+  display: inline-grid;
+  justify-items: center;
+}
+
+.toEliteSkills4 {
+  grid-area: toEliteSkills4;
+  display: inline-grid;
+  justify-items: center;
+}
+
+/* Skill Boxes */
+.skillbox_1_4 {
+  grid-area: skillbox_1_4;
+}
+.skillbox_1_3 {
+  grid-area: skillbox_1_3;
+}
+.skillbox_1_2 {
+  grid-area: skillbox_1_2;
+}
+.skillbox_1_1 {
+  grid-area: skillbox_1_1;
+}
+
+.skillbox_2_4 {
+  grid-area: skillbox_2_4;
+}
+.skillbox_2_3 {
+  grid-area: skillbox_2_3;
+}
+.skillbox_2_2 {
+  grid-area: skillbox_2_2;
+}
+.skillbox_2_1 {
+  grid-area: skillbox_2_1;
+}
+
+.skillbox_3_4 {
+  grid-area: skillbox_3_4;
+}
+.skillbox_3_3 {
+  grid-area: skillbox_3_3;
+}
+.skillbox_3_2 {
+  grid-area: skillbox_3_2;
+}
+.skillbox_3_1 {
+  grid-area: skillbox_3_1;
+}
+
+.skillbox_4_4 {
+  grid-area: skillbox_4_4;
+}
+.skillbox_4_3 {
+  grid-area: skillbox_4_3;
+}
+.skillbox_4_2 {
+  grid-area: skillbox_4_2;
+}
+.skillbox_4_1 {
+  grid-area: skillbox_4_1;
+}
+
+.noviceSkillBox {
+  grid-area: noviceSkillBox;
+  display: inline-grid;
+  place-items: center;
+}
+
+.skillPointsRemaining {
+  grid-area: skillPointsRemaining;
+  display: flex;
+  /* place-items: center; */
+  background-color: #006074;
+  position: relative;
+  height: 24px;
+}
+
+.skillPointsRemaining::before {
+  content: "Skill Points Remaining:";
+  position: absolute;
+  top: -20px;
+  color: white;
+  text-shadow: 1px 2px black;
+}
+
+#skillPointsNumbers {
+  color: white;
+  z-index: 1;
+  align-self: center;
+  display: flex;
+  flex: 1;
+  justify-content: center;
+}
+
+#skillPointsBar {
+  position: absolute;
+  background: #02ab2e;
+  /* For stripes similar to game
+  background: repeating-linear-gradient(
+    to right,
+    #02ab2e,
+    #02ab2e 6px,
+    rgba(0, 0, 0, 0) 8px,
+    rgba(0, 0, 0, 0) 8px
+  ); */
+  color: white;
+  height: 100%;
+}
+
+.largeSkillBox {
+  width: 35%;
+  height: 90%;
+  background-color: #006074;
+  cursor: pointer;
+  border-radius: 0px 8px 0px 8px;
+  color: #a5fbfb;
+  /* display: inline-grid;
+  place-items: center; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border: 1px solid black;
+}
+
+.largeSkillBox:hover {
+  background-color: #26672a;
+}
+
+.largeSkillBox.active {
+  background-color: #02ab2e;
+}
+
+.professionSkillBox {
+  /* background-color: #02ab2e; */
+  background-color: #006074;
+  cursor: pointer;
+  border-radius: 0px 8px 0px 8px;
+  color: #a5fbfb;
+  /* display: inline-grid;
+  place-items: center; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  border: 1px solid black;
+}
+
+.professionSkillBox:hover {
+  background-color: #26672a;
+}
+
+.professionSkillBox.active {
+  background-color: #02ab2e;
+}
+
+.topMasterEliteSkillsText {
+  color: #a5fbfb;
+  display: flex;
+  justify-content: space-evenly;
+  width: 50%;
+}
+
+.topMasterEliteSkillsText > span:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.prerequesitSkillsText {
+  color: #a5fbfb;
+  display: flex;
+  justify-content: space-evenly;
+  width: 50%;
+}
+
+.prerequesitSkillsText > span:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.eliteSkillsText {
+  color: #a5fbfb;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.eliteSkillsText > span:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.smallTitle {
+  font-size: 1.25em;
+}
+
+#listProfessions {
+  list-style: none;
+  background-color: #048da7;
+  padding: 5px 0;
+  border-radius: 10px;
+  border: 1px solid #a5fbfb;
+  min-width: 200px;
+}
+
+#listProfessions li {
+  color: #fffffa;
+  text-shadow: 2px 1px black;
+  cursor: pointer;
+  padding-left: 3px;
+}
+
+#listProfessions li:hover {
+  text-decoration: underline;
+  background-color: #a5fbfb;
+}
+
+#listProfessions > hr {
+  border: 1px solid #a5fbfb;
+}
+
+#listProfessions li.activeProfession {
+  background-color: #a5fbfb;
+}
+
+#listProfessions li.selectedProfession {
+  background-color: #a5fbfb;
+}
+
+#listProfessions li.selectedProfession::before {
+  content: ">>";
+  padding-right: 2px;
+}
+
+.rightTables {
+  color: #a5fbfb;
+  /* border: 1px solid #a5fbfb; */
+  border: 1px solid black;
+  border-radius: 5px;
+  position: relative;
+  border-collapse: collapse;
+  /* background-color: #006074; */
+}
+
+.rightTables th {
+  position: sticky;
+  top: -1px;
+  background-color: #006074;
+  color: #a5fbfb;
+  text-align: left;
+  font-weight: bold;
+  padding: 2px 3px;
+  cursor: pointer;
+}
+
+.rightTables tr {
+  border-bottom: 1px solid #404040;
+}
+
+.rightTables td {
+  text-shadow: 1px 2px black;
+  padding: 4px 5px;
+}
+
+.rightTables td:nth-child(1) {
+  border-right: 1px solid #404040;
+}
+
+.skillMods {
+  display: flex;
+  flex-direction: column;
+  /* width: 85%; */
+  background-color: #048da7;
+  /* padding: 5px 0; */
+  border-radius: 10px;
+  border: 1px solid #a5fbfb;
+  min-width: 350px;
+  max-width: 400px;
+  /* width: 90%; */
+  height: 400px;
+  /* padding: 10px 20px; */
+  overflow: auto;
+  margin-bottom: 50px;
+}
+
+#tableSkillMods {
+  max-height: 500px;
+}
+
+/* #tableSkillMods th {
+  position: sticky;
+  top: -10px;
+  background-color: #006074;
+  color: #a5fbfb;
+}
+
+#tableSkillMods tr {
+  border-bottom: 1px solid #a5fbfb;
+} */
+
+.experienceRequired {
+  display: flex;
+  flex-direction: column;
+  /* width: 85%; */
+  background-color: #048da7;
+  border-radius: 10px;
+  border: 1px solid #a5fbfb;
+  min-width: 350px;
+  max-width: 400px;
+  /* width: 90%; */
+  height: 200px;
+  /* max-height: 300px; */
+  /* padding: 5px 10px; */
+  overflow: auto;
+}
+
+#tableExperienceRequired {
+  max-height: 250px;
+}
+
+#tableExperienceRequired th {
+  position: sticky;
+  top: -1px;
+  background-color: #006074;
+  color: #a5fbfb;
+}
+
+/* .professionSkillBox {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+} */
+
+.professionSkillBox .tooltiptext {
+  visibility: hidden;
+  display: inline-block;
+  font-size: 0.75rem;
+  width: 500px;
+  min-height: 75px;
+  background-color: #00404c;
+  color: #fff;
+  text-align: center;
+  padding: 5px;
+  opacity: 80%;
+  border: 1px solid #a5fbfb;
+  text-align: left;
+  cursor: default;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 2;
+  /* width: 120px; */
+  top: 80%;
+  left: 50%;
+  margin-left: -20px;
+}
+
+.professionSkillBox:hover .tooltiptext {
+  visibility: visible;
+}
+
+.noviceSkillBoxLabel .tooltiptext {
+  visibility: hidden;
+  display: inline-block;
+  font-size: 0.75rem;
+  width: 500px;
+  min-height: 75px;
+  background-color: #00404c;
+  color: #fff;
+  text-align: center;
+  padding: 5px;
+  opacity: 80%;
+  border: 1px solid #a5fbfb;
+  text-align: left;
+  cursor: default;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  /* width: 120px; */
+  bottom: 80%;
+  left: 50%;
+  margin-left: -20px; /* Use half of the width (120/2 = 60), to center the tooltip */
+}
+
+.noviceSkillBoxLabel:hover .tooltiptext {
+  visibility: visible;
+}
+
+.masterSkillBoxLabel .tooltiptext {
+  visibility: hidden;
+  display: inline-block;
+  font-size: 0.75rem;
+  width: 500px;
+  min-height: 75px;
+  background-color: #00404c;
+  color: #fff;
+  text-align: center;
+  padding: 5px;
+  opacity: 80%;
+  border: 1px solid #a5fbfb;
+  text-align: left;
+  cursor: default;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  /* width: 120px; */
+  top: 80%;
+  left: 50%;
+  margin-left: -20px; /* Use half of the width (120/2 = 60), to center the tooltip */
+}
+
+.masterSkillBoxLabel:hover .tooltiptext {
+  visibility: visible;
+}
+
+.resetButtonContainer {
+  grid-area: resetButtonContainer;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 15px;
+}
+
+.resetButton {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* position: absolute;
+  right: 5px;
+  top: 5px; */
+  width: 80px;
+  height: 35px;
+  background-color: rgb(209, 0, 0);
+  color: white;
+  text-shadow: 1px 1px black;
+  border-radius: 0px 8px 0px 8px;
+  box-shadow: 2px 2px 3px black;
+  cursor: pointer;
+}
+
+.resetButton:hover {
+  background-color: rgb(255, 62, 62);
+}
+
+.skillMods::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.skillMods::-webkit-scrollbar-thumb {
+  background: #a5fbfb;
+  border-radius: 5px;
+  box-shadow: inset 2px 2px 2px hsla(0, 0%, 100%, 0.25),
+    inset -2px -2px 2px rgba(0, 0, 0, 0.25);
+}
+
+.skillMods::-webkit-scrollbar-track {
+  background: linear-gradient(90deg, #a5fbfb, #a5fbfb 1px, #00404c 0, #00404c);
+  /* background: #00404c; */
+}
+
+.experienceRequired::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.experienceRequired::-webkit-scrollbar-thumb {
+  background: #a5fbfb;
+  border-radius: 5px;
+  box-shadow: inset 2px 2px 2px hsla(0, 0%, 100%, 0.25),
+    inset -2px -2px 2px rgba(0, 0, 0, 0.25);
+}
+
+.experienceRequired::-webkit-scrollbar-track {
+  background: linear-gradient(90deg, #a5fbfb, #a5fbfb 1px, #00404c 0, #00404c);
+  /* background: #00404c; */
+}
