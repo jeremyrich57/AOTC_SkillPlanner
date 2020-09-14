@@ -160,7 +160,6 @@ SkillPlanner.prototype.sortTable = function (skillPlanner, tableID, header) {
           }
         });
         header.innerHTML = "Name &#9650";
-        console.log(headers[1]);
         headers[1].textContent = "Value";
       } else {
         rows.sort(function (a, b) {
@@ -683,11 +682,6 @@ SkillPlanner.prototype.addClickEventToSkillBox = function () {
             !skillPlanner.mappedCurrentSkillNames.includes(skill.name) &&
             skillPlanner.remainingSkillPoints - skill.skillpoint_cost >= 0
           ) {
-            console.log(
-              "adding skill",
-              skillPlanner.remainingSkillPoints,
-              skill.skillpoint_cost
-            );
             skillPlanner.mappedCurrentSkillNames.push(skill.name);
             // skillPoints += skill.skillpoint_cost;
             skillPlanner.remainingSkillPoints -= skill.skillpoint_cost;
@@ -1633,8 +1627,6 @@ SkillPlanner.prototype.updateSkillPlannerDOM = function () {
   skillPointsNumbers.textContent =
     skillPlanner.remainingSkillPoints + "/" + skillPlanner.skillPoints;
   skillPointsBar.style.width = skillPointsPercentage + "%";
-
-  console.log("skillPlanner", skillPlanner);
 
   function cancelProfessionTopSkillBoxClickEvent() {
     let baseSkill = this.dataset.baseSkillName;
