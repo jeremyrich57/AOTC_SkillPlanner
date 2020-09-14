@@ -36,8 +36,10 @@ function SkillPlanner(SKILL_DATA) {
     .getElementById("resetButton")
     .addEventListener("click", skillPlanner.resetPlanner.bind(skillPlanner));
 
-  skillPlanner.createProfessions();
   setUpEliteProfessionNames();
+  skillPlanner.createProfessions();
+
+  console.log(skillPlanner);
 
   // console.log(document.getElementsByClassName("tableHeaders"));
   // let headers = document.getElementsByClassName("tableHeaders");
@@ -283,6 +285,15 @@ SkillPlanner.prototype.createProfessions = function () {
         }
         break;
       case "crafting":
+        if (
+          skillPlanner.skillData.skills[skill].novice.skills_required.length > 0
+        ) {
+          eliteProfessions.push(skillPlanner.skillData.skills[skill]);
+        } else {
+          noviceProfessions.push(skillPlanner.skillData.skills[skill]);
+        }
+        break;
+      case "shipwright":
         if (
           skillPlanner.skillData.skills[skill].novice.skills_required.length > 0
         ) {
@@ -541,6 +552,7 @@ SkillPlanner.prototype.clickProfessionListItem = function (e) {
         skillPlanner.eliteProfessions[skillName] == undefined
           ? []
           : skillPlanner.eliteProfessions[skillName];
+
       if (eliteProfessionList != undefined && eliteProfessionList.length > 0) {
         eliteProfessionList.forEach(function (eliteProfession) {
           let span = document.createElement("span");
@@ -698,6 +710,8 @@ SkillPlanner.prototype.addClickEventToSkillBox = function () {
           colIndex
         ].slice(0, rowIndex);
 
+        skillPlanner.removeEliteSkills(baseSkill);
+
         let removedTreeSkills = skillPlanner.currentSelectedSkills[
           baseSkill
         ].trees[colIndex].slice(
@@ -721,7 +735,7 @@ SkillPlanner.prototype.addClickEventToSkillBox = function () {
           // skillPoints +=
           // skillPlanner.currentSelectedSkills[baseSkill].master
           //   .skillpoint_cost;
-          skillPlanner.remainingSkillPoints -=
+          skillPlanner.remainingSkillPoints +=
             skillPlanner.currentSelectedSkills[
               baseSkill
             ].master.skillpoint_cost;
@@ -743,8 +757,6 @@ SkillPlanner.prototype.addClickEventToSkillBox = function () {
         skillPlanner.currentSelectedSkills[baseSkill].master = {};
 
         // skillPlanner.remainingSkillPoints += skillPoints;
-
-        removeEliteSkills(baseSkill);
       }
 
       skillPlanner.updateSkillPlannerDOM();
@@ -805,26 +817,7 @@ SkillPlanner.prototype.addClickEventToSkillBox = function () {
 
       skillPlanner.remainingSkillPoints -= noviceSkillPointCost;
     } else {
-      delete skillPlanner.currentSelectedSkills[baseSkill];
-      skillPlanner.remainingSkillPoints += noviceSkillPointCost;
-      skillPlanner.mappedCurrentSkillNames.splice(
-        skillPlanner.mappedCurrentSkillNames.indexOf(
-          skillPlanner.skillData.skills[baseSkill].novice.name
-        ),
-        1
-      );
-
-      skillPlanner.currentSkillTrees.forEach(function (tree) {
-        tree.forEach(function (skill) {
-          if (skillPlanner.mappedCurrentSkillNames.includes(skill.name)) {
-            skillPlanner.mappedCurrentSkillNames.splice(
-              skillPlanner.mappedCurrentSkillNames.indexOf(skill.name),
-              1
-            );
-            skillPlanner.remainingSkillPoints += skill.skillpoint_cost;
-          }
-        });
-      });
+      skillPlanner.removeEliteSkills(baseSkill);
 
       if (
         skillPlanner.mappedCurrentSkillNames.includes(
@@ -838,11 +831,46 @@ SkillPlanner.prototype.addClickEventToSkillBox = function () {
           1
         );
 
+        skillPlanner.currentSelectedSkills[baseSkill].master = {};
+
         skillPlanner.remainingSkillPoints +=
           skillPlanner.skillData.skills[baseSkill].master.skillpoint_cost;
       }
 
-      removeEliteSkills(baseSkill);
+      skillPlanner.currentSelectedSkills[baseSkill].trees.forEach(function (
+        tree
+      ) {
+        for (let i = tree.length - 1; i >= 0; i--) {
+          if (skillPlanner.mappedCurrentSkillNames.includes(tree[i].name)) {
+            skillPlanner.mappedCurrentSkillNames.splice(
+              skillPlanner.mappedCurrentSkillNames.indexOf(tree[i].name),
+              1
+            );
+            skillPlanner.remainingSkillPoints += tree[i].skillpoint_cost;
+            tree.splice(i, 1);
+          }
+        }
+      });
+
+      let deleteNovice = true;
+      skillPlanner.currentSelectedSkills[baseSkill].trees.forEach(function (
+        tree
+      ) {
+        if (tree.length > 0) {
+          deleteNovice = false;
+        }
+      });
+
+      if (deleteNovice) {
+        delete skillPlanner.currentSelectedSkills[baseSkill];
+        skillPlanner.remainingSkillPoints += noviceSkillPointCost;
+        skillPlanner.mappedCurrentSkillNames.splice(
+          skillPlanner.mappedCurrentSkillNames.indexOf(
+            skillPlanner.skillData.skills[baseSkill].novice.name
+          ),
+          1
+        );
+      }
     }
 
     skillPlanner.updateSkillPlannerDOM();
@@ -988,7 +1016,7 @@ SkillPlanner.prototype.addClickEventToSkillBox = function () {
       skillPlanner.remainingSkillPoints +=
         skillPlanner.skillData.skills[baseSkill].master.skillpoint_cost;
 
-      removeEliteSkills(baseSkill);
+      skillPlanner.removeEliteSkills(baseSkill);
     }
 
     skillPlanner.updateSkillPlannerDOM();
@@ -1088,62 +1116,77 @@ SkillPlanner.prototype.addClickEventToSkillBox = function () {
       }
     });
   }
+};
 
-  function removeEliteSkills(baseSkill) {
-    for (const skill in skillPlanner.currentSelectedSkills) {
-      // let tempSkillName = skill.dataset.skillName;
-      let tempSkill = skillPlanner.currentSelectedSkills[skill];
-      //TODO: Remove elite skills if deleting pre req skills. Something with baseSkill needs to check against
-      if (tempSkill.novice.skills_required.length > 0) {
-        tempSkill.novice.skills_required.forEach(function (skillRequired) {
-          let tempBaseSkill = skillRequired.split("_").slice(0, 2).join("_");
+SkillPlanner.prototype.removeEliteSkills = function (baseSkill) {
+  let skillPlanner = this;
+  for (const skill in skillPlanner.currentSelectedSkills) {
+    let tempSkill = skillPlanner.currentSelectedSkills[skill];
+    if (tempSkill.novice.skills_required.length > 0) {
+      tempSkill.novice.skills_required.forEach(function (skillRequired) {
+        let tempBaseSkill = skillRequired.split("_").slice(0, 2).join("_");
+        if (
+          baseSkill == tempBaseSkill &&
+          skillPlanner.mappedCurrentSkillNames.includes(skillRequired)
+        ) {
           if (
-            baseSkill == tempBaseSkill &&
-            !skillPlanner.mappedCurrentSkillNames.includes(skillRequired)
+            skillPlanner.mappedCurrentSkillNames.includes(
+              skillPlanner.skillData.skills[skill].master.name
+            )
           ) {
-            skillPlanner.remainingSkillPoints +=
-              skillPlanner.skillData.skills[skill].novice.skillpoint_cost;
             skillPlanner.mappedCurrentSkillNames.splice(
               skillPlanner.mappedCurrentSkillNames.indexOf(
-                skillPlanner.skillData.skills[skill].novice.name
+                skillPlanner.skillData.skills[skill].master.name
               ),
               1
             );
 
+            skillPlanner.currentSelectedSkills[skill].master = {};
+
+            skillPlanner.remainingSkillPoints +=
+              skillPlanner.skillData.skills[skill].master.skillpoint_cost;
+          }
+
+          if (skillPlanner.currentSelectedSkills[skill] != undefined) {
             skillPlanner.currentSelectedSkills[skill].trees.forEach(function (
               tree
             ) {
-              tree.forEach(function (skill) {
-                if (skillPlanner.mappedCurrentSkillNames.includes(skill.name)) {
+              for (let i = tree.length - 1; i >= 0; i--) {
+                if (
+                  skillPlanner.mappedCurrentSkillNames.includes(tree[i].name)
+                ) {
                   skillPlanner.mappedCurrentSkillNames.splice(
-                    skillPlanner.mappedCurrentSkillNames.indexOf(skill.name),
+                    skillPlanner.mappedCurrentSkillNames.indexOf(tree[i].name),
                     1
                   );
-                  skillPlanner.remainingSkillPoints += skill.skillpoint_cost;
+                  skillPlanner.remainingSkillPoints += tree[i].skillpoint_cost;
+                  tree.splice(i, 1);
                 }
-              });
+              }
             });
 
-            if (
-              skillPlanner.mappedCurrentSkillNames.includes(
-                skillPlanner.skillData.skills[skill].master.name
-              )
+            let deleteNovice = true;
+            skillPlanner.currentSelectedSkills[skill].trees.forEach(function (
+              tree
             ) {
+              if (tree.length > 0) {
+                deleteNovice = false;
+              }
+            });
+            if (deleteNovice) {
+              delete skillPlanner.currentSelectedSkills[skill];
+              skillPlanner.remainingSkillPoints +=
+                skillPlanner.skillData.skills[skill].novice.skillpoint_cost;
               skillPlanner.mappedCurrentSkillNames.splice(
                 skillPlanner.mappedCurrentSkillNames.indexOf(
-                  skillPlanner.skillData.skills[skill].master.name
+                  skillPlanner.skillData.skills[skill].novice.name
                 ),
                 1
               );
-
-              skillPlanner.remainingSkillPoints +=
-                skillPlanner.skillData.skills[skill].master.skillpoint_cost;
-
-              delete skillPlanner.currentSelectedSkills[skill];
             }
           }
-        });
-      }
+        }
+      });
     }
   }
 };
@@ -1633,6 +1676,8 @@ SkillPlanner.prototype.updateSkillPlannerDOM = function () {
     let noviceSkillPointCost =
       skillPlanner.currentSelectedSkills[baseSkill].novice.skillpoint_cost;
 
+    skillPlanner.removeEliteSkills(baseSkill);
+
     skillPlanner.remainingSkillPoints += noviceSkillPointCost;
     skillPlanner.mappedCurrentSkillNames.splice(
       skillPlanner.mappedCurrentSkillNames.indexOf(
@@ -1669,58 +1714,6 @@ SkillPlanner.prototype.updateSkillPlannerDOM = function () {
 
       skillPlanner.remainingSkillPoints +=
         skillPlanner.skillData.skills[baseSkill].master.skillpoint_cost;
-    }
-
-    for (const skill in skillPlanner.currentSelectedSkills) {
-      let tempSkill = skillPlanner.currentSelectedSkills[skill];
-
-      if (tempSkill.novice.skills_required.length > 0) {
-        tempSkill.novice.skills_required.forEach(function (skillRequired) {
-          let tempBaseSkill = skillRequired.split("_").slice(0, 2).join("_");
-          if (baseSkill == tempBaseSkill) {
-            skillPlanner.remainingSkillPoints +=
-              skillPlanner.skillData.skills[skill].novice.skillpoint_cost;
-            skillPlanner.mappedCurrentSkillNames.splice(
-              skillPlanner.mappedCurrentSkillNames.indexOf(
-                skillPlanner.skillData.skills[skill].novice.name
-              ),
-              1
-            );
-
-            skillPlanner.currentSelectedSkills[skill].trees.forEach(function (
-              tree
-            ) {
-              tree.forEach(function (skill) {
-                if (skillPlanner.mappedCurrentSkillNames.includes(skill.name)) {
-                  skillPlanner.mappedCurrentSkillNames.splice(
-                    skillPlanner.mappedCurrentSkillNames.indexOf(skill.name),
-                    1
-                  );
-                  skillPlanner.remainingSkillPoints += skill.skillpoint_cost;
-                }
-              });
-            });
-
-            if (
-              skillPlanner.mappedCurrentSkillNames.includes(
-                skillPlanner.skillData.skills[skill].master.name
-              )
-            ) {
-              skillPlanner.mappedCurrentSkillNames.splice(
-                skillPlanner.mappedCurrentSkillNames.indexOf(
-                  skillPlanner.skillData.skills[skill].master.name
-                ),
-                1
-              );
-
-              skillPlanner.remainingSkillPoints +=
-                skillPlanner.skillData.skills[skill].master.skillpoint_cost;
-
-              delete skillPlanner.currentSelectedSkills[skill];
-            }
-          }
-        });
-      }
     }
 
     delete skillPlanner.currentSelectedSkills[baseSkill];
