@@ -3,6 +3,7 @@ xhr.open("GET", "/api/getSkillData");
 xhr.onload = function () {
   if (xhr.status === 200) {
     const data = JSON.parse(xhr.response);
+    console.log(data);
     const skillPlanner = new SkillPlanner(data.SKILL_DATA);
   } else {
     console.log("Request failed.  Returned status of " + xhr.status);
@@ -31,6 +32,7 @@ function SkillPlanner(SKILL_DATA) {
   skillPlanner.skillTreeBoxes = document.getElementsByClassName(
     "professionSkillBox"
   );
+  skillPlanner.newSkills = buildSkillInformation();
 
   document
     .getElementById("resetButton")
@@ -93,6 +95,213 @@ function SkillPlanner(SKILL_DATA) {
         }
       }
     }
+  }
+
+  function buildSkillInformation() {
+    let newSkills = {};
+    let parentSkillName;
+    let treeBaseIndex = 0; //Tree index for profession
+    let skillIndex = 0; //Index for the skill inside the tree
+
+    // newSkills[parentSkillName].trees = trees;
+    SKILL_DATA.new_skills.forEach(function (skillRow) {
+      //Make properties lower case because it's easier to read and that's how the code is set up
+      let newSkillRow = Object.fromEntries(
+        Object.entries(skillRow).map(([k, v]) => [k.toLowerCase(), v])
+      );
+
+      let trees;
+      switch (newSkillRow.graph_type) {
+        case "fourByFour":
+          trees = new Array(4);
+          for (let i = 0; i < trees.length; i++) {
+            trees[i] = new Array(4);
+          }
+          break;
+        case "oneByFour":
+          trees = new Array(1);
+          trees[0] = new Array(4);
+          break;
+        case "pyramid":
+          trees = new Array(1);
+          trees[0] = new Array(4);
+          break;
+        default:
+          trees = new Array(4);
+          for (let i = 0; i < trees.length; i++) {
+            trees[i] = new Array(4);
+          }
+          break;
+      }
+
+      if (newSkillRow.is_hidden == "false") {
+        if (newSkillRow.is_profession == "true") {
+          parentSkillName = newSkillRow.name;
+          // console.log("parent name", parentSkillName);
+          newSkills[parentSkillName] = newSkillRow;
+          // newSkills[parentSkillName].trees = [
+          //   [[], [], [], []],
+          //   [[], [], [], []],
+          //   [[], [], [], []],
+          //   [[], [], [], []],
+          // ];
+
+          newSkills[parentSkillName].category =
+            newSkills[parentSkillName].parent;
+          newSkills[parentSkillName].trees = trees;
+          treeBaseIndex = 0;
+          skillIndex = 0;
+        } else if (
+          newSkillRow.name.indexOf("novice") > -1 &&
+          newSkillRow.parent == parentSkillName
+        ) {
+          if (newSkills[newSkillRow.parent] == undefined) {
+            newSkills[newSkillRow.parent] = {};
+            newSkills[newSkillRow.parent].novice = newSkillRow;
+            newSkills[
+              newSkillRow.parent
+            ].novice.skills_required = newSkillRow.skills_required.split(",");
+            newSkills[newSkillRow.parent].trees = trees;
+          } else {
+            newSkills[newSkillRow.parent].novice = newSkillRow;
+            newSkills[
+              newSkillRow.parent
+            ].novice.skills_required = newSkillRow.skills_required.split(",");
+          }
+
+          newSkills[newSkillRow.parent].novice.skill_mods = newSkills[
+            newSkillRow.parent
+          ].novice.skill_mods.split(",");
+
+          newSkills[newSkillRow.parent].novice.skill_mods.forEach(function (
+            mod
+          ) {
+            let modName = mod.split("=")[0];
+            let modValue = mod.split("=")[1];
+
+            if (newSkills[newSkillRow.parent].novice.mods == undefined) {
+              newSkills[newSkillRow.parent].novice.mods = {};
+            }
+            newSkills[newSkillRow.parent].novice.mods[modName] = parseFloat(
+              modValue
+            );
+          });
+        } else if (
+          newSkillRow.name.indexOf("master") > -1 &&
+          newSkillRow.parent == parentSkillName
+        ) {
+          if (newSkills[newSkillRow.parent] == undefined) {
+            newSkills[newSkillRow.parent] = {};
+            newSkills[newSkillRow.parent].master = newSkillRow;
+            newSkills[newSkillRow.parent].trees = trees;
+            newSkills[
+              newSkillRow.parent
+            ].master.skills_required = newSkillRow.skills_required.split(",");
+          } else {
+            newSkills[newSkillRow.parent].master = newSkillRow;
+            newSkills[
+              newSkillRow.parent
+            ].master.skills_required = newSkillRow.skills_required.split(",");
+          }
+
+          newSkills[newSkillRow.parent].master.skill_mods = newSkills[
+            newSkillRow.parent
+          ].master.skill_mods.split(",");
+
+          newSkills[newSkillRow.parent].master.skill_mods.forEach(function (
+            mod
+          ) {
+            let modName = mod.split("=")[0];
+            let modValue = mod.split("=")[1];
+
+            if (newSkills[newSkillRow.parent].master.mods == undefined) {
+              newSkills[newSkillRow.parent].master.mods = {};
+            }
+            newSkills[newSkillRow.parent].master.mods[modName] = parseFloat(
+              modValue
+            );
+          });
+        } else {
+          if (
+            newSkillRow.parent != "" &&
+            newSkillRow.name.indexOf("language") < 0 &&
+            newSkillRow.name.indexOf("species") < 0 &&
+            newSkillRow.name.indexOf("pilot") < 0 &&
+            newSkillRow.name.indexOf("gcw_currency") < 0 &&
+            newSkills[parentSkillName] != undefined &&
+            newSkills[parentSkillName].trees != undefined
+          ) {
+            try {
+              if (
+                newSkills[parentSkillName].trees.length &&
+                newSkills[parentSkillName].trees[treeBaseIndex].length
+              ) {
+                newSkills[parentSkillName].trees[treeBaseIndex][
+                  skillIndex
+                ] = newSkillRow;
+
+                newSkills[parentSkillName].trees[treeBaseIndex][
+                  skillIndex
+                ].skill_mods = newSkills[parentSkillName].trees[treeBaseIndex][
+                  skillIndex
+                ].skill_mods.split(",");
+
+                newSkills[parentSkillName].trees[treeBaseIndex][
+                  skillIndex
+                ].skill_mods.forEach(function (mod) {
+                  let modName = mod.split("=")[0];
+                  let modValue = mod.split("=")[1];
+
+                  if (
+                    newSkills[parentSkillName].trees[treeBaseIndex][skillIndex]
+                      .mods == undefined
+                  ) {
+                    newSkills[parentSkillName].trees[treeBaseIndex][
+                      skillIndex
+                    ].mods = {};
+                  }
+                  newSkills[parentSkillName].trees[treeBaseIndex][
+                    skillIndex
+                  ].mods[modName] = parseFloat(modValue);
+                });
+              }
+
+              switch (newSkillRow.graph_type) {
+                case "fourByFour":
+                  if (newSkillRow.name.slice(-2) == "04") {
+                    // console.log("new tree", newSkillRow.name);
+                    treeBaseIndex++;
+                    skillIndex = 0;
+                  } else {
+                    skillIndex++;
+                  }
+                  break;
+                case "oneByFour":
+                  skillIndex++;
+                  break;
+                case "pyramid":
+                  skillIndex++;
+                  break;
+                default:
+                  if (newSkillRow.name.slice(-2) == "04") {
+                    // console.log("new tree", newSkillRow.name);
+                    treeBaseIndex++;
+                    skillIndex = 0;
+                  } else {
+                    skillIndex++;
+                  }
+                  break;
+              }
+            } catch (e) {
+              console.log(newSkills[parentSkillName]);
+              console.log("index", treeBaseIndex, skillIndex);
+            }
+          }
+        }
+      }
+    });
+
+    return newSkills;
   }
 }
 
