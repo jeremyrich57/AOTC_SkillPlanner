@@ -263,7 +263,7 @@ science_combatmedic_healerspeed_04, Emergency Physician
 science_combatmedic_healing_range_04, Medical Tactician
 science_combatmedic_healing_range_speed_04, Chemical Warfare Expert
 science_combatmedic_master, Master Combat Medic
-science_combatmedic_medicine_04, Toxicologist
+science_combatmedic_medicine_04, Field Surgeon
 science_combatmedic_novice, Novice Combat Medic
 science_combatmedic_support_04, Expert Combat Medic
 science_doctor, Doctor
@@ -273,7 +273,7 @@ science_doctor_master, Master Doctor
 science_doctor_novice, Novice Doctor
 science_doctor_support_04, Master Chemist
 science_doctor_wound_04, Master Surgeon
-science_doctor_wound_speed_04, Field Surgeon
+science_doctor_wound_speed_04, Toxicologist
 science_medic, Medic
 science_medic_ability_04, First Responder
 science_medic_crafting_04, Stimpack Chemist
@@ -319,53 +319,22 @@ base_bust_security_hacker_04, Hacker
 base_bust_genetic_decrypter_04, Cipher
 base_bust_power_disruptor_04, Disruptor
 base_bust_destruction_sequencer_04, Firebrand
-jedi_light_side_defender_novice, Novice Guardian
-jedi_light_side_defender_master, Master Guardian
-jedi_light_side_defender_saber_04, Soresu Practitioner
-jedi_light_side_defender_mitigation_04, Force Warden
-jedi_light_side_defender_force_power_04, Stalwart of the Force
-jedi_light_side_defender_force_manipulation_04, Force Protector
-jedi_light_side_sabers_novice, Novice Sentinel
-jedi_light_side_sabers_master, Master Sentinel
-jedi_light_side_sabers_saber_single_04, Shien Practitioner
-jedi_light_side_sabers_saber_dbl_04, Juyo Practitioner
-jedi_light_side_sabers_craftsmanship_04, Lightsaber Crafting Expert
-jedi_light_side_sabers_force_manipulation_04, Lightsaber Duelist
-jedi_light_side_healer_novice, Novice Healer
-jedi_light_side_healer_master, Master Healer
-jedi_light_side_healer_saber_04, Force Binder
-jedi_light_side_healer_heals_04, Jedi Healer
-jedi_light_side_healer_force_power_04, Force Mender
-jedi_light_side_healer_manipulation_04, Keeper of the Peace
-jedi_light_side_powers_novice, Novice Seer
-jedi_light_side_powers_master, Master Seer
-jedi_light_side_powers_assault_04, Expert Force Wielder
-jedi_light_side_powers_ranged_04, Force Adept
-jedi_light_side_powers_power_04, Peacekeeper
-jedi_light_side_powers_manipulation_04, Force Protector
-dark_dark_side_defender_novice, Novice Juggernaut
-dark_dark_side_defender_master, Master Juggernaut
-dark_dark_side_defender_saber_04, Soresu Practitioner
-dark_dark_side_defender_mitigation_04, Force Assailant
-dark_dark_side_defender_force_power_04, Stalwart of the Dark Side
-dark_dark_side_defender_force_manipulation_04, Force Bulwark
-dark_dark_side_sabers_novice, Novice Marauder
-dark_dark_side_sabers_master, Master Marauder
-dark_dark_side_sabers_saber_single_04, Shien Practitioner
-dark_dark_side_sabers_saber_dbl_04, Juyo Practitioner
-dark_dark_side_sabers_craftsmanship_04, Lightsaber Crafting Expert
-dark_dark_side_sabers_force_manipulation_04, Lightsaber Duelist
-dark_dark_side_healer_novice, Novice Alchemist
-dark_dark_side_healer_master, Master Alchemist
-dark_dark_side_healer_saber_04, Force Binder
-dark_dark_side_healer_heals_04, Dark Alchemist
-dark_dark_side_healer_force_power_04, Dark Arts Practitioner
-dark_dark_side_healer_manipulation_04, Manipulator of the Force
-dark_dark_side_powers_novice, Novice Sorcerer
-dark_dark_side_powers_master, Master Sorcerer
-dark_dark_side_powers_assault_04, Wielder of the Dark Side
-dark_dark_side_powers_ranged_04, Dark Side Adept
-dark_dark_side_powers_power_04, Dark Scholar
-dark_dark_side_powers_manipulation_04, Keeper of Knowledge
-dark_padawan_novice, Dark Initiate
-dark_padawan_master, Acolyte
+prequel_basic_novice, Jedi Initiate
+prequel_basic_master, Jedi Padawan
+prequel_form2_master, a Master of Makashi
+prequel_form2_novice, Makashi Student 
+prequel_form1_novice, Shi-Cho Student
+prequel_form1_master, a Master of Shii-Cho
+prequel_form3_novice, Soresu Student
+prequel_form3_master, a Master of Soresu
+prequel_form4_novice, Ataru Student
+prequel_form4_master, a Master of Ataru
+prequel_form5_novice, Form 5 Student
+prequel_form5_master, a Master of Shien
+prequel_form6_master, a Master of Form 6
+prequel_form7_master, a Master of Form 7
+prequel_form6_novice, a Novice of Form 6
+prequel_form7_novice, a Novice of Form 7
+prequel_master1_master, Jedi Healer
+prequel_master2_master, Jedi Guardian
+prequel_master3_master, Jedi Sentinel

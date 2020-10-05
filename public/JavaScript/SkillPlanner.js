@@ -3,7 +3,6 @@ xhr.open("GET", "/api/getSkillData");
 xhr.onload = function () {
   if (xhr.status === 200) {
     const data = JSON.parse(xhr.response);
-    console.log(data);
     const skillPlanner = new SkillPlanner(data.SKILL_DATA);
   } else {
     console.log("Request failed.  Returned status of " + xhr.status);
@@ -13,7 +12,8 @@ xhr.send();
 
 function SkillPlanner(SKILL_DATA) {
   const skillPlanner = this;
-  skillPlanner.skillData = SKILL_DATA;
+  skillPlanner.rawData = SKILL_DATA;
+  skillPlanner.skillData = {};
   skillPlanner.skillPoints = 250;
   skillPlanner.remainingSkillPoints = 250;
   skillPlanner.mods = {};
@@ -32,7 +32,9 @@ function SkillPlanner(SKILL_DATA) {
   skillPlanner.skillTreeBoxes = document.getElementsByClassName(
     "professionSkillBox"
   );
-  skillPlanner.newSkills = buildSkillInformation();
+
+  skillPlanner.skillData = buildNameAndDescriptionObjects();
+  skillPlanner.skillData.skills = buildSkillInformation();
 
   document
     .getElementById("resetButton")
@@ -40,8 +42,6 @@ function SkillPlanner(SKILL_DATA) {
 
   setUpEliteProfessionNames();
   skillPlanner.createProfessions();
-
-  console.log(skillPlanner);
 
   // console.log(document.getElementsByClassName("tableHeaders"));
   // let headers = document.getElementsByClassName("tableHeaders");
@@ -55,8 +55,8 @@ function SkillPlanner(SKILL_DATA) {
   //Shitty shortcut by doing a split, slice, and joining the first part of those names since it would be much more work to loop through every tree
   //and find the actual pre req profession name - this may break if profession structure ever changes
   function setUpEliteProfessionNames() {
-    for (const skill in SKILL_DATA.skills) {
-      let profession = SKILL_DATA.skills[skill];
+    for (const skill in skillPlanner.skillData.skills) {
+      let profession = skillPlanner.skillData.skills[skill];
       if (profession.novice.skills_required.length > 0) {
         for (let i = 0; i < profession.novice.skills_required.length; i++) {
           let prereqSkillName = profession.novice.skills_required[i];
@@ -97,6 +97,20 @@ function SkillPlanner(SKILL_DATA) {
     }
   }
 
+  function buildNameAndDescriptionObjects() {
+    let skillData = {};
+    for (const csvData in SKILL_DATA) {
+      if (csvData != "skills") {
+        skillData[csvData] = {};
+        SKILL_DATA[csvData].forEach(function (tableRow) {
+          skillData[csvData][tableRow.name] = tableRow.value;
+        });
+      }
+    }
+
+    return skillData;
+  }
+
   function buildSkillInformation() {
     let newSkills = {};
     let parentSkillName;
@@ -104,7 +118,7 @@ function SkillPlanner(SKILL_DATA) {
     let skillIndex = 0; //Index for the skill inside the tree
 
     // newSkills[parentSkillName].trees = trees;
-    SKILL_DATA.new_skills.forEach(function (skillRow) {
+    SKILL_DATA.skills.forEach(function (skillRow) {
       //Make properties lower case because it's easier to read and that's how the code is set up
       let newSkillRow = Object.fromEntries(
         Object.entries(skillRow).map(([k, v]) => [k.toLowerCase(), v])
@@ -137,14 +151,8 @@ function SkillPlanner(SKILL_DATA) {
       if (newSkillRow.is_hidden == "false") {
         if (newSkillRow.is_profession == "true") {
           parentSkillName = newSkillRow.name;
-          // console.log("parent name", parentSkillName);
+
           newSkills[parentSkillName] = newSkillRow;
-          // newSkills[parentSkillName].trees = [
-          //   [[], [], [], []],
-          //   [[], [], [], []],
-          //   [[], [], [], []],
-          //   [[], [], [], []],
-          // ];
 
           newSkills[parentSkillName].category =
             newSkills[parentSkillName].parent;
@@ -164,10 +172,29 @@ function SkillPlanner(SKILL_DATA) {
             newSkills[newSkillRow.parent].trees = trees;
           } else {
             newSkills[newSkillRow.parent].novice = newSkillRow;
-            newSkills[
-              newSkillRow.parent
-            ].novice.skills_required = newSkillRow.skills_required.split(",");
+
+            if (newSkillRow.skills_required != "") {
+              newSkills[
+                newSkillRow.parent
+              ].novice.skills_required = newSkillRow.skills_required.split(",");
+            } else {
+              newSkills[newSkillRow.parent].novice.skills_required = [];
+            }
           }
+
+          //Update number fields so math works later
+          newSkills[newSkillRow.parent].novice.points_required = parseInt(
+            newSkillRow.points_required
+          );
+          newSkills[newSkillRow.parent].novice.xp_cap = parseInt(
+            newSkillRow.xp_cap
+          );
+          newSkills[newSkillRow.parent].novice.xp_cost = parseInt(
+            newSkillRow.xp_cost
+          );
+          newSkills[newSkillRow.parent].novice.money_required = parseInt(
+            newSkillRow.money_required
+          );
 
           newSkills[newSkillRow.parent].novice.skill_mods = newSkills[
             newSkillRow.parent
@@ -182,13 +209,16 @@ function SkillPlanner(SKILL_DATA) {
             if (newSkills[newSkillRow.parent].novice.mods == undefined) {
               newSkills[newSkillRow.parent].novice.mods = {};
             }
-            newSkills[newSkillRow.parent].novice.mods[modName] = parseFloat(
-              modValue
-            );
+            if (modName != "" && modName != undefined && !isNaN(modValue)) {
+              newSkills[newSkillRow.parent].novice.mods[modName] = parseFloat(
+                modValue
+              );
+            }
           });
         } else if (
           newSkillRow.name.indexOf("master") > -1 &&
-          newSkillRow.parent == parentSkillName
+          newSkillRow.parent == parentSkillName &&
+          newSkillRow.skills_required.indexOf("novice") < 0
         ) {
           if (newSkills[newSkillRow.parent] == undefined) {
             newSkills[newSkillRow.parent] = {};
@@ -204,6 +234,20 @@ function SkillPlanner(SKILL_DATA) {
             ].master.skills_required = newSkillRow.skills_required.split(",");
           }
 
+          //Update number fields so math works later
+          newSkills[newSkillRow.parent].master.points_required = parseInt(
+            newSkillRow.points_required
+          );
+          newSkills[newSkillRow.parent].master.xp_cap = parseInt(
+            newSkillRow.xp_cap
+          );
+          newSkills[newSkillRow.parent].master.xp_cost = parseInt(
+            newSkillRow.xp_cost
+          );
+          newSkills[newSkillRow.parent].master.money_required = parseInt(
+            newSkillRow.money_required
+          );
+
           newSkills[newSkillRow.parent].master.skill_mods = newSkills[
             newSkillRow.parent
           ].master.skill_mods.split(",");
@@ -217,9 +261,11 @@ function SkillPlanner(SKILL_DATA) {
             if (newSkills[newSkillRow.parent].master.mods == undefined) {
               newSkills[newSkillRow.parent].master.mods = {};
             }
-            newSkills[newSkillRow.parent].master.mods[modName] = parseFloat(
-              modValue
-            );
+            if (modName != "" && modName != undefined && !isNaN(modValue)) {
+              newSkills[newSkillRow.parent].master.mods[modName] = parseFloat(
+                modValue
+              );
+            }
           });
         } else {
           if (
@@ -231,70 +277,79 @@ function SkillPlanner(SKILL_DATA) {
             newSkills[parentSkillName] != undefined &&
             newSkills[parentSkillName].trees != undefined
           ) {
-            try {
-              if (
-                newSkills[parentSkillName].trees.length &&
-                newSkills[parentSkillName].trees[treeBaseIndex].length
-              ) {
-                newSkills[parentSkillName].trees[treeBaseIndex][
-                  skillIndex
-                ] = newSkillRow;
+            if (
+              newSkills[parentSkillName].trees.length &&
+              newSkills[parentSkillName].trees[treeBaseIndex].length
+            ) {
+              newSkills[parentSkillName].trees[treeBaseIndex][
+                skillIndex
+              ] = newSkillRow;
 
-                newSkills[parentSkillName].trees[treeBaseIndex][
-                  skillIndex
-                ].skill_mods = newSkills[parentSkillName].trees[treeBaseIndex][
-                  skillIndex
-                ].skill_mods.split(",");
+              //Update number fields so math works later
+              newSkills[parentSkillName].trees[treeBaseIndex][
+                skillIndex
+              ].points_required = parseInt(newSkillRow.points_required);
+              newSkills[parentSkillName].trees[treeBaseIndex][
+                skillIndex
+              ].xp_cap = parseInt(newSkillRow.xp_cap);
+              newSkills[parentSkillName].trees[treeBaseIndex][
+                skillIndex
+              ].xp_cost = parseInt(newSkillRow.xp_cost);
+              newSkills[parentSkillName].trees[treeBaseIndex][
+                skillIndex
+              ].money_required = parseInt(newSkillRow.money_required);
 
-                newSkills[parentSkillName].trees[treeBaseIndex][
-                  skillIndex
-                ].skill_mods.forEach(function (mod) {
-                  let modName = mod.split("=")[0];
-                  let modValue = mod.split("=")[1];
+              newSkills[parentSkillName].trees[treeBaseIndex][
+                skillIndex
+              ].skill_mods = newSkills[parentSkillName].trees[treeBaseIndex][
+                skillIndex
+              ].skill_mods.split(",");
 
-                  if (
-                    newSkills[parentSkillName].trees[treeBaseIndex][skillIndex]
-                      .mods == undefined
-                  ) {
-                    newSkills[parentSkillName].trees[treeBaseIndex][
-                      skillIndex
-                    ].mods = {};
-                  }
+              newSkills[parentSkillName].trees[treeBaseIndex][
+                skillIndex
+              ].skill_mods.forEach(function (mod) {
+                let modName = mod.split("=")[0];
+                let modValue = mod.split("=")[1];
+
+                if (
+                  newSkills[parentSkillName].trees[treeBaseIndex][skillIndex]
+                    .mods == undefined
+                ) {
+                  newSkills[parentSkillName].trees[treeBaseIndex][
+                    skillIndex
+                  ].mods = {};
+                }
+                if (modName != "" && modName != undefined && !isNaN(modValue)) {
                   newSkills[parentSkillName].trees[treeBaseIndex][
                     skillIndex
                   ].mods[modName] = parseFloat(modValue);
-                });
-              }
+                }
+              });
+            }
 
-              switch (newSkillRow.graph_type) {
-                case "fourByFour":
-                  if (newSkillRow.name.slice(-2) == "04") {
-                    // console.log("new tree", newSkillRow.name);
-                    treeBaseIndex++;
-                    skillIndex = 0;
-                  } else {
-                    skillIndex++;
-                  }
-                  break;
-                case "oneByFour":
+            switch (newSkillRow.graph_type) {
+              case "fourByFour":
+                if (newSkillRow.name.slice(-2) == "04") {
+                  treeBaseIndex++;
+                  skillIndex = 0;
+                } else {
                   skillIndex++;
-                  break;
-                case "pyramid":
+                }
+                break;
+              case "oneByFour":
+                skillIndex++;
+                break;
+              case "pyramid":
+                skillIndex++;
+                break;
+              default:
+                if (newSkillRow.name.slice(-2) == "04") {
+                  treeBaseIndex++;
+                  skillIndex = 0;
+                } else {
                   skillIndex++;
-                  break;
-                default:
-                  if (newSkillRow.name.slice(-2) == "04") {
-                    // console.log("new tree", newSkillRow.name);
-                    treeBaseIndex++;
-                    skillIndex = 0;
-                  } else {
-                    skillIndex++;
-                  }
-                  break;
-              }
-            } catch (e) {
-              console.log(newSkills[parentSkillName]);
-              console.log("index", treeBaseIndex, skillIndex);
+                }
+                break;
             }
           }
         }
@@ -357,13 +412,13 @@ SkillPlanner.prototype.sortTable = function (skillPlanner, tableID, header) {
       if (header.textContent.indexOf("▼") > -1) {
         rows.sort(function (a, b) {
           if (
-            skillPlanner.skillData.stat_names[a.mod] >
-            skillPlanner.skillData.stat_names[b.mod]
+            skillPlanner.skillData.skill_mod_names[a.mod] >
+            skillPlanner.skillData.skill_mod_names[b.mod]
           ) {
             return -1;
           } else if (
-            skillPlanner.skillData.stat_names[a.mod] <
-            skillPlanner.skillData.stat_names[b.mod]
+            skillPlanner.skillData.skill_mod_names[a.mod] <
+            skillPlanner.skillData.skill_mod_names[b.mod]
           ) {
             return 1;
           } else {
@@ -375,13 +430,13 @@ SkillPlanner.prototype.sortTable = function (skillPlanner, tableID, header) {
       } else {
         rows.sort(function (a, b) {
           if (
-            skillPlanner.skillData.stat_names[a.mod] >
-            skillPlanner.skillData.stat_names[b.mod]
+            skillPlanner.skillData.skill_mod_names[a.mod] >
+            skillPlanner.skillData.skill_mod_names[b.mod]
           ) {
             return 1;
           } else if (
-            skillPlanner.skillData.stat_names[a.mod] <
-            skillPlanner.skillData.stat_names[b.mod]
+            skillPlanner.skillData.skill_mod_names[a.mod] <
+            skillPlanner.skillData.skill_mod_names[b.mod]
           ) {
             return -1;
           } else {
@@ -424,9 +479,9 @@ SkillPlanner.prototype.sortTable = function (skillPlanner, tableID, header) {
       let modNameCell = document.createElement("td");
       let modValueCell = document.createElement("td");
       let modName =
-        skillPlanner.skillData.stat_names[rows[i].mod] == undefined
+        skillPlanner.skillData.skill_mod_names[rows[i].mod] == undefined
           ? rows[i].mod
-          : skillPlanner.skillData.stat_names[rows[i].mod];
+          : skillPlanner.skillData.skill_mod_names[rows[i].mod];
 
       modNameCell.appendChild(document.createTextNode(modName));
       row.appendChild(modNameCell);
@@ -472,70 +527,59 @@ SkillPlanner.prototype.createProfessions = function () {
   let forceSensitiveProfessions = []; //Will probably go away
   let pilotProfessions = []; //Not implemented yet
 
-  for (const skill in skillPlanner.skillData.skills) {
-    switch (skillPlanner.skillData.skills[skill].category) {
-      case "force_discipline":
-        jediProfessions.push(skillPlanner.skillData.skills[skill]);
-        skillPlanner.skillData.skills[skill].novice.skills_required = [];
+  for (const skillName in skillPlanner.skillData.skills) {
+    let skill = skillPlanner.skillData.skills[skillName];
+    switch (skill.category) {
+      case "prequel":
+        jediProfessions.push(skill);
+        skill.novice.skills_required = [];
         break;
       case "force_sensitive":
-        forceSensitiveProfessions.push(skillPlanner.skillData.skills[skill]);
+        forceSensitiveProfessions.push(skill);
         break;
       case "pilot":
-        pilotProfessions.push(skillPlanner.skillData.skills[skill]);
+        pilotProfessions.push(skill);
         break;
       case "combat":
-        if (
-          skillPlanner.skillData.skills[skill].novice.skills_required.length > 0
-        ) {
-          eliteProfessions.push(skillPlanner.skillData.skills[skill]);
+        if (skill.novice.skills_required.length > 0) {
+          eliteProfessions.push(skill);
         } else {
-          noviceProfessions.push(skillPlanner.skillData.skills[skill]);
+          noviceProfessions.push(skill);
         }
         break;
       case "crafting":
-        if (
-          skillPlanner.skillData.skills[skill].novice.skills_required.length > 0
-        ) {
-          eliteProfessions.push(skillPlanner.skillData.skills[skill]);
+        if (skill.novice.skills_required.length > 0) {
+          eliteProfessions.push(skill);
         } else {
-          noviceProfessions.push(skillPlanner.skillData.skills[skill]);
+          noviceProfessions.push(skill);
         }
         break;
       case "shipwright":
-        if (
-          skillPlanner.skillData.skills[skill].novice.skills_required.length > 0
-        ) {
-          eliteProfessions.push(skillPlanner.skillData.skills[skill]);
+        if (skill.novice.skills_required.length > 0) {
+          eliteProfessions.push(skill);
         } else {
-          noviceProfessions.push(skillPlanner.skillData.skills[skill]);
+          noviceProfessions.push(skill);
         }
         break;
       case "outdoors":
-        if (
-          skillPlanner.skillData.skills[skill].novice.skills_required.length > 0
-        ) {
-          eliteProfessions.push(skillPlanner.skillData.skills[skill]);
+        if (skill.novice.skills_required.length > 0) {
+          eliteProfessions.push(skill);
         } else {
-          noviceProfessions.push(skillPlanner.skillData.skills[skill]);
+          noviceProfessions.push(skill);
         }
         break;
       case "science":
-        if (
-          skillPlanner.skillData.skills[skill].novice.skills_required.length > 0
-        ) {
-          eliteProfessions.push(skillPlanner.skillData.skills[skill]);
+        if (skill.novice.skills_required.length > 0) {
+          eliteProfessions.push(skill);
         } else {
-          noviceProfessions.push(skillPlanner.skillData.skills[skill]);
+          noviceProfessions.push(skill);
         }
         break;
       case "social":
-        if (
-          skillPlanner.skillData.skills[skill].novice.skills_required.length > 0
-        ) {
-          eliteProfessions.push(skillPlanner.skillData.skills[skill]);
+        if (skill.novice.skills_required.length > 0) {
+          eliteProfessions.push(skill);
         } else {
-          noviceProfessions.push(skillPlanner.skillData.skills[skill]);
+          noviceProfessions.push(skill);
         }
         break;
     }
@@ -547,14 +591,19 @@ SkillPlanner.prototype.createProfessions = function () {
   forceSensitiveProfessions.sort(sortProfessionNames);
   pilotProfessions.sort(sortProfessionNames);
 
+  jediProfessions = jediProfessions.filter(
+    (item) => skillPlanner.skillData.skill_names[item.name] !== "Jedi"
+  );
+  jediProfessions.unshift(skillPlanner.skillData.skills["prequel_basic"]);
+
   let ul = document.getElementById("listProfessions");
   noviceProfessions.forEach(function (profession, index) {
     let li = document.createElement("li");
-    li.appendChild(
-      document.createTextNode(
-        skillPlanner.skillData.skill_names[profession.name]
-      )
-    );
+    let skillDisplayName =
+      skillPlanner.skillData.skill_names[profession.name] == undefined
+        ? profession.name
+        : skillPlanner.skillData.skill_names[profession.name];
+    li.appendChild(document.createTextNode(skillDisplayName));
     li.setAttribute("data-skill-name", profession.name);
     li.classList.add("professionListItem");
     ul.appendChild(li);
@@ -565,11 +614,11 @@ SkillPlanner.prototype.createProfessions = function () {
 
   eliteProfessions.forEach(function (profession, index) {
     let li = document.createElement("li");
-    li.appendChild(
-      document.createTextNode(
-        skillPlanner.skillData.skill_names[profession.name]
-      )
-    );
+    let skillDisplayName =
+      skillPlanner.skillData.skill_names[profession.name] == undefined
+        ? profession.name
+        : skillPlanner.skillData.skill_names[profession.name];
+    li.appendChild(document.createTextNode(skillDisplayName));
     li.setAttribute("data-skill-name", profession.name);
     li.classList.add("professionListItem");
     ul.appendChild(li);
@@ -580,11 +629,11 @@ SkillPlanner.prototype.createProfessions = function () {
 
   jediProfessions.forEach(function (profession, index) {
     let li = document.createElement("li");
-    li.appendChild(
-      document.createTextNode(
-        skillPlanner.skillData.skill_names[profession.name]
-      )
-    );
+    let skillDisplayName =
+      skillPlanner.skillData.skill_names[profession.name] == undefined
+        ? profession.name
+        : skillPlanner.skillData.skill_names[profession.name];
+    li.appendChild(document.createTextNode(skillDisplayName));
     li.setAttribute("data-skill-name", profession.name);
     li.classList.add("professionListItem");
     ul.appendChild(li);
@@ -595,11 +644,11 @@ SkillPlanner.prototype.createProfessions = function () {
 
   forceSensitiveProfessions.forEach(function (profession, index) {
     let li = document.createElement("li");
-    li.appendChild(
-      document.createTextNode(
-        skillPlanner.skillData.skill_names[profession.name]
-      )
-    );
+    let skillDisplayName =
+      skillPlanner.skillData.skill_names[profession.name] == undefined
+        ? profession.name
+        : skillPlanner.skillData.skill_names[profession.name];
+    li.appendChild(document.createTextNode(skillDisplayName));
     li.setAttribute("data-skill-name", profession.name);
     li.classList.add("professionListItem");
     ul.appendChild(li);
@@ -660,13 +709,24 @@ SkillPlanner.prototype.clickProfessionListItem = function (e) {
   const noviceLabelName =
     skillPlanner.skillData.skill_names[
       skillPlanner.skillData.skills[skillDataName].novice.name
-    ];
+    ] == undefined
+      ? skillDataName
+      : skillPlanner.skillData.skill_names[
+          skillPlanner.skillData.skills[skillDataName].novice.name
+        ];
   const masterLabelName =
     skillPlanner.skillData.skill_names[
       skillPlanner.skillData.skills[skillDataName].master.name
-    ];
+    ] == undefined
+      ? skillDataName
+      : skillPlanner.skillData.skill_names[
+          skillPlanner.skillData.skills[skillDataName].master.name
+        ];
 
-  const skillTitleName = skillPlanner.skillData.skill_names[skillDataName];
+  const skillTitleName =
+    skillPlanner.skillData.skill_names[skillDataName] == undefined
+      ? skillDataName
+      : skillPlanner.skillData.skill_names[skillDataName];
   document.querySelector(".skillName").textContent = skillTitleName;
 
   //Check if was click event on list item or start of page with selected profession
@@ -739,15 +799,24 @@ SkillPlanner.prototype.clickProfessionListItem = function (e) {
     // if (!skillBox.classList.contains("largeSkillBox")) {
     let rowIndex = parseInt(skillBox.dataset.row);
     let colIndex = parseInt(skillBox.dataset.col);
+    let skillName =
+      professionSkillTrees[colIndex][rowIndex] == undefined
+        ? ""
+        : professionSkillTrees[colIndex][rowIndex].name;
     let skillBoxName =
-      skillPlanner.skillData.skill_names[
-        professionSkillTrees[colIndex][rowIndex].name
-      ];
-    let skillName = professionSkillTrees[colIndex][rowIndex].name;
+      skillPlanner.skillData.skill_names[skillName] == undefined
+        ? skillName
+        : skillPlanner.skillData.skill_names[skillName];
 
-    skillBox.textContent = skillBoxName;
-    skillBox.dataset.skillName = skillName;
-    skillBox.dataset.baseSkillName = skillDataName;
+    if (skillBoxName != undefined) {
+      skillBox.textContent = skillBoxName;
+      skillBox.dataset.skillName = skillName;
+      skillBox.dataset.baseSkillName = skillDataName;
+    } else {
+      skillBox.textContent = "";
+      skillBox.dataset.skillName = "none";
+      skillBox.dataset.baseSkillName = "none";
+    }
 
     //Get rid of elite profession links over trees
     let eliteSkillsDiv = document.querySelector(
@@ -845,11 +914,11 @@ SkillPlanner.prototype.addClickEventToSkillBox = function () {
       if (
         skillPlanner.currentSelectedSkills[baseSkill] == undefined &&
         skillPlanner.remainingSkillPoints -
-          skillPlanner.skillData.skills[baseSkill].novice.skillpoint_cost >=
+          skillPlanner.skillData.skills[baseSkill].novice.points_required >=
           0
       ) {
         let skillPoints =
-          skillPlanner.skillData.skills[baseSkill].novice.skillpoint_cost;
+          skillPlanner.skillData.skills[baseSkill].novice.points_required;
 
         //added new skill
         skillPlanner.currentSelectedSkills[baseSkill] = {
@@ -857,6 +926,9 @@ SkillPlanner.prototype.addClickEventToSkillBox = function () {
           master: {},
           novice: skillPlanner.skillData.skills[baseSkill].novice,
         };
+
+        skillPlanner.remainingSkillPoints -=
+          skillPlanner.skillData.skills[baseSkill].novice.points_required;
 
         let tree = skillPlanner.currentSkillTrees[colIndex].slice(
           0,
@@ -867,10 +939,10 @@ SkillPlanner.prototype.addClickEventToSkillBox = function () {
           skillPlanner.skillData.skills[baseSkill].novice.name,
         ];
         tree.forEach(function (skill) {
-          if (skillPlanner.remainingSkillPoints - skill.skillpoint_cost >= 0) {
+          if (skillPlanner.remainingSkillPoints - skill.points_required >= 0) {
             mappedSkillNames.push(skill.name);
-            // skillPoints += skill.skillpoint_cost;
-            skillPlanner.remainingSkillPoints -= skill.skillpoint_cost;
+            // skillPoints += skill.points_required;
+            skillPlanner.remainingSkillPoints -= skill.points_required;
             skillPlanner.currentSelectedSkills[baseSkill].trees[colIndex].push(
               skill
             );
@@ -901,11 +973,11 @@ SkillPlanner.prototype.addClickEventToSkillBox = function () {
         tree.forEach(function (skill) {
           if (
             !skillPlanner.mappedCurrentSkillNames.includes(skill.name) &&
-            skillPlanner.remainingSkillPoints - skill.skillpoint_cost >= 0
+            skillPlanner.remainingSkillPoints - skill.points_required >= 0
           ) {
             skillPlanner.mappedCurrentSkillNames.push(skill.name);
-            // skillPoints += skill.skillpoint_cost;
-            skillPlanner.remainingSkillPoints -= skill.skillpoint_cost;
+            // skillPoints += skill.points_required;
+            skillPlanner.remainingSkillPoints -= skill.points_required;
             skillPlanner.currentSelectedSkills[baseSkill].trees[colIndex].push(
               skill
             );
@@ -943,11 +1015,11 @@ SkillPlanner.prototype.addClickEventToSkillBox = function () {
 
           // skillPoints +=
           // skillPlanner.currentSelectedSkills[baseSkill].master
-          //   .skillpoint_cost;
+          //   .points_required;
           skillPlanner.remainingSkillPoints +=
             skillPlanner.currentSelectedSkills[
               baseSkill
-            ].master.skillpoint_cost;
+            ].master.points_required;
         }
 
         removedTreeSkills.forEach(function (skill) {
@@ -957,8 +1029,8 @@ SkillPlanner.prototype.addClickEventToSkillBox = function () {
               1
             );
 
-            // skillPoints += skill.skillpoint_cost;
-            skillPlanner.remainingSkillPoints += skill.skillpoint_cost;
+            // skillPoints += skill.points_required;
+            skillPlanner.remainingSkillPoints += skill.points_required;
           }
         });
 
@@ -979,7 +1051,7 @@ SkillPlanner.prototype.addClickEventToSkillBox = function () {
     }
     let baseSkill = this.dataset.baseSkillName;
     let noviceSkillPointCost =
-      skillPlanner.skillData.skills[baseSkill].novice.skillpoint_cost;
+      skillPlanner.skillData.skills[baseSkill].novice.points_required;
     let preRequisteSkills =
       skillPlanner.skillData.skills[baseSkill].novice.skills_required;
     let hasMetAllPrerequisteSkills = true;
@@ -1043,7 +1115,7 @@ SkillPlanner.prototype.addClickEventToSkillBox = function () {
         skillPlanner.currentSelectedSkills[baseSkill].master = {};
 
         skillPlanner.remainingSkillPoints +=
-          skillPlanner.skillData.skills[baseSkill].master.skillpoint_cost;
+          skillPlanner.skillData.skills[baseSkill].master.points_required;
       }
 
       skillPlanner.currentSelectedSkills[baseSkill].trees.forEach(function (
@@ -1055,7 +1127,7 @@ SkillPlanner.prototype.addClickEventToSkillBox = function () {
               skillPlanner.mappedCurrentSkillNames.indexOf(tree[i].name),
               1
             );
-            skillPlanner.remainingSkillPoints += tree[i].skillpoint_cost;
+            skillPlanner.remainingSkillPoints += tree[i].points_required;
             tree.splice(i, 1);
           }
         }
@@ -1092,9 +1164,9 @@ SkillPlanner.prototype.addClickEventToSkillBox = function () {
     let baseSkill = this.dataset.baseSkillName;
     let skillPoints = 0;
     let masterSkillPointCost =
-      skillPlanner.skillData.skills[baseSkill].master.skillpoint_cost;
+      skillPlanner.skillData.skills[baseSkill].master.points_required;
     let noviceSkillPointCost =
-      skillPlanner.skillData.skills[baseSkill].novice.skillpoint_cost;
+      skillPlanner.skillData.skills[baseSkill].novice.points_required;
     let prerequisiteSkills =
       skillPlanner.skillData.skills[baseSkill].novice.skills_required;
     let hasMetAllPrerequisteSkills = true;
@@ -1115,62 +1187,76 @@ SkillPlanner.prototype.addClickEventToSkillBox = function () {
       updatePrerequisiteSkills(prerequisiteSkills);
     }
 
-    if (
-      skillPlanner.currentSelectedSkills[baseSkill] == undefined &&
-      skillPlanner.remainingSkillPoints -
-        skillPlanner.skillData.skills[baseSkill].novice.skillpoint_cost >=
-        0
-    ) {
-      skillPlanner.currentSelectedSkills[baseSkill] = {
-        trees: [[], [], [], []],
-        master: {},
-        novice: skillPlanner.skillData.skills[baseSkill].novice,
-      };
-
-      skillPlanner.remainingSkillPoints -= noviceSkillPointCost;
-
-      //Add base novice name to mapped skill names
+    if (skillPlanner.currentSelectedSkills[baseSkill] == undefined) {
       if (
-        !skillPlanner.mappedCurrentSkillNames.includes(
-          skillPlanner.skillData.skills[baseSkill].novice.name
-        )
+        skillPlanner.remainingSkillPoints -
+          skillPlanner.skillData.skills[baseSkill].novice.points_required >=
+        0
       ) {
-        skillPlanner.mappedCurrentSkillNames.push(
-          skillPlanner.skillData.skills[baseSkill].novice.name
-        );
-      }
+        skillPlanner.currentSelectedSkills[baseSkill] = {
+          trees: [[], [], [], []],
+          master: {},
+          novice: skillPlanner.skillData.skills[baseSkill].novice,
+        };
 
-      //Trees
-      let treeIndex = 0;
+        skillPlanner.remainingSkillPoints -= noviceSkillPointCost;
 
-      skillPlanner.currentSkillTrees.forEach(function (skillTree) {
-        let tree = [];
-        skillTree.forEach(function (skill) {
-          if (
-            !skillPlanner.mappedCurrentSkillNames.includes(skill.name) &&
-            skillPlanner.remainingSkillPoints - skill.skillpoint_cost >= 0
-          ) {
-            skillPlanner.mappedCurrentSkillNames.push(skill.name);
-            tree.push(skill);
-            skillPlanner.remainingSkillPoints -= skill.skillpoint_cost;
-          }
-        });
-        skillPlanner.currentSelectedSkills[baseSkill].trees[treeIndex] = tree;
-        treeIndex++;
-      });
-
-      if (skillPlanner.remainingSkillPoints - masterSkillPointCost >= 0) {
-        skillPlanner.currentSelectedSkills[baseSkill].master =
-          skillPlanner.skillData.skills[baseSkill].master;
-        skillPlanner.remainingSkillPoints -= masterSkillPointCost;
+        //Add base novice name to mapped skill names
         if (
           !skillPlanner.mappedCurrentSkillNames.includes(
-            skillPlanner.skillData.skills[baseSkill].master.name
+            skillPlanner.skillData.skills[baseSkill].novice.name
           )
         ) {
           skillPlanner.mappedCurrentSkillNames.push(
-            skillPlanner.skillData.skills[baseSkill].master.name
+            skillPlanner.skillData.skills[baseSkill].novice.name
           );
+        }
+
+        //Trees
+        let treeIndex = 0;
+
+        skillPlanner.currentSkillTrees.forEach(function (skillTree) {
+          let tree = [];
+          skillTree.forEach(function (skill) {
+            if (
+              !skillPlanner.mappedCurrentSkillNames.includes(skill.name) &&
+              skillPlanner.remainingSkillPoints - skill.points_required >= 0
+            ) {
+              skillPlanner.mappedCurrentSkillNames.push(skill.name);
+              tree.push(skill);
+              skillPlanner.remainingSkillPoints -= skill.points_required;
+            }
+          });
+          skillPlanner.currentSelectedSkills[baseSkill].trees[treeIndex] = tree;
+          treeIndex++;
+        });
+
+        let meetsAllTreePrereqsForMaster = true;
+
+        skillPlanner.skillData.skills[baseSkill].master.skills_required.forEach(
+          function (skillPrereq) {
+            if (!skillPlanner.mappedCurrentSkillNames.includes(skillPrereq)) {
+              meetsAllTreePrereqsForMaster = false;
+            }
+          }
+        );
+
+        if (
+          meetsAllTreePrereqsForMaster &&
+          skillPlanner.remainingSkillPoints - masterSkillPointCost >= 0
+        ) {
+          skillPlanner.currentSelectedSkills[baseSkill].master =
+            skillPlanner.skillData.skills[baseSkill].master;
+          skillPlanner.remainingSkillPoints -= masterSkillPointCost;
+          if (
+            !skillPlanner.mappedCurrentSkillNames.includes(
+              skillPlanner.skillData.skills[baseSkill].master.name
+            )
+          ) {
+            skillPlanner.mappedCurrentSkillNames.push(
+              skillPlanner.skillData.skills[baseSkill].master.name
+            );
+          }
         }
       }
 
@@ -1178,6 +1264,7 @@ SkillPlanner.prototype.addClickEventToSkillBox = function () {
 
       // skillPlanner.remainingSkillPoints -= skillPoints;
     } else if (
+      // skillPlanner.currentSelectedSkills[baseSkill].master == undefined &&
       skillPlanner.currentSelectedSkills[baseSkill].master.name == undefined
     ) {
       let treeIndex = 0;
@@ -1186,20 +1273,33 @@ SkillPlanner.prototype.addClickEventToSkillBox = function () {
         skillTree.forEach(function (skill) {
           if (
             !skillPlanner.mappedCurrentSkillNames.includes(skill.name) &&
-            skillPlanner.remainingSkillPoints - skill.skillpoint_cost >= 0
+            skillPlanner.remainingSkillPoints - skill.points_required >= 0
           ) {
             skillPlanner.mappedCurrentSkillNames.push(skill.name);
             skillPlanner.currentSelectedSkills[baseSkill].trees[treeIndex].push(
               skill
             );
-            skillPlanner.remainingSkillPoints -= skill.skillpoint_cost;
+            skillPlanner.remainingSkillPoints -= skill.points_required;
           }
         });
         // skillPlanner.currentSelectedSkills[baseSkill].trees[treeIndex] = tree;
         treeIndex++;
       });
 
-      if (skillPlanner.remainingSkillPoints - masterSkillPointCost >= 0) {
+      let meetsAllTreePrereqsForMaster = true;
+
+      skillPlanner.skillData.skills[baseSkill].master.skills_required.forEach(
+        function (skillPrereq) {
+          if (!skillPlanner.mappedCurrentSkillNames.includes(skillPrereq)) {
+            meetsAllTreePrereqsForMaster = false;
+          }
+        }
+      );
+
+      if (
+        meetsAllTreePrereqsForMaster &&
+        skillPlanner.remainingSkillPoints - masterSkillPointCost >= 0
+      ) {
         skillPlanner.currentSelectedSkills[baseSkill].master =
           skillPlanner.skillData.skills[baseSkill].master;
         skillPlanner.remainingSkillPoints -= masterSkillPointCost;
@@ -1223,7 +1323,7 @@ SkillPlanner.prototype.addClickEventToSkillBox = function () {
       );
 
       skillPlanner.remainingSkillPoints +=
-        skillPlanner.skillData.skills[baseSkill].master.skillpoint_cost;
+        skillPlanner.skillData.skills[baseSkill].master.points_required;
 
       skillPlanner.removeEliteSkills(baseSkill);
     }
@@ -1239,7 +1339,7 @@ SkillPlanner.prototype.addClickEventToSkillBox = function () {
       if (skillPlanner.currentSelectedSkills[novicePrereqSkill] == undefined) {
         let prereqNoviceSkillPoints =
           skillPlanner.skillData.skills[novicePrereqSkill].novice
-            .skillpoint_cost;
+            .points_required;
         if (skillPlanner.remainingSkillPoints - prereqNoviceSkillPoints >= 0) {
           skillPlanner.remainingSkillPoints -= prereqNoviceSkillPoints;
           skillPlanner.currentSelectedSkills[novicePrereqSkill] = {
@@ -1270,25 +1370,25 @@ SkillPlanner.prototype.addClickEventToSkillBox = function () {
         prereqSkillTree.forEach(function (prereqSkill) {
           if (skill.indexOf("master") > -1) {
             if (
-              skillPlanner.remainingSkillPoints - prereqSkill.skillpoint_cost >=
+              skillPlanner.remainingSkillPoints - prereqSkill.points_required >=
                 0 &&
               !skillPlanner.mappedCurrentSkillNames.includes(prereqSkill.name)
             ) {
               skillPlanner.mappedCurrentSkillNames.push(prereqSkill.name);
               tree.push(prereqSkill);
-              skillPlanner.remainingSkillPoints -= prereqSkill.skillpoint_cost;
+              skillPlanner.remainingSkillPoints -= prereqSkill.points_required;
             }
           } else if (prereqSkillTree[3].name == skill) {
             if (
               !skillPlanner.mappedCurrentSkillNames.includes(
                 prereqSkill.name
               ) &&
-              skillPlanner.remainingSkillPoints - prereqSkill.skillpoint_cost >=
+              skillPlanner.remainingSkillPoints - prereqSkill.points_required >=
                 0
             ) {
               skillPlanner.mappedCurrentSkillNames.push(prereqSkill.name);
               tree.push(prereqSkill);
-              skillPlanner.remainingSkillPoints -= prereqSkill.skillpoint_cost;
+              skillPlanner.remainingSkillPoints -= prereqSkill.points_required;
             }
           }
         });
@@ -1306,7 +1406,7 @@ SkillPlanner.prototype.addClickEventToSkillBox = function () {
         skill.indexOf("master") > -1 &&
         skillPlanner.remainingSkillPoints -
           skillPlanner.skillData.skills[novicePrereqSkill].master
-            .skillpoint_cost >=
+            .points_required >=
           0 &&
         !skillPlanner.mappedCurrentSkillNames.includes(
           skillPlanner.skillData.skills[novicePrereqSkill].master.name
@@ -1315,7 +1415,7 @@ SkillPlanner.prototype.addClickEventToSkillBox = function () {
         skillPlanner.remainingSkillPoints -=
           skillPlanner.skillData.skills[
             novicePrereqSkill
-          ].master.skillpoint_cost;
+          ].master.points_required;
         skillPlanner.currentSelectedSkills[novicePrereqSkill].master =
           skillPlanner.skillData.skills[novicePrereqSkill].master;
 
@@ -1325,6 +1425,152 @@ SkillPlanner.prototype.addClickEventToSkillBox = function () {
       }
     });
   }
+};
+
+SkillPlanner.prototype.updateAbilitiesGranted = function () {
+  let skillPlanner = this;
+  let abilities = [];
+
+  for (const skill in skillPlanner.currentSelectedSkills) {
+    let currentSkill = skillPlanner.currentSelectedSkills[skill];
+    if (
+      currentSkill.novice != undefined &&
+      currentSkill.novice.commands != ""
+    ) {
+      let commands = currentSkill.novice.commands.split(",");
+      commands.forEach(function (command) {
+        let commandName =
+          skillPlanner.skillData.command_names[command.toLowerCase()];
+        if (commandName != undefined && !abilities.includes(commandName)) {
+          abilities.push(commandName);
+        }
+        // else if (!abilities.includes(command)) {
+        //   abilities.push(command);
+        // }
+      });
+    }
+    //Master abilities
+    if (
+      currentSkill.master != undefined &&
+      currentSkill.master.commands != undefined &&
+      currentSkill.master.commands != ""
+    ) {
+      let commands = currentSkill.master.commands.split(",");
+      commands.forEach(function (command) {
+        let commandName =
+          skillPlanner.skillData.command_names[command.toLowerCase()];
+        if (commandName != undefined && !abilities.includes(commandName)) {
+          abilities.push(commandName);
+        }
+        // else if (!abilities.includes(command)) {
+        //   abilities.push(command);
+        // }
+      });
+    }
+
+    if (currentSkill.trees != undefined && currentSkill.trees.length) {
+      currentSkill.trees.forEach(function (tree) {
+        tree.forEach(function (skill) {
+          let commands = skill.commands.split(",");
+          commands.forEach(function (command) {
+            let commandName =
+              skillPlanner.skillData.command_names[command.toLowerCase()];
+            if (commandName != undefined && !abilities.includes(commandName)) {
+              abilities.push(commandName);
+            }
+            // else if (!abilities.includes(command)) {
+            //   abilities.push(command);
+            // }
+          });
+        });
+      });
+    }
+  }
+
+  abilities.sort();
+  skillPlanner.currentAbilities = abilities;
+
+  let abilitiesList = document.getElementById("listCommands");
+  abilitiesList.innerHTML = "";
+
+  abilities.forEach(function (ability) {
+    let listItem = document.createElement("li");
+    listItem.textContent = ability;
+    abilitiesList.appendChild(listItem);
+  });
+};
+
+//TODO: See where schematic group names come from
+SkillPlanner.prototype.updateSchematicsAcquired = function () {
+  let skillPlanner = this;
+  let schematics = [];
+
+  for (const skill in skillPlanner.currentSelectedSkills) {
+    let currentSkill = skillPlanner.currentSelectedSkills[skill];
+    if (
+      currentSkill.novice != undefined &&
+      currentSkill.novice.schematics_granted != ""
+    ) {
+      let schematicsGranted = currentSkill.novice.schematics_granted.split(",");
+      schematicsGranted.forEach(function (schematic) {
+        let schematicName =
+          skillPlanner.skillData.schematics_granted[schematic.toLowerCase()];
+        if (schematicName != undefined && !schematics.includes(schematicName)) {
+          schematics.push(schematicName);
+        }
+        // else if (!schematics.includes(command)) {
+        //   schematics.push(command);
+        // }
+      });
+    }
+    //Master schematics
+    if (
+      currentSkill.master != undefined &&
+      currentSkill.master.schematics_granted != ""
+    ) {
+      let schematicsGranted = currentSkill.master.schematics_granted.split(",");
+      schematicsGranted.forEach(function (schematic) {
+        let schematicName =
+          skillPlanner.skillData.schematics_granted[schematic.toLowerCase()];
+        if (schematicName != undefined && !schematics.includes(schematicName)) {
+          schematics.push(schematicName);
+        }
+        // else if (!schematics.includes(command)) {
+        //   schematics.push(command);
+        // }
+      });
+    }
+
+    if (currentSkill.trees != undefined && currentSkill.trees.length) {
+      currentSkill.trees.forEach(function (tree) {
+        tree.forEach(function (skill) {
+          let schematics_granted = skill.schematics_granted.split(",");
+          schematics_granted.forEach(function (command) {
+            let schematicName =
+              skillPlanner.skillData.command_names[command.toLowerCase()];
+            if (commandName != undefined && !schematics.includes(commandName)) {
+              schematics.push(commandName);
+            }
+            // else if (!schematics.includes(command)) {
+            //   schematics.push(command);
+            // }
+          });
+        });
+      });
+    }
+  }
+
+  abilities.sort();
+  skillPlanner.currentAbilities = abilities;
+
+  let schematicsList = document.getElementById("listSchematics");
+  abilitiesList.innerHTML = "";
+
+  abilities.forEach(function (ability) {
+    let listItem = document.createElement("li");
+    listItem.textContent = ability;
+    schematicsList.appendChild(listItem);
+  });
 };
 
 SkillPlanner.prototype.removeEliteSkills = function (baseSkill) {
@@ -1353,7 +1599,7 @@ SkillPlanner.prototype.removeEliteSkills = function (baseSkill) {
             skillPlanner.currentSelectedSkills[skill].master = {};
 
             skillPlanner.remainingSkillPoints +=
-              skillPlanner.skillData.skills[skill].master.skillpoint_cost;
+              skillPlanner.skillData.skills[skill].master.points_required;
           }
 
           if (skillPlanner.currentSelectedSkills[skill] != undefined) {
@@ -1368,7 +1614,7 @@ SkillPlanner.prototype.removeEliteSkills = function (baseSkill) {
                     skillPlanner.mappedCurrentSkillNames.indexOf(tree[i].name),
                     1
                   );
-                  skillPlanner.remainingSkillPoints += tree[i].skillpoint_cost;
+                  skillPlanner.remainingSkillPoints += tree[i].points_required;
                   tree.splice(i, 1);
                 }
               }
@@ -1385,7 +1631,7 @@ SkillPlanner.prototype.removeEliteSkills = function (baseSkill) {
             if (deleteNovice) {
               delete skillPlanner.currentSelectedSkills[skill];
               skillPlanner.remainingSkillPoints +=
-                skillPlanner.skillData.skills[skill].novice.skillpoint_cost;
+                skillPlanner.skillData.skills[skill].novice.points_required;
               skillPlanner.mappedCurrentSkillNames.splice(
                 skillPlanner.mappedCurrentSkillNames.indexOf(
                   skillPlanner.skillData.skills[skill].novice.name
@@ -1410,33 +1656,46 @@ SkillPlanner.prototype.addHoverEventForProfessionTooltip = function () {
     let skillBoxName = skillPlanner.noviceSkillBox.dataset.skillName;
     let baseSkillName = skillPlanner.noviceSkillBox.dataset.baseSkillName;
     let toolTip = document.createElement("span");
+    let description =
+      skillPlanner.skillData.skill_descriptions[skillBoxName] == undefined
+        ? "No description available."
+        : skillPlanner.skillData.skill_descriptions[skillBoxName];
     toolTip.classList.add("tooltiptext");
-    toolTip.appendChild(
-      document.createTextNode(
-        skillPlanner.skillData.skill_descriptions[skillBoxName]
-      )
-    );
+
+    if (skillPlanner.skillData.skill_titles[skillBoxName] != undefined) {
+      toolTip.innerHTML +=
+        "<span style='color:lightgreen;'>(" +
+        skillPlanner.skillData.skill_titles[skillBoxName] +
+        ")</span><br><br>";
+    }
+
+    toolTip.appendChild(document.createTextNode(description));
     let mods = skillPlanner.skillData.skills[baseSkillName].novice.mods;
     let skillPoints =
-      skillPlanner.skillData.skills[baseSkillName].novice.skillpoint_cost;
+      skillPlanner.skillData.skills[baseSkillName].novice.points_required;
 
     if (mods != undefined) {
       toolTip.innerHTML += "<br><br><b>MODS:</b> <br>";
       for (const mod in mods) {
-        if (skillPlanner.skillData.stat_names[mod] != undefined) {
+        if (skillPlanner.skillData.skill_mod_names[mod] != undefined) {
           toolTip.innerHTML +=
-            skillPlanner.skillData.stat_names[mod] + ": " + mods[mod] + "<br> ";
+            skillPlanner.skillData.skill_mod_names[mod] +
+            ": " +
+            mods[mod] +
+            "<br> ";
         }
       }
     }
 
     //Skill points
-    toolTip.innerHTML +=
-      "<br>" +
-      "<br>" +
-      "This skill requires " +
-      skillPoints +
-      " Skill Points to Learn.";
+    if (skillPoints != undefined) {
+      toolTip.innerHTML +=
+        "<br>" +
+        "<br>" +
+        "This skill requires " +
+        skillPoints +
+        " Skill Points to Learn.";
+    }
 
     if (
       skillPlanner.skillData.exp_names[
@@ -1475,33 +1734,46 @@ SkillPlanner.prototype.addHoverEventForProfessionTooltip = function () {
     let skillBoxName = skillPlanner.masterSkillBox.dataset.skillName;
     let baseSkillName = skillPlanner.masterSkillBox.dataset.baseSkillName;
     let toolTip = document.createElement("span");
+    let description =
+      skillPlanner.skillData.skill_descriptions[skillBoxName] == undefined
+        ? "No description available."
+        : skillPlanner.skillData.skill_descriptions[skillBoxName];
     toolTip.classList.add("tooltiptext");
-    toolTip.appendChild(
-      document.createTextNode(
-        skillPlanner.skillData.skill_descriptions[skillBoxName]
-      )
-    );
+
+    if (skillPlanner.skillData.skill_titles[skillBoxName] != undefined) {
+      toolTip.innerHTML +=
+        "<span style='color:lightgreen; opacity: 100%'>(" +
+        skillPlanner.skillData.skill_titles[skillBoxName] +
+        ")</span><br><br>";
+    }
+
+    toolTip.appendChild(document.createTextNode(description));
     let mods = skillPlanner.skillData.skills[baseSkillName].master.mods;
     let skillPoints =
-      skillPlanner.skillData.skills[baseSkillName].master.skillpoint_cost;
+      skillPlanner.skillData.skills[baseSkillName].master.points_required;
 
     if (mods != undefined) {
       toolTip.innerHTML += "<br><br><b>MODS:</b> <br>";
       for (const mod in mods) {
-        if (skillPlanner.skillData.stat_names[mod] != undefined) {
+        if (skillPlanner.skillData.skill_mod_names[mod] != undefined) {
           toolTip.innerHTML +=
-            skillPlanner.skillData.stat_names[mod] + ": " + mods[mod] + "<br> ";
+            skillPlanner.skillData.skill_mod_names[mod] +
+            ": " +
+            mods[mod] +
+            "<br> ";
         }
       }
     }
 
     //Skill points
-    toolTip.innerHTML +=
-      "<br>" +
-      "<br>" +
-      "This skill requires " +
-      skillPoints +
-      " Skill Points to Learn.";
+    if (skillPoints != undefined) {
+      toolTip.innerHTML +=
+        "<br>" +
+        "<br>" +
+        "This skill requires " +
+        skillPoints +
+        " Skill Points to Learn.";
+    }
 
     if (
       skillPlanner.skillData.exp_names[
@@ -1526,12 +1798,20 @@ SkillPlanner.prototype.addHoverEventForProfessionTooltip = function () {
       let skillBoxName = skillBox.dataset.skillName;
       let baseSkillName = skillBox.dataset.baseSkillName;
       let toolTip = document.createElement("span");
+      let description =
+        skillPlanner.skillData.skill_descriptions[skillBoxName] == undefined
+          ? "No description available."
+          : skillPlanner.skillData.skill_descriptions[skillBoxName];
       toolTip.classList.add("tooltiptext");
-      toolTip.appendChild(
-        document.createTextNode(
-          skillPlanner.skillData.skill_descriptions[skillBoxName]
-        )
-      );
+
+      if (skillPlanner.skillData.skill_titles[skillBoxName] != undefined) {
+        toolTip.innerHTML +=
+          "<span style='color:lightgreen'>(" +
+          skillPlanner.skillData.skill_titles[skillBoxName] +
+          ")</span><br><br>";
+      }
+
+      toolTip.appendChild(document.createTextNode(description));
 
       //Grab the the correct skill box description, mods, and skill point costs.
       let mods;
@@ -1541,9 +1821,12 @@ SkillPlanner.prototype.addHoverEventForProfessionTooltip = function () {
       let xpName;
       for (let i = 0; i < skillTrees.length; i++) {
         for (let j = 0; j < skillTrees[i].length; j++) {
-          if (skillTrees[i][j].name == skillBoxName) {
+          if (
+            skillTrees[i][j] != undefined &&
+            skillTrees[i][j].name == skillBoxName
+          ) {
             mods = skillTrees[i][j].mods;
-            skillPoints = skillTrees[i][j].skillpoint_cost;
+            skillPoints = skillTrees[i][j].points_required;
             xpCost = skillTrees[i][j].xp_cost;
             xpName = skillPlanner.skillData.exp_names[skillTrees[i][j].xp_type];
             break;
@@ -1559,9 +1842,9 @@ SkillPlanner.prototype.addHoverEventForProfessionTooltip = function () {
       if (mods != undefined) {
         toolTip.innerHTML += "<br><br><b>MODS:</b> <br>";
         for (const mod in mods) {
-          if (skillPlanner.skillData.stat_names[mod] != undefined) {
+          if (skillPlanner.skillData.skill_mod_names[mod] != undefined) {
             toolTip.innerHTML +=
-              skillPlanner.skillData.stat_names[mod] +
+              skillPlanner.skillData.skill_mod_names[mod] +
               ": " +
               mods[mod] +
               "<br> ";
@@ -1570,12 +1853,14 @@ SkillPlanner.prototype.addHoverEventForProfessionTooltip = function () {
       }
 
       //Skill points
-      toolTip.innerHTML +=
-        "<br>" +
-        "<br>" +
-        "This skill requires " +
-        skillPoints +
-        " Skill Points to Learn.";
+      if (skillPoints != undefined) {
+        toolTip.innerHTML +=
+          "<br>" +
+          "<br>" +
+          "This skill requires " +
+          skillPoints +
+          " Skill Points to Learn.";
+      }
 
       if (xpName != undefined) {
         toolTip.innerHTML +=
@@ -1791,13 +2076,13 @@ SkillPlanner.prototype.updateSkillPlannerDOM = function () {
 
   rows.sort(function (a, b) {
     if (
-      skillPlanner.skillData.stat_names[a.mod] >
-      skillPlanner.skillData.stat_names[b.mod]
+      skillPlanner.skillData.skill_mod_names[a.mod] >
+      skillPlanner.skillData.skill_mod_names[b.mod]
     ) {
       return 1;
     } else if (
-      skillPlanner.skillData.stat_names[a.mod] <
-      skillPlanner.skillData.stat_names[b.mod]
+      skillPlanner.skillData.skill_mod_names[a.mod] <
+      skillPlanner.skillData.skill_mod_names[b.mod]
     ) {
       return -1;
     } else {
@@ -1810,9 +2095,9 @@ SkillPlanner.prototype.updateSkillPlannerDOM = function () {
     let modNameCell = document.createElement("td");
     let modValueCell = document.createElement("td");
     let modName =
-      skillPlanner.skillData.stat_names[rows[i].mod] == undefined
+      skillPlanner.skillData.skill_mod_names[rows[i].mod] == undefined
         ? rows[i].mod
-        : skillPlanner.skillData.stat_names[rows[i].mod];
+        : skillPlanner.skillData.skill_mod_names[rows[i].mod];
 
     modNameCell.appendChild(document.createTextNode(modName));
     row.appendChild(modNameCell);
@@ -1880,10 +2165,13 @@ SkillPlanner.prototype.updateSkillPlannerDOM = function () {
     skillPlanner.remainingSkillPoints + "/" + skillPlanner.skillPoints;
   skillPointsBar.style.width = skillPointsPercentage + "%";
 
+  skillPlanner.updateAbilitiesGranted();
+  // skillPlanner.updateSchematicsAcquired(); //TODO: Add back in when figure out where schematic group names come from
+
   function cancelProfessionTopSkillBoxClickEvent() {
     let baseSkill = this.dataset.baseSkillName;
     let noviceSkillPointCost =
-      skillPlanner.currentSelectedSkills[baseSkill].novice.skillpoint_cost;
+      skillPlanner.currentSelectedSkills[baseSkill].novice.points_required;
 
     skillPlanner.removeEliteSkills(baseSkill);
 
@@ -1904,7 +2192,7 @@ SkillPlanner.prototype.updateSkillPlannerDOM = function () {
             skillPlanner.mappedCurrentSkillNames.indexOf(skill.name),
             1
           );
-          skillPlanner.remainingSkillPoints += skill.skillpoint_cost;
+          skillPlanner.remainingSkillPoints += skill.points_required;
         }
       });
     });
@@ -1922,7 +2210,7 @@ SkillPlanner.prototype.updateSkillPlannerDOM = function () {
       );
 
       skillPlanner.remainingSkillPoints +=
-        skillPlanner.skillData.skills[baseSkill].master.skillpoint_cost;
+        skillPlanner.skillData.skills[baseSkill].master.points_required;
     }
 
     delete skillPlanner.currentSelectedSkills[baseSkill];

@@ -963,7 +963,7 @@ profession_miner, Miners are hardworking people who frequently grow rich off of 
 profession_rancher, A farmer can grow his or her own plants and animals in order to provide the foods necessary for keeping adventurers well fed and ready for combat.  An advanced farmer can develop their own strains of crops and even produce new breeds of creatures!
 profession_ranger, The Ranger is a unique combination of the explorer and the creature handler.  A player in this profession can head out on their own in search of adventure, or lead a group of players through the wilderness.
 profession_smuggler, Smugglers are those who rebel against the protectionist and unreasonable laws in restraint of free trade, in order to better lubricate the wheels of progress--and line their own pockets.
-profession_teraskasi, This profession combines skills from the melee combat and melee tactics disciplines. A player in this profession is extremely dangerous in melee combat. Teras Kasi, or "steel hands," is a Bunduki martial arts discipline focusing on weaponless combat.
+profession_teraskasi, This profession combines skills from the melee combat and melee tactics disciplines. A player in this profession is extremely dangerous in melee combat. Teras Kasi, or 'steel hands,' is a Bunduki martial arts discipline focusing on weaponless combat.
 profession_weaponsmith, Although seemingly low-tech at first glance, a player who master the melee weaponsmith profession can design the hi-tech and very deadly "vibro" melee weapons.
 rifle_concealment_chance, This skill  mod allows a rifleman to succesfully attack a mobile and only pull that mobile if succesful.
 science, Scientific advancement has led to many startling discoveries in the field of medicine.  The pursuit of knowledge is known to be quite rewarding, by those who seek it.
@@ -977,10 +977,10 @@ science_combatmedic_healing_range_speed_02, Advanced Healing Speed improves the 
 science_combatmedic_healing_range_speed_03, Expert Healing Speed improves the Combat Medic's speed at healing targets at a range.
 science_combatmedic_healing_range_speed_04, Master Healing Speed improves the Combat Medic's speed at healing targets at a range.
 science_combatmedic_master, The Master Combat Medic can heal even the most injured characters from several meters away. They are one of the most invaluable combat support professions.
-science_combatmedic_medicine_01, Intermediate Bacta Crafting conveys the knowledge to craft improved ranged healing medicines.
-science_combatmedic_medicine_02, Advanced Bacta Crafting conveys the knowledge to craft improved ranged healing medicines.
-science_combatmedic_medicine_03, Expert Bacta Crafting conveys the knowledge to craft improved ranged healing medicines.
-science_combatmedic_medicine_04, Master Bacta Crafting conveys the knowledge to craft improved ranged healing medicines.
+science_combatmedic_medicine_01, Intermediate Wound Treatment Speed enhances the speed at which a Combat Medic can heal.
+science_combatmedic_medicine_02, Advanced Wound Treatment Speed enhances the speed at which a Combat Medic can heal.
+science_combatmedic_medicine_03, Expert Wound Treatment Speed enhances the speed at which a Combat Medic can heal.
+science_combatmedic_medicine_04, Master Wound Treatment Speed enhances the speed at which a Combat Medic can heal.
 science_combatmedic_novice, Combat Medics are invaluable to any fighting unit. Not only can they heal injured combatants in the field, they can hold their own in a firefight.  They continue to gain improved crafting skills, and bonuses to healing large amounts of damage.
 science_combatmedic_support_01, Intermediate Combat Medic Support aids the Combat Medic at getting to their injured comrade faster.
 science_combatmedic_support_02, Advanced Combat Medic Support aids the Combat Medic at getting to their injured comrade faster.
@@ -1001,10 +1001,10 @@ science_doctor_wound_01, Intermediate Wound Treatment teaches the Doctor how to 
 science_doctor_wound_02, Advanced Wound Treatment teaches the Doctor how to heal significant wounds when in a hospital.
 science_doctor_wound_03, Expert Wound Treatment teaches the Doctor how to heal significant wounds when in a hospital.
 science_doctor_wound_04, Master Wound Treatment teaches the Doctor how to heal significant wounds when in a hospital.
-science_doctor_wound_speed_01, Intermediate Wound Treatment Speed enhances the speed at which a Doctor can heal wounds.
-science_doctor_wound_speed_02, Advanced Wound Treatment Speed enhances the speed at which a Doctor can heal wounds.
-science_doctor_wound_speed_03, Expert Wound Treatment Speed enhances the speed at which a Doctor can heal wounds.
-science_doctor_wound_speed_04, Master Wound Treatment Speed enhances the speed at which a Doctor can heal wounds.
+science_doctor_wound_speed_01, Intermediate Bacta Crafting conveys the knowledge to craft improved ranged healing medicines.
+science_doctor_wound_speed_02, Advanced Bacta Crafting conveys the knowledge to craft improved ranged healing medicines.
+science_doctor_wound_speed_03, Expert Bacta Crafting conveys the knowledge to craft improved ranged healing medicines.
+science_doctor_wound_speed_04, Master Bacta Crafting conveys the knowledge to craft improved ranged healing medicines.
 science_medic, The Medic is a critical component of any squad and is vital to a group engaged in combat. Medics can heal combat injuries, allowing others to continue the fight. Medics can evolve into Doctors, or combine their medical skills with the skills of a Marksman to become a Combat Medic better-suited to service on the front-lines of larger battles. If you enjoy helping others and want to be a necessary part of any group, choose the Medic.
 science_medic_ability_01, The Pharmacology skill set improves the Medic's knowledge of medicine and medicinal applications.
 science_medic_ability_02, The Pharmacology skill set improves the Medic's knowledge of medicine and medicinal applications.
@@ -1348,3 +1348,45 @@ dark_padawan_force_manipulation_01, One of the first skills a Dark Initiate lear
 dark_padawan_force_manipulation_02, After learning meditation, the Dark Initiate can now increase his or her run speed with the Force.
 dark_padawan_force_manipulation_03, The Dark Initiate prepares their training in the use of shielding themselves with the Force.
 dark_padawan_force_manipulation_04, The Dark Initiate's training in the use of shielding themselves is now complete and they can utilise said shield to defend themselves in combat.
+prequel_basic, The Jedi learner is only a novice Force user, and knows the basic use of a lightsaber. However, their training is not complete and the journey ahead is likely to be difficult and frought with danger.
+prequel_basic_novice, The Jedi Initiate has just begun the journey down the road of becoming a Jedi. Before becoming a full Padawan Learner, the Initiate must first learn the basics of wielding a lightsaber and exercising control over the Force.
+prequel_basic_master, The Jedi Padawan has completed their initial training and is ready to step into the larger galaxy.
+prequel_basic_sabers_01, You have begun your training with the true weapon of a Jedi Knight.  Not as clumsy or random as a blaster, this is an elegant weapon.
+prequel_basic_sabers_02, Your training has begun teaching you to target vital areas of your opponent's body.
+prequel_basic_sabers_03, Your ability to damage vital areas has increased, as well as your accuracy with the lightsaber, allowing you to make more precise strikes
+prequel_basic_sabers_04, Your skill with the lightsaber has resulted in your attacks increasing in both damage and speed.
+prequel_basic_unarmed_01, Unarmed I: Basic Combat
+prequel_basic_unarmed_02, Unarmed II: Blinding Strike
+prequel_basic_unarmed_03, Unarmed III: Stunning Strike
+prequel_basic_unarmed_04, Unarmed IV: Advanced Combat
+prequel_basic_force_01, Using the Force as a psychokinetic instrument, you can attack a target with nearby objects.
+prequel_basic_force_02, You have become more attuned to the force through constant meditation.
+prequel_basic_force_03, Using a blast of power from the Force, you can knock your enemies to the ground.
+prequel_basic_force_04, You are able to reduce your fatigue levels by bolstering yourself with the force.
+prequel_basic_crafting_01, You learn the fundamental steps of crafting a lightsaber.
+prequel_basic_crafting_02, You learn more advanced crafting methods, allowing for a more refined weapon.
+prequel_basic_crafting_03, You take your first steps at making your lightsaber more personalised.
+prequel_basic_crafting_04, You are capable of more advanced customisations. Your weapon is now truly your own.
+prequel_form2_master, A true master of Form 2, Makashi.
+prequel_form2_novice, Developed for the purpose of lightsaber-to-lightsaber combat, to address the failings of Form I, Makashi was the most dueling-centric of the seven classical forms. Relying on precision and efficiency over Shii-Cho's wild, sweeping motions, Form II allowed an initiate to defend themselves against an opponent with minimal effort, while placing a heavy focus on avoiding disarmament.
+
+prequel_form1_novice, Form 1 (1H) - Form I, also known as Shii-Cho, The Way of the Sarlacc, or The Determination Form
+prequel_form1_master, A master of Form 1, Shii-Cho
+prequel_form3_novice, Form 3 (2H) - Form III, also known as Soresu, the Way of the Mynock, or the Resilience Form
+
+prequel_form3_master, A master of Form 3, Soresu. Essentially a development on Form I blast-deflect training, Soresu relied on tight bladework and subtle dodges to provide maximum defensive coverage, minimizing exposure to ranged weaponry. Over time, Soresu transcended this basic origin, and came to be considered the ultimate expression of non-aggressive Jedi philosophy.
+prequel_form4_master, An aggressive style, Form IV was fast-paced and effective against single opponents, though weaker in prolonged combat and confined spaces. Also, it was not recommended for use against opponents wielding blasters. Ataru was characterized by Force-assisted acrobatics, such as somersaults and leaping strikes, both for attack and defense
+prequel_form4_novice, Form 4 (2H) - Form IV, also known as Ataru, the Way of the Hawk-Bat, or The Aggression Form
+
+prequel_form5_novice, Form 5 - Form 5 (2H) - Form V, also known by its two primary disciplines of Shien and Djem So, as well as The Way of the Krayt Dragon or The Perseverance Form
+
+prequel_form5_master, Form 5 - Master - It was developed by practitioners of Form III who felt that the defensively minded form unnecessarily extended time spent in combat by forcing its users to wait for an opportunity to strike rather than create their own openings. Form V combat was characterized by power attacks and defense immediately followed by a counterstrike.
+
+prequel_form6_master, Form 6 - Master - Niman training regimens encouraged the inclusion of Force-based attacks in combat, such as telekinetic pulls and shoves used in sync with lightsaber strikes. Also, as Niman was developed from two pre-existing martial arts fighting forms that both emphasized the use of dual-blades, it provided a firm foundation for duelists looking to study into such practices. 
+
+prequel_form6_novice, Form 6 - Form 6 (1h, 2h, Pole) - Form VI, also known as Niman, the Way of the Rancor, the Moderation Form, and the diplomat's form
+
+prequel_form7_novice, Form 7 - Form 7 (1H/2H/POLE) - Form VII, also known as Juyo, the Way of the Vornskr, or the Ferocity Form,
+
+prequel_form7_master, Form 7 - Master - There were two variations of Form VII, Juyo and Vaapad, but both utilized bold, direct movements. According to accounts compiled by the New Jedi Order, use of Form VII was more demanding in terms of energy used due to a broader focus and deeper utilization of emotion.
+

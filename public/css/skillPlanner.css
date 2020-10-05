@@ -3,24 +3,18 @@ body {
   background-color: #00404c;
   margin: 0px;
   font-family: Arial, Helvetica, sans-serif;
+  flex-direction: column;
 }
 
 main {
   flex: 1;
-  display: grid;
-  grid-template-areas:
-    "topbar topbar topbar"
-    "leftProfessions content sidebar"
-    "footer footer footer";
-  grid-template-columns: 1fr 3fr 2fr;
-  grid-template-rows: 70px auto 70px;
-  gap: 0 10px;
+  display: flex;
+  justify-content: center;
   /* align-items: center;
   justify-items: center; */
 }
 
 header {
-  grid-area: topbar;
   display: flex;
   /* justify-items: center; */
   background-color: #048da7;
@@ -53,22 +47,6 @@ header h1 {
   color: #006074;
 }
 
-aside {
-  grid-area: leftProfessions;
-  display: inline-grid;
-  place-items: center;
-  background-color: #00404c;
-}
-
-article {
-  grid-area: content;
-  /* background-color: #acb0b1; */
-  display: inline-grid;
-  place-items: center;
-  /* border: 1px solid black; */
-  grid-template-rows: 100px auto 100px;
-}
-
 .rightSideOfPage {
   grid-area: sidebar;
   display: flex;
@@ -77,14 +55,17 @@ article {
   align-items: center;
   /* place-items: center; */
   background-color: #00404c;
+  padding-left: 25px;
 }
 
 footer {
-  grid-area: footer;
   display: inline-grid;
+  width: 100%;
   justify-items: center;
   background-color: #048da7;
   color: #a5fbfb;
+  position: absolute;
+  bottom: 0;
 }
 
 .selectProfessions {
@@ -110,6 +91,8 @@ footer {
   cursor: pointer;
   border-radius: 0px 8px 0px 8px;
   padding: 5px;
+  text-align: center;
+  transition: background-color 0.5s ease;
 }
 
 .selectedProfessionBox:hover {
@@ -138,10 +121,22 @@ footer {
   cursor: pointer;
 }
 
+.professionContainer {
+  align-self: flex-end;
+  padding-right: 25px;
+}
+
+#skillPlannerContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .skillPlannerBody {
+  flex: 1;
   display: grid;
   grid-template-areas:
-    "skillName skillName skillName resetButtonContainer"
     "topMasterSkills topMasterSkills topMasterSkills topMasterSkills"
     "masterSkillBox masterSkillBox masterSkillBox masterSkillBox"
     "toEliteSkills1 toEliteSkills2 toEliteSkills3 toEliteSkills4"
@@ -153,24 +148,33 @@ footer {
     "prerequesiteSkills prerequesiteSkills prerequesiteSkills prerequesiteSkills"
     "skillPointsRemaining skillPointsRemaining skillPointsRemaining skillPointsRemaining";
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-template-rows: 1fr 0.5fr 1.5fr 1fr 1.5fr 1.5fr 1.5fr 1.5fr 1.5fr 0.25fr 0.5fr;
+  /* grid-template-rows: 0.5fr 1.5fr 1fr 1.5fr 1.5fr 1.5fr 1.5fr 1.5fr 0.25fr 0.5fr; */
   gap: 3px 5px;
-  border-radius: 10px;
+  border-radius: 6px;
   padding: 15px 5px;
   background-color: #048da7;
-  height: 95%;
-  width: 100%;
-  max-width: 1000px;
-  max-height: 800px;
+  /* height: 95%; */
+  /* width: 100%; */
+  width: 900px;
+  height: 500px;
   border: 1px solid #a5fbfb;
+  margin-top: 20px;
+}
+
+.skillTitleHeader {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+  /* max-width: 1000px; */
+  width: 100%;
 }
 
 /* Skill Planner Grid */
 .skillName {
-  grid-area: skillName;
   font-size: 2.5rem;
   color: #a5fbfb;
   text-shadow: 2px 1px black;
+  flex: 1;
 }
 
 .topMasterSkills {
@@ -219,12 +223,15 @@ footer {
 .skillbox_1_4 {
   grid-area: skillbox_1_4;
 }
+
 .skillbox_1_3 {
   grid-area: skillbox_1_3;
 }
+
 .skillbox_1_2 {
   grid-area: skillbox_1_2;
 }
+
 .skillbox_1_1 {
   grid-area: skillbox_1_1;
 }
@@ -232,12 +239,15 @@ footer {
 .skillbox_2_4 {
   grid-area: skillbox_2_4;
 }
+
 .skillbox_2_3 {
   grid-area: skillbox_2_3;
 }
+
 .skillbox_2_2 {
   grid-area: skillbox_2_2;
 }
+
 .skillbox_2_1 {
   grid-area: skillbox_2_1;
 }
@@ -245,12 +255,15 @@ footer {
 .skillbox_3_4 {
   grid-area: skillbox_3_4;
 }
+
 .skillbox_3_3 {
   grid-area: skillbox_3_3;
 }
+
 .skillbox_3_2 {
   grid-area: skillbox_3_2;
 }
+
 .skillbox_3_1 {
   grid-area: skillbox_3_1;
 }
@@ -258,12 +271,15 @@ footer {
 .skillbox_4_4 {
   grid-area: skillbox_4_4;
 }
+
 .skillbox_4_3 {
   grid-area: skillbox_4_3;
 }
+
 .skillbox_4_2 {
   grid-area: skillbox_4_2;
 }
+
 .skillbox_4_1 {
   grid-area: skillbox_4_1;
 }
@@ -313,11 +329,13 @@ footer {
   ); */
   color: white;
   height: 100%;
+  transition: all 0.5s ease;
 }
 
 .largeSkillBox {
   width: 35%;
-  height: 90%;
+  /* height: 90%; */
+  height: 4rem;
   background-color: #006074;
   cursor: pointer;
   border-radius: 0px 8px 0px 8px;
@@ -336,6 +354,7 @@ footer {
 }
 
 .largeSkillBox.active {
+  transition: background-color 0.5s ease;
   background-color: #02ab2e;
 }
 
@@ -349,9 +368,11 @@ footer {
   place-items: center; */
   display: flex;
   justify-content: center;
+  text-align: center;
   align-items: center;
   position: relative;
   border: 1px solid black;
+  height: 4rem;
 }
 
 .professionSkillBox:hover {
@@ -359,6 +380,7 @@ footer {
 }
 
 .professionSkillBox.active {
+  transition: background-color 0.5s ease;
   background-color: #02ab2e;
 }
 
@@ -366,10 +388,11 @@ footer {
   color: #a5fbfb;
   display: flex;
   justify-content: space-evenly;
-  width: 50%;
+  width: 100%;
+  min-height: 2rem;
 }
 
-.topMasterEliteSkillsText > span:hover {
+.topMasterEliteSkillsText>span:hover {
   cursor: pointer;
   text-decoration: underline;
 }
@@ -379,9 +402,10 @@ footer {
   display: flex;
   justify-content: space-evenly;
   width: 50%;
+  height: 1rem;
 }
 
-.prerequesitSkillsText > span:hover {
+.prerequesitSkillsText>span:hover {
   cursor: pointer;
   text-decoration: underline;
 }
@@ -392,22 +416,24 @@ footer {
   flex-direction: column;
   justify-content: flex-end;
   align-items: center;
+  height: 5rem;
 }
 
-.eliteSkillsText > span:hover {
+.eliteSkillsText>span:hover {
   cursor: pointer;
   text-decoration: underline;
 }
 
 .smallTitle {
   font-size: 1.25em;
+  color: #fffffa;
 }
 
 #listProfessions {
   list-style: none;
   background-color: #048da7;
   padding: 5px 0;
-  border-radius: 10px;
+  border-radius: 6px;
   border: 1px solid #a5fbfb;
   min-width: 200px;
 }
@@ -424,7 +450,7 @@ footer {
   background-color: #a5fbfb;
 }
 
-#listProfessions > hr {
+#listProfessions>hr {
   border: 1px solid #a5fbfb;
 }
 
@@ -481,7 +507,7 @@ footer {
   /* width: 85%; */
   background-color: #048da7;
   /* padding: 5px 0; */
-  border-radius: 10px;
+  border-radius: 6px;
   border: 1px solid #a5fbfb;
   min-width: 350px;
   max-width: 400px;
@@ -512,10 +538,10 @@ footer {
   flex-direction: column;
   /* width: 85%; */
   background-color: #048da7;
-  border-radius: 10px;
+  border-radius: 6px;
   border: 1px solid #a5fbfb;
   min-width: 350px;
-  max-width: 400px;
+  /* max-width: 400px; */
   /* width: 90%; */
   height: 200px;
   /* max-height: 300px; */
@@ -589,7 +615,8 @@ footer {
   /* width: 120px; */
   bottom: 80%;
   left: 50%;
-  margin-left: -20px; /* Use half of the width (120/2 = 60), to center the tooltip */
+  margin-left: -20px;
+  /* Use half of the width (120/2 = 60), to center the tooltip */
 }
 
 .noviceSkillBoxLabel:hover .tooltiptext {
@@ -617,7 +644,8 @@ footer {
   /* width: 120px; */
   top: 80%;
   left: 50%;
-  margin-left: -20px; /* Use half of the width (120/2 = 60), to center the tooltip */
+  margin-left: -20px;
+  /* Use half of the width (120/2 = 60), to center the tooltip */
 }
 
 .masterSkillBoxLabel:hover .tooltiptext {
@@ -625,10 +653,12 @@ footer {
 }
 
 .resetButtonContainer {
-  grid-area: resetButtonContainer;
+  /* grid-area: resetButtonContainer;
   display: flex;
-  justify-content: flex-end;
-  padding-right: 15px;
+  align-self: flex-end; */
+  /* padding-right: 15px; */
+  /* position: absolute;
+  right: 15px; */
 }
 
 .resetButton {
@@ -656,6 +686,7 @@ footer {
   width: 5px;
   height: 5px;
 }
+
 .skillMods::-webkit-scrollbar-thumb {
   background: #a5fbfb;
   border-radius: 5px;
@@ -683,4 +714,78 @@ footer {
 .experienceRequired::-webkit-scrollbar-track {
   background: linear-gradient(90deg, #a5fbfb, #a5fbfb 1px, #00404c 0, #00404c);
   /* background: #00404c; */
+}
+
+.commandsAndSchematicsContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+  /* border: 1px solid #a5fbfb;   */
+  width: 100%;
+  padding: 5px;
+  height: 150px;
+}
+
+.commandsContainer {
+  color: white;
+  text-shadow: 1px 2px black;
+  border: 1px solid #a5fbfb;
+  flex: 1;
+  /* margin: 10px; */
+  background-color: #048da7;
+  border-radius: 6px;
+  position: relative;
+  overflow: auto;
+  height: 300px;
+}
+
+.commandsContainer::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+.commandsContainer::-webkit-scrollbar-thumb {
+  background: #a5fbfb;
+  border-radius: 5px;
+  box-shadow: inset 2px 2px 2px hsla(0, 0%, 100%, 0.25),
+    inset -2px -2px 2px rgba(0, 0, 0, 0.25);
+}
+
+.commandsContainer::-webkit-scrollbar-track {
+  background: linear-gradient(90deg, #a5fbfb, #a5fbfb 1px, #00404c 0, #00404c);
+  /* background: #00404c; */
+}
+
+.commandsContainer ul {
+  list-style: none;
+  margin: 5px 5px 0 -30px;
+}
+
+.commandsContainer li {
+  display: block;
+  border-bottom: 1px solid #404040;
+  padding: 5px;
+  color: #a5fbfb;
+  /* width: 100%; */
+}
+
+.listHeader {
+  display: block;
+  /* position: absolute;
+  top: 1px; */
+  background-color: #006074;
+  width: 99%;
+  border-radius: 4px 4px 0 0;
+  border-bottom: 1px solid black;
+  padding: 4px 0 4px 4px;
+  position: sticky;
+  top: 0;
+}
+
+.experienceRequiredDiv {
+  height: 150px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 2rem 0;
 }

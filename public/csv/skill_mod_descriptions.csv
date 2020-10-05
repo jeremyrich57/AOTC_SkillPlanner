@@ -122,7 +122,7 @@ group_melee_defense, The group melee defense skill mod grants everyone in the Sq
 group_ranged_defense, The group ranged defense skill mod grants everyone in the Squad Leader's party the ability to defend against ranged attacks more effectively.
 group_slope_move, This skill mod determines how fast members of a Squad Leader's group can move through sloped terrain conditions.  The higher the number, the easier group members can move over hills.
 hair, This skill mod determines how adept the Image Designer is at modifying a character's hairstyle. This is used to trim or color facial hair, as well as to sculpt hairstyles and modify hair color.
-healing_ability, This skill mod determines the level of medication that you have access to use to heal patients with.  The higher the number, the more advanced your medicine selection is.
+healing_ability, This skill mod determines the cost to your mind when attempting to heal patients.  The higher the number, the smaller the cost is.
 healing_dance_ability, This skill mod determines the number of dances that you know.  The higher the number, the more dances you are likely to know.
 healing_dance_mind, This skill mod determines how effective you are at healing the Mind injuries of players that are watching you dance.
 healing_dance_shock, This skill mod determines how effective you are at healing the Battle Fatigue of players that are watching you dance.
@@ -332,3 +332,5 @@ force_enhancement_dark, This skill mod increases your ability to Force Drain and
 force_enhancement_light, This skill mod increases your ability to Force Drain and Force Channel.
 force_healing_dark, This skill mod increases your Force healing abilities.
 force_healing_light, This skill mod increases your Force healing abilities.
+pharmacy, This skill mod determines the level of medication that you have access to use to enhance patients with. The higher the number, the more advanced your enhancement selection is.
+saber_skill, This skill mod increases your damage dealt from lightsaber abilities.
