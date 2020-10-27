@@ -835,7 +835,7 @@ flame, /flame: You take a deep breath and exhale verbal flames everywhere.
 /flame self: You put on your flame-proof suit.
 /flame target: You verbally flame (target name).
 flamecone1, /flamecone1 <target>: This ranged area attack envelops a number of multiple opponents at once with a large sheet of flame.
-flamecone2, /flamecone1 <target>: This powerful ranged area attack envelops a number of multiple opponents at once with a horrifying sheet of flame.  This attack causes more damage than Flame Cone 1.
+flamecone2, /flamecone2 <target>: This powerful ranged area attack envelops a number of multiple opponents at once with a horrifying sheet of flame.  This attack causes more damage than Flame Cone 1.
 flamesingle1, /flamesingle1 <target>: This ranged attack sends a blast of flame towards a single target and does considerable damage.
 flamesingle2, /flamesingle2 <target>: This powerful ranged attack sends a blast of flame towards a target, causing high damage once it strikes.  This is more powerful than Flame Single 1.
 flee, /flee: FLEE!!
@@ -1639,8 +1639,6 @@ ruffle, /ruffle: You look ruffled.
 /ruffle self: You ruffle your own hair.
 /ruffle target: You ruffle (his, her, or its) hair.
 saber1hcombohit1, /saber1hComboHit1 <target>: This attack allows a Jedi to hit multiple locations on the target's body, dealing damage to all enemies in the immediate area.
-saber1hcombohit2, /saber1hComboHit2 <target>: This attack allows a Jedi to hit multiple locations on the target's body and has a chance to lower the target's posture, dealing damage to all enemies in the immediate area. This attack is more powerful than the Saber One Hand Combo Hit 1, and will likely do more damage.
-saber1hcombohit3, /saber1hComboHit3 <target>: This attack allows a Jedi to hit multiple locations on the target's body and has a chance to lower the target's posture, dealing damage to all enemies in the immediate area. This attack is more powerful than the Saber One Hand Combo Hit 2, and will likely do more damage.
 saber1hflurry, /saber1hFlurry <target>: This attack allows a Jedi to perform a devastating move with a one-handed lightsaber that damages all enemies in the immediate area, as well as inflicting stun, blind, and dizziness.
 saber1hflurry2, /saber1hFlurry2 <target>: This ultimate attack allows a Jedi to perform a devastating move with a one-handed lightsaber that damages all enemies in the immediate area, as well as inflicting stun, blind, and dizziness.
 saber1hheadhit1, /saber1hHeadHit1 <target>: This attack allows a Jedi to perform a strike against the target's head, increasing the chance of affecting its mind pool.
@@ -1656,7 +1654,7 @@ saber2hfrenzy, /saber2hFrenzy <target>: This attack allows a Jedi to perform a d
 saber2hhit1, /saber2hHit1 <target>: This attack allows a Jedi to do more damage than normal with a two-handed lightsaber.
 saber2hhit2, /saber2hHit2 <target>: This attack allows a Jedi to do significantly more damage than normal with a two-handed lightsaber. This attack is more powerful than Saber Two Hand Hit 1.
 saber2hhit3, /saber2hHit3 <target>: This attack allows a Jedi to do much more damage than normal with a two-handed lightsaber. This attack is more powerful than Saber Two Hand Hit 2.
-saber2hphantom, /saber2hFrenzy <target>: This ultimate attack allows a Jedi to perform a devastating move with a two-handed lightsaber that damages all enemies in the immediate area, as well as inflicting stun, blind, and dizziness.
+saber2hphantom, /saber2hPhantom <target>: This attack allows a Jedi to perform a low exertion move with a two-handed lightsaber that damages the target, as well as inflicting stun, blind, and dizziness.
 saber2hsweep1, /saber2hSweep1 <target>: This attack allows a Jedi to cause damage to all enemies in the immediate area.
 saber2hsweep2, /saber2hSweep1 <target>: This attack allows a Jedi to cause damage to all enemies in the immediate area.This includes a damage increase over Saber Two Hand Sweep 1.
 saber2hsweep3, /saber2hSweep1 <target>: This attack allows a Jedi to cause damage to all enemies in the immediate area. This includes dealing more damage than Saber Two Hand Sweep 2.
@@ -2014,7 +2012,7 @@ tmi, /tmi: TOO MUCH INFO!!
 tongue, /tongue: You stick your tongue out.
 /tongue self: You stick your tongue out and try to touch your nose.
 /tongue target: You stick your tongue out at (target name).
-torsoshot, /torsoshot <target>: This ranged attack douses a target in flames, causing high amounts of damage to the body as well as causing additional fire damage. Usable with pistols and carbines.
+torsoshot, /torsoshot <target>: This ranged attack douses a target in flames, causing high amounts of damage to the body as well as causing additional fire damage. Usable with pistols only. 
 toss, /toss: You extend your arms like a child wanting to be tossed.
 /toss self: You toss yourself into the air and land flat on your face.
 /toss target: You toss (him, her, or it) into the air.
@@ -2178,3 +2176,5 @@ cert_carbine_geo, This certification allows you to wield a Kalranoos Carbine.
 inherent_focus, This ability blocks the effect of any intimidate against your Force Powers.
 cert_lance_magna_guard, This certification allows you to wield a MagnaGuard Electrostaff.
 cert_carbine_dc15s, This certification allows you to wield a DC-15S Carbine.
+saber1hcombohit2, /saber1hComboHit2 <target>: This attack allows a Jedi to hit multiple locations on the target's body, dealing damage to all enemies in the immediate area. This attack is more powerful than the Saber One Hand Combo Hit 1, and will likely do more damage.
+saber1hcombohit3, /saber1hComboHit3 <target>: This attack allows a Jedi to hit multiple locations on the target's body and has a chance to Stun, Blind and Dizzy. This attack is more powerful than the Saber One Hand Combo Hit 2 but focussed on a single opponent.

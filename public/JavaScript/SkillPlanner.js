@@ -4,6 +4,7 @@ xhr.onload = function () {
   if (xhr.status === 200) {
     const data = JSON.parse(xhr.response);
     const skillPlanner = new SkillPlanner(data.SKILL_DATA);
+    console.log(skillPlanner);
   } else {
     console.log("Request failed.  Returned status of " + xhr.status);
   }
@@ -1689,6 +1690,25 @@ SkillPlanner.prototype.addHoverEventForProfessionTooltip = function () {
       }
     }
 
+    if (
+      skillPlanner.skillData.skills[baseSkillName].novice != undefined &&
+      skillPlanner.skillData.skills[baseSkillName].novice.commands != ""
+    ) {
+      let commands = skillPlanner.skillData.skills[
+        baseSkillName
+      ].novice.commands.split(",");
+      toolTip.innerHTML += "<br><br><b>SKILLS:</b><br>";
+      if (commands.length > 0) {
+        commands.forEach(function (command) {
+          let commandName =
+            skillPlanner.skillData.command_names[command.toLowerCase()];
+          if (commandName != undefined) {
+            toolTip.innerHTML += commandName + "<br>";
+          }
+        });
+      }
+    }
+
     //Skill points
     if (skillPoints != undefined) {
       toolTip.innerHTML +=
@@ -1767,6 +1787,25 @@ SkillPlanner.prototype.addHoverEventForProfessionTooltip = function () {
       }
     }
 
+    if (
+      skillPlanner.skillData.skills[baseSkillName].master != undefined &&
+      skillPlanner.skillData.skills[baseSkillName].master.commands != ""
+    ) {
+      let commands = skillPlanner.skillData.skills[
+        baseSkillName
+      ].master.commands.split(",");
+      toolTip.innerHTML += "<br><br><b>SKILLS:</b><br>";
+      if (commands.length > 0) {
+        commands.forEach(function (command) {
+          let commandName =
+            skillPlanner.skillData.command_names[command.toLowerCase()];
+          if (commandName != undefined) {
+            toolTip.innerHTML += commandName + "<br>";
+          }
+        });
+      }
+    }
+
     //Skill points
     if (skillPoints != undefined) {
       toolTip.innerHTML +=
@@ -1817,6 +1856,7 @@ SkillPlanner.prototype.addHoverEventForProfessionTooltip = function () {
 
       //Grab the the correct skill box description, mods, and skill point costs.
       let mods;
+      let commands;
       let skillPoints;
       let skillTrees = skillPlanner.skillData.skills[baseSkillName].trees;
       let xpCost;
@@ -1828,6 +1868,7 @@ SkillPlanner.prototype.addHoverEventForProfessionTooltip = function () {
             skillTrees[i][j].name == skillBoxName
           ) {
             mods = skillTrees[i][j].mods;
+            commands = skillTrees[i][j].commands.split(",");
             skillPoints = skillTrees[i][j].points_required;
             xpCost = skillTrees[i][j].xp_cost;
             xpName = skillPlanner.skillData.exp_names[skillTrees[i][j].xp_type];
@@ -1851,6 +1892,19 @@ SkillPlanner.prototype.addHoverEventForProfessionTooltip = function () {
               mods[mod] +
               "<br> ";
           }
+        }
+      }
+
+      if (commands != undefined) {
+        toolTip.innerHTML += "<br><br><b>SKILLS:</b><br>";
+        if (commands.length > 0) {
+          commands.forEach(function (command) {
+            let commandName =
+              skillPlanner.skillData.command_names[command.toLowerCase()];
+            if (commandName != undefined) {
+              toolTip.innerHTML += commandName + "<br>";
+            }
+          });
         }
       }
 
