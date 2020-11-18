@@ -331,10 +331,10 @@ prequel_form4_novice, Ataru Student
 prequel_form4_master, a Master of Ataru
 prequel_form5_novice, Form 5 Student
 prequel_form5_master, a Master of Shien
-prequel_form6_master, a Master of Form 6
-prequel_form7_master, a Master of Form 7
-prequel_form6_novice, a Novice of Form 6
-prequel_form7_novice, a Novice of Form 7
+prequel_form6_master, a Master of Niman
+prequel_form7_master, a Master of Juyo
+prequel_form6_novice, Niman Student
+prequel_form7_novice, Juyo Student
 prequel_master1_master, Jedi Healer
 prequel_master2_master, Jedi Guardian
 prequel_master3_master, Jedi Sentinel

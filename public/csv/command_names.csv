@@ -726,7 +726,7 @@ forceknockdown1, Force Knockdown 1
 forceknockdown2, Force Knockdown 2
 forceknockdown3, Force Knockdown 3
 forcelightningcone1, Force Lightning Cone 1
-forcelightningcone2, Force Lightning Cone 2
+forcelightningcone2, Force Storm
 forcelightningsingle1, Force Lightning Single 1
 forcelightningsingle2, Force Lightning Single 2
 forcemeditate, Force Meditate
@@ -1169,9 +1169,6 @@ polearmheadhit, Polearm Head Hit
 polearmhit1, Polearm Hit 1
 polearmhit2, Polearm Hit 2
 polearmhit3, Polearm Hit 3
-polearmleghit1, Polearm Leg Hit 1
-polearmleghit2, Polearm Leg Hit 2
-polearmleghit3, Polearm Leg Hit 3
 polearmlunge1, Polearm Lunge 1
 polearmlunge2, Polearm Lunge 2
 polearmspinattack1, Polearm Spin Attack 1
@@ -1292,14 +1289,14 @@ saber2hsweep1, Saber Two Hand Sweep 1
 saber2hsweep2, Saber Two Hand Sweep 2
 saber2hsweep3, Saber Two Hand Sweep 3
 saber_block, Saber Block
-saberpolearmdervish, Saber Polearm Dervish
+saberpolearmdervish, Juyo Dervish
 saberpolearmdervish2, Saber Polearm Dervish 2
 saberpolearmhit1, Saber Polearm Hit 1
 saberpolearmhit2, Saber Polearm Hit 2
 saberpolearmhit3, Saber Polearm Hit 3
-saberpolearmleghit1, Saber Leg Hit 1
-saberpolearmleghit2, Saber Leg Hit 2
-saberpolearmleghit3, Saber Leg Hit 3
+saberpolearmleghit1, Polearm Leg Hit 1
+saberpolearmleghit2, Polearm Leg Hit 2
+saberpolearmleghit3, Polearm Leg Hit 3
 saberpolearmspinattack1, Saber Polearm Spin Attack 1
 saberpolearmspinattack2, Saber Polearm Spin Attack 2
 saberpolearmspinattack3, Saber Polearm Spin Attack 3
@@ -1670,3 +1667,7 @@ inherent_focus, Inherent Focus
 cert_lance_magna_guard, MagnaGuard Electrostaff Certification
 cert_carbine_dc15s, DC-15S Carbine Certification
 forceserenity1, Force Serenity 1
+polearmleghit1, Polearm Leg Hit 1
+polearmleghit2, Polearm Leg Hit 2
+polearmleghit3, Polearm Leg Hit 3
+saberjuyostrike, Juyo Strike

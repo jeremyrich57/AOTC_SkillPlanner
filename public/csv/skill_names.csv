@@ -1507,26 +1507,22 @@ prequel_form1, Form 1 - Shii-Cho
 prequel_form3_novice, Novice Student of Soresu
 prequel_form3_master, Master of Soresu
 prequel_form3, Form 3 - Soresu
-prequel_form3_unarmed_01, Form 3 - Soresu - MELEE
-
-prequel_form3_unarmed_02, Form 3 - Soresu - MELEE 2
-
-prequel_form3_unarrmed_03, Form 3 - Soresu - MELEE 3
-
-prequel_form3_unarmed_04, Form 3 - Soresu - MELEE 4
-
-prequel_form3_force_01, Form 3 - Soresu - THE FORCE 01
-prequel_form3_force_02, Form 3 - Soresu - THE FORCE 02
-prequel_form3_force_03, Form 3 - Soresu - THE FORCE 03
-prequel_form3_force_04, Form 3 - Soresu - THE FORCE 04
-prequel_form3_sabers_01, Form 3 - Soresu - Sabers 01
-prequel_form3_sabers_02, Form 3 - Soresu - Sabers 02
-prequel_form3_sabers_03, Form 3 - Soresu - Sabers 03
-prequel_form3_sabers_04, Form 3 - Soresu - Sabers 04
-prequel_form3_powers_01, Form 3 - Soresu - Powers 01
-prequel_form3_powers_02, Form 3 - Soresu - Powers 02
-prequel_form3_powers_03, Form 3 - Soresu - Powers 03
-prequel_form3_powers_04, Form 3 - Soresu - Powers 04
+prequel_form3_toughness_01, Toughness I
+prequel_form3_toughness_02, Toughness II
+prequel_form3_toughness_03, Toughness III
+prequel_form3_toughness_04, Toughness IV
+prequel_form3_healing_01, Focused Healing I
+prequel_form3_healing_02, Focused Healing II
+prequel_form3_healing_03, Focused Healing III
+prequel_form3_healing_04, Focused Healing IV
+prequel_form3_form_01, Technique I: Soresu Form
+prequel_form3_form_02, Technique II: Advanced Soresu Form
+prequel_form3_form_03, Technique III: Soresu Combos
+prequel_form3_form_04, Technique IV: Soresu Mastery
+prequel_form3_powers_01, Force Mastery I
+prequel_form3_powers_02, Force Mastery II
+prequel_form3_powers_03, Force Mastery III
+prequel_form3_powers_04, Force Mastery IV
 prequel_form4, Form 4 - Ataru
 prequel_form4_master, Master of Ataru
 prequel_form4_powers_01, Form 4 - Ataru - Powers 01
@@ -1548,12 +1544,12 @@ prequel_form4_unarmed_04, Form 4 - Ataru - Melee 04
 prequel_form5_novice, Form 5 Novice
 prequel_form5, Form 5 Shien and Djem So
 prequel_form5_master, Master of Shien and Djem So
-prequel_form6_master, Form 6 Master
-prequel_form6_novice, Form 6 Novice
-prequel_form6, Form 6 
-prequel_form7, Form 7
-prequel_form7_novice, Form 7 Novice
-prequel_form7_master, Form 7 Master
+prequel_form6_master, Master of Niman
+prequel_form6_novice, Novice Student of Niman
+prequel_form6, Form 6 - Niman
+prequel_form7, Form 7 - Juyo
+prequel_form7_novice, Novice Student of Juyo
+prequel_form7_master, Master of Juyo
 prequel_form5_unarmed_01, Form 5 Shien and Djem So - Melee
 prequel_form5_unarmed_02, Form 5 Shien and Djem So - Melee
 
@@ -1652,15 +1648,47 @@ prequel_master4_tree1_01, Force Lightning I: Basic Lightning
 prequel_master4_tree1_02, Force Lightning II: Cone Lightning
 prequel_master4_tree1_03, Force Lightning III: Empowered Lightning
 prequel_master4_tree1_04, Force Lightning IV: Empowered Cone Lightning
-prequel_master4_tree2_01, Advanced Force Use I
+prequel_master4_tree2_01, Advanced Force Use I: Force Grip
 prequel_master4_tree2_02, Advanced Force Use II
 prequel_master4_tree2_03, Advanced Force Use III
 prequel_master4_tree2_04, Advanced Force Use IV
-prequel_master4_tree3_01, Power Technique I
-prequel_master4_tree3_02, Power Technique II
-prequel_master4_tree3_03, Power Technique III
-prequel_master4_tree3_04, Power Technique IV
-prequel_master4_tree4_01, Force Toughness I
-prequel_master4_tree4_02, Force Toughness II
-prequel_master4_tree4_03, Force Toughness III
-prequel_master4_tree4_04, Force Toughness IV
+prequel_master4_tree3_01, Telekenisis I: Force Throw
+prequel_master4_tree3_02, Telekenisis II
+prequel_master4_tree3_03, Telekenisis III
+prequel_master4_tree3_04, Telekenisis IV
+prequel_master4_tree4_01, Force Telepathy I: Mind Blast
+prequel_master4_tree4_02, Force Telepathy II
+prequel_master4_tree4_03, Force Telepathy III
+prequel_master4_tree4_04, Force Telepathy IV
+prequel_form6_form_01, Technique I: Niman Deflection
+prequel_form6_form_02, Technique II: Saber Form
+prequel_form6_form_03, Technique III: Focused Strikes
+prequel_form6_form_04, Technique IV: Advanced Spin Techniques
+prequel_form6_powers_01, The Force I
+prequel_form6_powers_02, The Force II
+prequel_form6_powers_03, The Force III
+prequel_form6_powers_04, The Force IV
+prequel_form6_healing_01, Focused Healing I
+prequel_form6_healing_02, Focused Healing II
+prequel_form6_healing_03, Focused Healing III
+prequel_form6_healing_04, Focused Healing IV
+prequel_form6_toughness_01, Toughness I
+prequel_form6_toughness_02, Toughness II
+prequel_form6_toughness_03, Toughness III
+prequel_form6_toughness_04, Toughness IV
+prequel_form7_form_01, Technique I: Juyo Deflection
+prequel_form7_form_02, Technique II: Juyo Form
+prequel_form7_form_03, Technique III: Focused Strikes
+prequel_form7_form_04, Technique IV: Offensive Mastery
+prequel_form7_powers_01, The Force I
+prequel_form7_powers_02, The Force II
+prequel_form7_powers_03, The Force III
+prequel_form7_powers_04, The Force IV
+prequel_form7_healing_01, Focused Healing I
+prequel_form7_healing_02, Focused Healing II
+prequel_form7_healing_03, Focused Healing III
+prequel_form7_healing_04, Focused Healing IV
+prequel_form7_toughness_01, Toughness I
+prequel_form7_toughness_02, Toughness II
+prequel_form7_toughness_03, Toughness III
+prequel_form7_toughness_04, Toughness IV
