@@ -334,3 +334,4 @@ force_healing_dark, This skill mod increases your Force healing abilities.
 force_healing_light, This skill mod increases your Force healing abilities.
 pharmacy, This skill mod determines the level of medication that you have access to use to enhance patients with. The higher the number, the more advanced your enhancement selection is.
 saber_skill, This skill mod increases your damage dealt from lightsaber abilities.
+pet_toughness, This skill mod increases the toughness of your pets, decreasing the amount of damage they take.

@@ -737,7 +737,7 @@ forceresistpoison, Force Resist Poison
 forceresiststates, Force Resist States
 forcerun1, Force Run 1
 forcerun2, Force Run 2
-forcerun3, Force Run 3
+forcerun3, Ataru Rush
 forceshield1, Force Shield 1
 forceshield2, Force Shield 2
 forcespeed1, Force Speed 1
@@ -1280,7 +1280,7 @@ saber1hhit3, Saber One Hand Hit 3
 saber2hbodyhit1, Saber Body Hit 1
 saber2hbodyhit2, Saber Body Hit 2
 saber2hbodyhit3, Saber Body Hit 3
-saber2hfrenzy, Saber Two Hand Frenzy
+saber2hfrenzy, Ataru Leaping Strike
 saber2hhit1, Saber Two Hand Hit 1
 saber2hhit2, Saber Two Hand Hit 2
 saber2hhit3, Saber Two Hand Hit 3
@@ -1671,3 +1671,4 @@ polearmleghit1, Polearm Leg Hit 1
 polearmleghit2, Polearm Leg Hit 2
 polearmleghit3, Polearm Leg Hit 3
 saberjuyostrike, Juyo Strike
+sabershienstrike, Shien Strike

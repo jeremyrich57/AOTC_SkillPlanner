@@ -1482,7 +1482,7 @@ prequel_basic_crafting_01, Lightsaber Construction I: Basic Construction Methods
 prequel_basic_crafting_02, Lightsaber Construction II: Advanced Construction Methods
 prequel_basic_crafting_03, Lightsaber Construction III: Basic Personalisation
 prequel_basic_crafting_04, Lightsaber Costruction IV: Advanced Customisation
-prequel_form2_healing_01, Focused Healing I
+prequel_form2_healing_01, Focused Healing I - Self Healing
 prequel_form2_healing_02, Focused Healing II
 prequel_form2_healing_03, Focused Healing III
 prequel_form2_healing_04, Focused Healing IV
@@ -1507,11 +1507,11 @@ prequel_form1, Form 1 - Shii-Cho
 prequel_form3_novice, Novice Student of Soresu
 prequel_form3_master, Master of Soresu
 prequel_form3, Form 3 - Soresu
-prequel_form3_toughness_01, Toughness I
-prequel_form3_toughness_02, Toughness II
-prequel_form3_toughness_03, Toughness III
-prequel_form3_toughness_04, Toughness IV
-prequel_form3_healing_01, Focused Healing I
+prequel_form3_toughness_01, ToughnessII: Soresu Defence
+prequel_form3_toughness_02, Toughness II: Advanced Soresu Defence
+prequel_form3_toughness_03, Toughness III: Defensive Mastery
+prequel_form3_toughness_04, Toughness IV: Total Defence
+prequel_form3_healing_01, Focused Healing I - Self Healing
 prequel_form3_healing_02, Focused Healing II
 prequel_form3_healing_03, Focused Healing III
 prequel_form3_healing_04, Focused Healing IV
@@ -1525,49 +1525,47 @@ prequel_form3_powers_03, Force Mastery III
 prequel_form3_powers_04, Force Mastery IV
 prequel_form4, Form 4 - Ataru
 prequel_form4_master, Master of Ataru
-prequel_form4_powers_01, Form 4 - Ataru - Powers 01
-prequel_form4_powers_02, Form 4 - Ataru - Powers 02
-prequel_form4_powers_03, Form 4 - Ataru - Powers 03
-prequel_form4_powers_04, Form 4 - Ataru - Powers 04
-prequel_form4_sabers_01, Form 4 - Ataru - Sabers 01
-prequel_form4_sabers_02, Form 4 - Ataru - Sabers 02
-prequel_form4_sabers_03, Form 4 - Ataru - Sabers 03
-prequel_form4_sabers_04, Form 4 - Ataru - Sabers 04
-prequel_form4_force_01, Form 4 - Ataru - Force 01
-prequel_form4_force_02, Form 4 - Ataru - Force 02
-prequel_form4_force_03, Form 4 - Ataru - Force 03
-prequel_form4_force_04, Form 4 - Ataru - Force 04
-prequel_form4_unarmed_01, Form 4 - Ataru - Melee 01
-prequel_form4_unarmed_02, Form 4 - Ataru - Melee 02
-prequel_form4_unarmed_03, Form 4 - Ataru - Melee 03
-prequel_form4_unarmed_04, Form 4 - Ataru - Melee 04
-prequel_form5_novice, Form 5 Novice
-prequel_form5, Form 5 Shien and Djem So
-prequel_form5_master, Master of Shien and Djem So
+prequel_form4_toughness_01, Toughness I
+prequel_form4_toughness_02, Toughness II
+prequel_form4_toughness_03, Toughness III
+prequel_form4_toughness_04, Toughness IV
+prequel_form4_healing_01, Focused Healing I - Self Healing
+prequel_form4_healing_02, Focused Healing II
+prequel_form4_healing_03, Focused Healing III
+prequel_form4_healing_04, Focused Healing IV
+prequel_form4_form_01, Technique I: Ataru Acrobatics
+prequel_form4_form_02, Technique II: Ataru Form
+prequel_form4_form_03, Technique III: Advanced Ataru Form
+prequel_form4_form_04, Technique IV: Ataru Mastery
+prequel_form4_powers_01, Force Mastery I
+prequel_form4_powers_02, Force Mastery II
+prequel_form4_powers_03, Force Mastery III
+prequel_form4_powers_04, Force Mastery IV
+prequel_form5_novice, Novice Student of Shien
+prequel_form5, Form 5 - Shien
+prequel_form5_master, Master of Shien
 prequel_form6_master, Master of Niman
 prequel_form6_novice, Novice Student of Niman
 prequel_form6, Form 6 - Niman
 prequel_form7, Form 7 - Juyo
 prequel_form7_novice, Novice Student of Juyo
 prequel_form7_master, Master of Juyo
-prequel_form5_unarmed_01, Form 5 Shien and Djem So - Melee
-prequel_form5_unarmed_02, Form 5 Shien and Djem So - Melee
-
-prequel_form5_unarmed_03, Form 5 Shien and Djem So - Melee
-prequel_form5_unarmed_04, Form 5 Shien and Djem So - Melee
-prequel_form5_force_01, Form 5 Shien and Djem So - Force
-prequel_form5_force_02, Form 5 Shien and Djem So - Force
-prequel_form5_force_03, Form 5 Shien and Djem So - Force
-prequel_form5_force_04, Form 5 Shien and Djem So - Force
-
-prequel_form5_sabers_01, Form 5 Shien and Djem So - Sabers
-prequel_form5_sabers_02, Form 5 Shien and Djem So - Sabers
-prequel_form5_sabers_03, Form 5 Shien and Djem So - Sabers
-prequel_form5_sabers_04, Form 5 Shien and Djem So - Sabers
-prequel_form5_powers_01, Form 5 Shien and Djem So - Powers
-prequel_form5_powers_02, Form 5 Shien and Djem So - Powers
-prequel_form5_powers_03, Form 5 Shien and Djem So - Powers
-prequel_form5_powers_04, Form 5 Shien and Djem So - Powers
+prequel_form5_form_01, Technique I: Soresu Form
+prequel_form5_form_02, Technique II: Advanced Soresu Form
+prequel_form5_form_03, Technique III: Shien Form
+prequel_form5_form_04, Technique IV: Advanced Shien Form
+prequel_form5_toughness_01, Toughness I: Soresu Defence
+prequel_form5_toughness_02, Toughness II: Advanced Soresu Defence
+prequel_form5_toughness_03, Toughness III: Shien Defence
+prequel_form5_toughness_04, Toughness IV: Advanced Shien Defence
+prequel_form5_healing_01, Focused Healing I - Self Healing
+prequel_form5_healing_02, Focused Healing II
+prequel_form5_healing_03, Focused Healing III
+prequel_form5_healing_04, Focused Healing IV
+prequel_form5_powers_01, Force Mastery I
+prequel_form5_powers_02, Force Mastery II
+prequel_form5_powers_03, Force Mastery III
+prequel_form5_powers_04, Force Mastery IV
 prequel_master1, Jedi Mastery: Healer
 prequel_master2, Jedi Mastery: Defender
 prequel_master3, Jedi Mastery: Sentinel
@@ -1588,7 +1586,7 @@ prequel_form1_powers_01, The Force I
 prequel_form1_powers_02, The Force II
 prequel_form1_powers_03, The Force III
 prequel_form1_powers_04, The Force IV
-prequel_form1_healing_01, Focused Healing I
+prequel_form1_healing_01, Focused Healing I - Self Healing
 prequel_form1_healing_02, Focused Healing II
 prequel_form1_healing_03, Focused Healing III
 prequel_form1_healing_04, Focused Healing IV
@@ -1600,7 +1598,7 @@ prequel_master1_tree1_01, Prevention I: Absorb
 prequel_master1_tree1_02, Prevention II: Poison
 prequel_master1_tree1_03, Prevention III: Disease
 prequel_master1_tree1_04, Prevention IV: Wounds
-prequel_master1_tree2_01, Expert Healing I: Self Healing
+prequel_master1_tree2_01, Expert Healing I: Advanced Self Healing
 prequel_master1_tree2_02, Expert Healing II: States
 prequel_master1_tree2_03, Expert Healing III: Heal Other
 prequel_master1_tree2_04, Expert Healing IV: Total Heal
@@ -1668,10 +1666,10 @@ prequel_form6_powers_01, The Force I
 prequel_form6_powers_02, The Force II
 prequel_form6_powers_03, The Force III
 prequel_form6_powers_04, The Force IV
-prequel_form6_healing_01, Focused Healing I
+prequel_form6_healing_01, Focused Healing I - Self Healing
 prequel_form6_healing_02, Focused Healing II
 prequel_form6_healing_03, Focused Healing III
-prequel_form6_healing_04, Focused Healing IV
+prequel_form6_healing_04, Focused Healing IV: Niman Healing
 prequel_form6_toughness_01, Toughness I
 prequel_form6_toughness_02, Toughness II
 prequel_form6_toughness_03, Toughness III
@@ -1684,7 +1682,7 @@ prequel_form7_powers_01, The Force I
 prequel_form7_powers_02, The Force II
 prequel_form7_powers_03, The Force III
 prequel_form7_powers_04, The Force IV
-prequel_form7_healing_01, Focused Healing I
+prequel_form7_healing_01, Focused Healing I - Self Healing
 prequel_form7_healing_02, Focused Healing II
 prequel_form7_healing_03, Focused Healing III
 prequel_form7_healing_04, Focused Healing IV
@@ -1692,3 +1690,4 @@ prequel_form7_toughness_01, Toughness I
 prequel_form7_toughness_02, Toughness II
 prequel_form7_toughness_03, Toughness III
 prequel_form7_toughness_04, Toughness IV
+prequel_form4_novice, Novice Student of Ataru

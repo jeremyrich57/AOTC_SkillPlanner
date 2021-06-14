@@ -510,7 +510,7 @@ comfort, /comfort: You comfort everyone and let them know it will be OK.
 con, /con
 conceal, /conceal: This command allows you to apply a camouflage kit to become far less detectable by NPCs and creatures while in the concealed state.  This can be used on other players.
 concealshot, /concealshot <target>: This ranged sneak attack, if successful, will damage your target without them knowing where the attack came from.
-confusionshot, /confusionshot <target>: This ranged attack is designed to confuse its target, and can stun and dizzy its target as well.  Usable with pistols and carbines.
+confusionshot, /confusionshot <target>: This ranged attack is designed to confuse its target, and can stun and dizzy its target as well. Usable with carbines only.
 congratulate, /congratulate: Congrats to all!
 /congratulate self: You give yourself a pat on the back.
 /congratulate target: You congratulate (him, her, or it).
@@ -896,7 +896,7 @@ forceknockdown1, /forceKnockdown1 <target>: This attack allows a Jedi to release
 forceknockdown2, /forceKnockdown2 <target>: This attack allows a Jedi to release a large kinetic burst from his or her palm. This will knock down multiple targets in a cone emanating from the Jedi, but will not do any damage.
 forceknockdown3, /forceKnockdown3 <target>: This attack allows a Jedi to release a large kinetic burst from his or her palm. This will knock down multiple targets in the area, but will not do any damage.
 forcelightningcone1, /forceLightningCone1 <target>: This attack allows a Jedi to direct a fork of lightning to hit multiple targets.
-forcelightningcone2, /forceLightningCone2 <target>: This attack allows a Jedi to direct a lightning strike against a multitude of targets. While doing more damage than Force Lightning Cone 1, this attack also has a chance of causing all targets struck by the lightning to become dizzy.
+forcelightningcone2, /forceLightningCone2 <target>: This attack allows a Jedi to direct a lightning strike against target and all other enemites in range. This attack also has a chance of causing all targets struck by the lightning to become dizzy.
 forcelightningsingle1, /forceLightningSingle1 <target>: This attack allows a Jedi to direct an arc of electricity to the target.
 forcelightningsingle2, /forceLightningSingle2 <target>: This attack allows a Jedi to direct a bolt of lightning towards the target. This has a chance of stunning the target as well as doing more damage than Force Lightning Single 1.
 forcemeditate, /forceMeditate: This ability allows a Jedi to enter a state where their stored Force power can replenish faster than normal.  A Jedi is very vulnerable while in this meditative state.
@@ -906,8 +906,8 @@ forceresistdisease, /forceResistDisease: This ability allows a Jedi to use their
 forceresistpoison, /forceResistPoison: This ability allows a Jedi to use their Force power to increase their body's natural resistance to poisons.
 forceresiststates, /forceResistStates: This ability allows a Jedi to use their Force power to increase their body's natural resistance to various state attacks such as Stun, Blind, and Dizziness.
 forcerun1, /forceRun1: Increases your run speed for a short duration.
-forcerun2, /forceRun2: Increases your run speed for a short duration. This ability allows you to run faster than with Force Run 1. This ability has a fifteen second cooldown.
-forcerun3, /forceRun3: Increases your run speed for a short duration. This ability allows you to run with blinding speed.
+forcerun2, /forceRun2: Increases your run speed for a short duration. This ability allows you to run for longer than with Force Run 1.
+forcerun3, /forceRun3: Massively increases your run speed for a few seconds. This ability allows you to run with blinding speed.
 forceshield1, /forceShield1: This ability allows a Jedi to create a barrier around themselves that will stop a portion of incoming Force attacks.
 forceshield2, /forceShield2: This ability allows a Jedi to create a barrier around themselves that will stop a significant portion of incoming Force attacks.  This ability will stop more damage than Force Shield 1.
 forcespeed1, /forceSpeed1: This ability allows a Jedi to perform all combat actions faster than normal.
@@ -1650,7 +1650,7 @@ saber1hhit3, /saber1hHit3 <target>: This attack allows a Jedi to do significantl
 saber2hbodyhit1, /saber2hBodyHit1 <target>: This attack allows a Jedi to perform a strike against the target's body, increasing the chance of affecting its health pool.
 saber2hbodyhit2, /saber2hBodyHit2 <target>: This attack allows a Jedi to perform a strike against the target's body, increasing the chance of affecting its health pool. This attack is more powerful than Saber Body Hit 1.
 saber2hbodyhit3, /saber2hBodyHit3 <target>: This attack allows a Jedi to perform a strike against the target's body, increasing the chance of affecting its health pool. This attack is more powerful than Saber Body Hit 2.
-saber2hfrenzy, /saber2hFrenzy <target>: This attack allows a Jedi to perform a devastating move with a two-handed lightsaber that damages all enemies in the immediate area, as well as inflicting stun, blind, and dizziness.
+saber2hfrenzy, /saber2hFrenzy <target>: This attack allows a Jedi to perform a swift leaping strike with a two-handed lightsaber, striking an enemy who would otherwise be out of reach. It also has a high chance of stunning and blinding the target.
 saber2hhit1, /saber2hHit1 <target>: This attack allows a Jedi to do more damage than normal with a two-handed lightsaber.
 saber2hhit2, /saber2hHit2 <target>: This attack allows a Jedi to do significantly more damage than normal with a two-handed lightsaber. This attack is more powerful than Saber Two Hand Hit 1.
 saber2hhit3, /saber2hHit3 <target>: This attack allows a Jedi to do much more damage than normal with a two-handed lightsaber. This attack is more powerful than Saber Two Hand Hit 2.
@@ -1659,10 +1659,10 @@ saber2hsweep1, /saber2hSweep1 <target>: This attack allows a Jedi to cause damag
 saber2hsweep2, /saber2hSweep1 <target>: This attack allows a Jedi to cause damage to all enemies in the immediate area.This includes a damage increase over Saber Two Hand Sweep 1.
 saber2hsweep3, /saber2hSweep1 <target>: This attack allows a Jedi to cause damage to all enemies in the immediate area. This includes dealing more damage than Saber Two Hand Sweep 2.
 saber_block, Allows a Jedi to block many types of energy bolts and several types of projectiles with a lightsaber.
-saberpolearmdervish, /saberPolearmDervish <target>: This attack allows a Jedi to perform a devastating move with a double-bladed lightsaber that damages all enemies in the immediate area, as well as inflicting stun, blind, and dizzyness.
+saberpolearmdervish, /saberPolearmDervish <target>: This attack allows a Jedi to perform a devastating move with a double-bladed lightsaber that damages the enemy, as well as inflicting stun, blind, and dizzyness.
 saberpolearmdervish2, /saberPolearmDervish2 <target>: This ultimate attack allows a Jedi to perform a devastating move with a double-bladed lightsaber that damages all enemies in a cone radius outward from the Jedi, as well as inflicting stun, blind, and dizzyness.
 saberpolearmhit1, /saberPolearmHit1 <target>: This attack allows a Jedi to do more damage than normal with a double-bladed lightsaber.
-saberpolearmhit2, /saberPolearmHit2 <target>: This attack allows a Jedi to do significantly more damage than normal with a double-bladed lightsaber. This attack is more powerful than the Saber Polearm Hit 1, and also has a chance to stun the target.
+saberpolearmhit2, /saberPolearmHit2 <target>: This attack allows a Form 7 Jedi to do significantly more damage than normal with a lightsaber. This attack is more powerful than the other Saber Hit's.
 saberpolearmhit3, /saberPolearmHit3 <target>: This attack allows a Jedi to do significantly more damage than normal with a double-bladed lightsaber. This attack is more powerful than the Saber Polearm Hit 2, and also has a chance to stun the target.
 saberpolearmleghit1, /saberPolearmLegHit1 <target>: This attack allows a Jedi to perform a strike against the target's legs, increasing the chance of affecting its action pool.
 saberpolearmleghit2, /saberPolearmLegHit2 <target>: This attack allows a Jedi to perform a precise against a target's legs, increasing the chance of affecting its action pool. This attack is more powerful than the Saber Leg Hit 1.
@@ -2071,7 +2071,7 @@ uncle, /uncle: UNCLE!! UNCLE!!
 /uncle self: Say Uncle! Say Uncle!
 /uncle target: You beg (him, her, or it) to stop. UNCLE!
 unconsent, /unconsent: This command brings up a window with all of the players who you have consented to move your corpse.  To remove them from this list, click on their name and then click OK.
-underhandshot, /underhandshot <target>: This sneaky ranged attack is designed to catch a target unaware, and causes high damage and can also knock them down.  Usable with pistols, carbines and heavy weapons.
+underhandshot, /underhandshot <target>: This sneaky ranged attack is designed to catch a target unaware, and causes high damage and can also knock them down. Usable with carbines only.
 undock, /undock: Undock from a space station.
 uninstallshipcomponent, Uninstall a ship component from a ship.
 unregistered, Your city has been unregistered from the planetary map.
@@ -2178,3 +2178,6 @@ cert_lance_magna_guard, This certification allows you to wield a MagnaGuard Elec
 cert_carbine_dc15s, This certification allows you to wield a DC-15S Carbine.
 saber1hcombohit2, /saber1hComboHit2 <target>: This attack allows a Jedi to hit multiple locations on the target's body, dealing damage to all enemies in the immediate area. This attack is more powerful than the Saber One Hand Combo Hit 1, and will likely do more damage.
 saber1hcombohit3, /saber1hComboHit3 <target>: This attack allows a Jedi to hit multiple locations on the target's body and has a chance to Stun, Blind and Dizzy. This attack is more powerful than the Saber One Hand Combo Hit 2 but focussed on a single opponent.
+saberjuyostrike, /saberJuyoStrike <target>: This attack allows a Jedi trained in the Juyo form to deal devastating damage to their target with a lightsaber.
+forceserenity1, /forceSerenity1: Allows the Jedi to focus more on their connection to the force, providing huge increases to their Stamina and Consitution for a brief time.
+sabershienstrike, /saberShienStrike <target>: This attack allows a Jedi trained in the Shien form to deal significant damage to their target with a lightsaber.
