@@ -153,7 +153,7 @@ function SkillPlanner(skillPlannerData) {
     );
 
     noviceSkillBox.addEventListener("mouseleave", function tooltipExit() {
-      document.querySelectorAll(".tooltiptext").forEach((x) => x.remove());
+      document.querySelectorAll(".skillToolTip").forEach((x) => x.remove());
     });
 
     masterSkillBox.addEventListener(
@@ -162,7 +162,7 @@ function SkillPlanner(skillPlannerData) {
     );
 
     masterSkillBox.addEventListener("mouseleave", function tooltipExit() {
-      document.querySelectorAll(".tooltiptext").forEach((x) => x.remove());
+      document.querySelectorAll(".skillToolTip").forEach((x) => x.remove());
     });
 
     let masterSkillLinks = document.getElementById("topMasterEliteSkillsText");
@@ -248,7 +248,7 @@ function SkillPlanner(skillPlannerData) {
       );
 
       skillBox.addEventListener("mouseleave", function tooltipExit() {
-        document.querySelectorAll(".tooltiptext").forEach((x) => x.remove());
+        document.querySelectorAll(".skillToolTip").forEach((x) => x.remove());
       });
     });
 
@@ -276,58 +276,83 @@ function SkillPlanner(skillPlannerData) {
     return profession;
   }
 
+  //TODO: Check position of tooltip and move up if extends off screen
   function addToolTip(skillBoxName) {
-    let toolTip = document.createElement("span");
+    let toolTip = document
+      .querySelector(".skillTooltipTemplate")
+      .cloneNode(true);
+    toolTip.classList.remove("skillTooltipTemplate");
+    toolTip.classList.add("skillToolTip");
     let skill = skillData.skills[skillBoxName];
     let description =
       skillData.skill_descriptions[skillBoxName] == undefined
         ? "No description available."
         : skillData.skill_descriptions[skillBoxName];
-    toolTip.classList.add("tooltiptext");
 
     if (skillData.skill_titles[skillBoxName] != undefined) {
-      toolTip.innerHTML +=
-        "<span style='color:lightgreen'>(" +
-        skillData.skill_titles[skillBoxName] +
-        ")</span><br><br>";
+      toolTip.querySelector(".tooltipSkillTitleText").innerHTML = toolTip
+        .querySelector(".tooltipSkillTitleText")
+        .innerHTML.replace("{title}", skillData.skill_titles[skillBoxName]);
+    } else {
+      toolTip.querySelector(".tooltipSkillTitleText").style.display = "none";
     }
 
-    toolTip.appendChild(document.createTextNode(description));
+    toolTip.querySelector(".tooltipDescription").innerHTML = toolTip
+      .querySelector(".tooltipDescription")
+      .innerHTML.replace("{description}", description);
 
-    toolTip.innerHTML += "<br><br><b>MODS:</b> <br>";
-    for (const mod in skill.skill_mods) {
-      if (skillData.skill_mod_names[mod] != undefined) {
-        toolTip.innerHTML +=
-          skillData.skill_mod_names[mod] +
-          ": " +
-          skill.skill_mods[mod] +
-          "<br> ";
+    if (Object.keys(skill.skill_mods).length) {
+      let modText = "";
+      for (const mod in skill.skill_mods) {
+        if (skillData.skill_mod_names[mod] != undefined) {
+          modText +=
+            skillData.skill_mod_names[mod] +
+            ": " +
+            skill.skill_mods[mod] +
+            "<br> ";
+        }
       }
+
+      toolTip.querySelector(".tooltipMods").innerHTML = toolTip
+        .querySelector(".tooltipMods")
+        .innerHTML.replace("{mods}", modText);
+    } else {
+      toolTip.querySelector(".tooltipMods").style.display = "none";
     }
 
     if (skill.commands.length > 0) {
-      toolTip.innerHTML += "<br><br><b>SKILLS:</b><br>";
+      let skillText = "";
       skill.commands.forEach(function (command) {
         let commandName = skillData.command_names[command.toLowerCase()];
         if (commandName != undefined) {
-          toolTip.innerHTML += commandName + "<br>";
+          skillText += commandName + "<br>";
         }
       });
+
+      toolTip.querySelector(".tooltipSkills").innerHTML = toolTip
+        .querySelector(".tooltipSkills")
+        .innerHTML.replace("{skills}", skillText);
+    } else {
+      toolTip.querySelector(".tooltipSkills").style.display = "none";
     }
 
-    toolTip.innerHTML +=
-      "<br>" +
-      "<br>" +
-      "This skill requires " +
-      skill.points_required +
-      " Skill Points to Learn.";
-    toolTip.innerHTML +=
-      "<br>" +
-      "This skill requires " +
-      skill.xp_cost +
-      " of <b><i>" +
-      skillData.exp_names[skill.xp_type] +
-      "</i></b> Experience";
+    toolTip.querySelector(".tooltipSkillPoints").innerHTML = toolTip
+      .querySelector(".tooltipSkillPoints")
+      .innerHTML.replace("{points}", skill.points_required);
+
+    if (skillData.exp_names[skill.xp_type] != undefined) {
+      toolTip.querySelector(".tooltipExperience").innerHTML = toolTip
+        .querySelector(".tooltipExperience")
+        .innerHTML.replace("{number}", skill.xp_cost);
+      toolTip.querySelector(".tooltipExperience").innerHTML = toolTip
+        .querySelector(".tooltipExperience")
+        .innerHTML.replace("{type}", skillData.exp_names[skill.xp_type]);
+    } else {
+      toolTip.querySelector(".tooltipExperience").style.display = "none";
+    }
+
+    toolTip.style.display = "flex";
+    toolTip.style.flexDirection = "column";
 
     return toolTip;
   }
