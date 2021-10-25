@@ -80,13 +80,9 @@ app.get("/api/getSkillData", async (req, res) => {
   skill_data.skill_titles = skill_titles;
   skillPlannerData.rawData = skill_data;
   skillPlannerData.skillData = convertCSVsToObjects(skill_data);
-  skillPlannerData.skills = buildSkills(skillPlannerData.skillData);
-
   skillPlannerData.professionLists = buildProfessionLists(
     skillPlannerData.skillData
   );
-  // skillPlannerData.eliteProfessionPrerequisites =
-  //   buildEliteProfessions(skillPlannerData);
 
   res.json({
     skillPlannerData: skillPlannerData,
@@ -160,6 +156,10 @@ function convertCSVsToObjects(skill_data) {
   return skillData;
 }
 
+/*****************************
+ * Loop through skills to create profession list with novice, master, and
+ * trees built out. Makes it easier for front end to just look up skill name.
+ *****************************/
 function buildProfessionLists(skillData) {
   let professionLists = {};
   let noviceProfessionList = [];
@@ -172,7 +172,7 @@ function buildProfessionLists(skillData) {
   let previousSkillName = "";
   let skillTree = [];
   let eliteProfessionMap = {}; //Keep track of what elite professions to show on clicking a basic one
-  let noviceProfessionMap = {};
+  let novicePrereqProfessionMap = {};
 
   for (const skillName in skillData.skills) {
     let skill = skillData.skills[skillName];
@@ -189,6 +189,9 @@ function buildProfessionLists(skillData) {
       if (skill.name.includes("novice")) {
         currentProfession.novice = skill.name;
 
+        //Parent for is_profession is type/category
+        //Difference between elite/basic profession is whether it has pre reqs
+        //Create elite and pre req profession map to make easier to add links on planner
         switch (currentProfession.parent) {
           case "prequel":
             jediProfessionList.push(currentProfession);
@@ -224,20 +227,19 @@ function buildProfessionLists(skillData) {
                 let basicProfession =
                   skillData.skills[prereqProfession].professionName;
                 if (
-                  noviceProfessionMap[currentProfession.professionName] ==
+                  novicePrereqProfessionMap[currentProfession.professionName] ==
                   undefined
                 ) {
-                  noviceProfessionMap[currentProfession.professionName] = [
-                    basicProfession,
-                  ];
+                  novicePrereqProfessionMap[currentProfession.professionName] =
+                    [basicProfession];
                 } else if (
-                  !noviceProfessionMap[
+                  !novicePrereqProfessionMap[
                     currentProfession.professionName
                   ].includes(basicProfession)
                 ) {
-                  noviceProfessionMap[currentProfession.professionName].push(
-                    basicProfession
-                  );
+                  novicePrereqProfessionMap[
+                    currentProfession.professionName
+                  ].push(basicProfession);
                 }
               });
             } else {
@@ -269,20 +271,19 @@ function buildProfessionLists(skillData) {
                 let basicProfession =
                   skillData.skills[prereqProfession].professionName;
                 if (
-                  noviceProfessionMap[currentProfession.professionName] ==
+                  novicePrereqProfessionMap[currentProfession.professionName] ==
                   undefined
                 ) {
-                  noviceProfessionMap[currentProfession.professionName] = [
-                    basicProfession,
-                  ];
+                  novicePrereqProfessionMap[currentProfession.professionName] =
+                    [basicProfession];
                 } else if (
-                  !noviceProfessionMap[
+                  !novicePrereqProfessionMap[
                     currentProfession.professionName
                   ].includes(basicProfession)
                 ) {
-                  noviceProfessionMap[currentProfession.professionName].push(
-                    basicProfession
-                  );
+                  novicePrereqProfessionMap[
+                    currentProfession.professionName
+                  ].push(basicProfession);
                 }
               });
             } else {
@@ -314,20 +315,19 @@ function buildProfessionLists(skillData) {
                 let basicProfession =
                   skillData.skills[prereqProfession].professionName;
                 if (
-                  noviceProfessionMap[currentProfession.professionName] ==
+                  novicePrereqProfessionMap[currentProfession.professionName] ==
                   undefined
                 ) {
-                  noviceProfessionMap[currentProfession.professionName] = [
-                    basicProfession,
-                  ];
+                  novicePrereqProfessionMap[currentProfession.professionName] =
+                    [basicProfession];
                 } else if (
-                  !noviceProfessionMap[
+                  !novicePrereqProfessionMap[
                     currentProfession.professionName
                   ].includes(basicProfession)
                 ) {
-                  noviceProfessionMap[currentProfession.professionName].push(
-                    basicProfession
-                  );
+                  novicePrereqProfessionMap[
+                    currentProfession.professionName
+                  ].push(basicProfession);
                 }
               });
             } else {
@@ -359,20 +359,19 @@ function buildProfessionLists(skillData) {
                 let basicProfession =
                   skillData.skills[prereqProfession].professionName;
                 if (
-                  noviceProfessionMap[currentProfession.professionName] ==
+                  novicePrereqProfessionMap[currentProfession.professionName] ==
                   undefined
                 ) {
-                  noviceProfessionMap[currentProfession.professionName] = [
-                    basicProfession,
-                  ];
+                  novicePrereqProfessionMap[currentProfession.professionName] =
+                    [basicProfession];
                 } else if (
-                  !noviceProfessionMap[
+                  !novicePrereqProfessionMap[
                     currentProfession.professionName
                   ].includes(basicProfession)
                 ) {
-                  noviceProfessionMap[currentProfession.professionName].push(
-                    basicProfession
-                  );
+                  novicePrereqProfessionMap[
+                    currentProfession.professionName
+                  ].push(basicProfession);
                 }
               });
             } else {
@@ -404,20 +403,19 @@ function buildProfessionLists(skillData) {
                 let basicProfession =
                   skillData.skills[prereqProfession].professionName;
                 if (
-                  noviceProfessionMap[currentProfession.professionName] ==
+                  novicePrereqProfessionMap[currentProfession.professionName] ==
                   undefined
                 ) {
-                  noviceProfessionMap[currentProfession.professionName] = [
-                    basicProfession,
-                  ];
+                  novicePrereqProfessionMap[currentProfession.professionName] =
+                    [basicProfession];
                 } else if (
-                  !noviceProfessionMap[
+                  !novicePrereqProfessionMap[
                     currentProfession.professionName
                   ].includes(basicProfession)
                 ) {
-                  noviceProfessionMap[currentProfession.professionName].push(
-                    basicProfession
-                  );
+                  novicePrereqProfessionMap[
+                    currentProfession.professionName
+                  ].push(basicProfession);
                 }
               });
             } else {
@@ -449,20 +447,19 @@ function buildProfessionLists(skillData) {
                 let basicProfession =
                   skillData.skills[prereqProfession].professionName;
                 if (
-                  noviceProfessionMap[currentProfession.professionName] ==
+                  novicePrereqProfessionMap[currentProfession.professionName] ==
                   undefined
                 ) {
-                  noviceProfessionMap[currentProfession.professionName] = [
-                    basicProfession,
-                  ];
+                  novicePrereqProfessionMap[currentProfession.professionName] =
+                    [basicProfession];
                 } else if (
-                  !noviceProfessionMap[
+                  !novicePrereqProfessionMap[
                     currentProfession.professionName
                   ].includes(basicProfession)
                 ) {
-                  noviceProfessionMap[currentProfession.professionName].push(
-                    basicProfession
-                  );
+                  novicePrereqProfessionMap[
+                    currentProfession.professionName
+                  ].push(basicProfession);
                 }
               });
             } else {
@@ -501,7 +498,7 @@ function buildProfessionLists(skillData) {
   professionLists.forceList = forceSensitiveProfessionList;
   professionLists.pilotList = pilotProfessionList;
   professionLists.eliteProfessionMap = eliteProfessionMap;
-  professionLists.noviceProfessionMap = noviceProfessionMap;
+  professionLists.novicePrereqProfessionMap = novicePrereqProfessionMap;
 
   function sortSkillsByName(a, b) {
     if (a.professionName == "prequel_basic") {
@@ -520,276 +517,4 @@ function buildProfessionLists(skillData) {
   }
 
   return professionLists;
-}
-
-function buildSkills(skillData) {
-  let newSkills = {};
-  let parentSkillName;
-  let treeBaseIndex = 0; //Tree index for profession
-  let skillIndex = 0; //Index for the skill inside the tree
-  let professionName = "";
-  let noviceName = "";
-  let masterName = "";
-
-  for (const skillName in skillData.skills) {
-    let currentSkill = skillData.skills[skillName];
-
-    newSkills[currentSkill.name] = currentSkill;
-  }
-
-  // skill_data.skills.forEach(function (skillRow) {
-  //   //Make properties lower case because it's easier to read
-  //   let newSkillRow = Object.fromEntries(
-  //     Object.entries(skillRow).map(([k, v]) => [k.toLowerCase(), v])
-  //   );
-
-  //   let trees;
-  //   switch (newSkillRow.graph_type) {
-  //     case "fourByFour":
-  //       trees = new Array(4);
-  //       for (let i = 0; i < trees.length; i++) {
-  //         trees[i] = new Array(4);
-  //       }
-  //       break;
-  //     case "oneByFour":
-  //       trees = new Array(1);
-  //       trees[0] = new Array(4);
-  //       break;
-  //     case "pyramid":
-  //       trees = new Array(1);
-  //       trees[0] = new Array(4);
-  //       break;
-  //     default:
-  //       trees = new Array(4);
-  //       for (let i = 0; i < trees.length; i++) {
-  //         trees[i] = new Array(4);
-  //       }
-  //       break;
-  //   }
-
-  //   if (newSkillRow.is_hidden == "false") {
-  //     if (newSkillRow.is_profession == "true") {
-  //       parentSkillName = newSkillRow.name;
-
-  //       newSkills[parentSkillName] = newSkillRow;
-
-  //       newSkills[parentSkillName].category = newSkills[parentSkillName].parent;
-  //       newSkills[parentSkillName].trees = trees;
-  //       treeBaseIndex = 0;
-  //       skillIndex = 0;
-  //     } else if (
-  //       newSkillRow.name.indexOf("novice") > -1 &&
-  //       newSkillRow.parent == parentSkillName
-  //     ) {
-  //       if (newSkills[newSkillRow.parent] == undefined) {
-  //         newSkills[newSkillRow.parent] = {};
-  //         newSkills[newSkillRow.parent].novice = newSkillRow;
-  //         newSkills[newSkillRow.parent].novice.skills_required =
-  //           newSkillRow.skills_required.split(",");
-  //         newSkills[newSkillRow.parent].trees = trees;
-  //       } else {
-  //         newSkills[newSkillRow.parent].novice = newSkillRow;
-
-  //         if (newSkillRow.skills_required != "") {
-  //           let skillsRequired = newSkillRow.skills_required.split(",");
-  //           newSkills[newSkillRow.parent].novice.skills_required =
-  //             skillsRequired;
-  //         } else {
-  //           newSkills[newSkillRow.parent].novice.skills_required = [];
-  //         }
-  //       }
-
-  //       //Update number fields so math works later
-  //       newSkills[newSkillRow.parent].novice.points_required = parseInt(
-  //         newSkillRow.points_required
-  //       );
-  //       newSkills[newSkillRow.parent].novice.xp_cap = parseInt(
-  //         newSkillRow.xp_cap
-  //       );
-  //       newSkills[newSkillRow.parent].novice.xp_cost = parseInt(
-  //         newSkillRow.xp_cost
-  //       );
-  //       newSkills[newSkillRow.parent].novice.money_required = parseInt(
-  //         newSkillRow.money_required
-  //       );
-
-  //       newSkills[newSkillRow.parent].novice.skill_mods =
-  //         newSkills[newSkillRow.parent].novice.skill_mods.split(",");
-
-  //       newSkills[newSkillRow.parent].novice.skill_mods.forEach(function (mod) {
-  //         let modName = mod.split("=")[0];
-  //         let modValue = mod.split("=")[1];
-
-  //         if (newSkills[newSkillRow.parent].novice.mods == undefined) {
-  //           newSkills[newSkillRow.parent].novice.mods = {};
-  //         }
-  //         if (modName != "" && modName != undefined && !isNaN(modValue)) {
-  //           newSkills[newSkillRow.parent].novice.mods[modName] =
-  //             parseFloat(modValue);
-  //         }
-  //       });
-  //     } else if (
-  //       newSkillRow.name.indexOf("master") > -1 &&
-  //       newSkillRow.parent == parentSkillName &&
-  //       newSkillRow.skills_required.indexOf("novice") < 0
-  //     ) {
-  //       if (newSkills[newSkillRow.parent] == undefined) {
-  //         newSkills[newSkillRow.parent] = {};
-  //         newSkills[newSkillRow.parent].master = newSkillRow;
-  //         newSkills[newSkillRow.parent].trees = trees;
-  //         newSkills[newSkillRow.parent].master.skills_required =
-  //           newSkillRow.skills_required.split(",");
-  //       } else {
-  //         newSkills[newSkillRow.parent].master = newSkillRow;
-  //         newSkills[newSkillRow.parent].master.skills_required =
-  //           newSkillRow.skills_required.split(",");
-  //       }
-
-  //       //Update number fields so math works later
-  //       newSkills[newSkillRow.parent].master.points_required = parseInt(
-  //         newSkillRow.points_required
-  //       );
-  //       newSkills[newSkillRow.parent].master.xp_cap = parseInt(
-  //         newSkillRow.xp_cap
-  //       );
-  //       newSkills[newSkillRow.parent].master.xp_cost = parseInt(
-  //         newSkillRow.xp_cost
-  //       );
-  //       newSkills[newSkillRow.parent].master.money_required = parseInt(
-  //         newSkillRow.money_required
-  //       );
-
-  //       newSkills[newSkillRow.parent].master.skill_mods =
-  //         newSkills[newSkillRow.parent].master.skill_mods.split(",");
-
-  //       newSkills[newSkillRow.parent].master.skill_mods.forEach(function (mod) {
-  //         let modName = mod.split("=")[0];
-  //         let modValue = mod.split("=")[1];
-
-  //         if (newSkills[newSkillRow.parent].master.mods == undefined) {
-  //           newSkills[newSkillRow.parent].master.mods = {};
-  //         }
-  //         if (modName != "" && modName != undefined && !isNaN(modValue)) {
-  //           newSkills[newSkillRow.parent].master.mods[modName] =
-  //             parseFloat(modValue);
-  //         }
-  //       });
-  //     } else {
-  //       if (
-  //         newSkillRow.parent != "" &&
-  //         newSkillRow.name.indexOf("language") < 0 &&
-  //         newSkillRow.name.indexOf("species") < 0 &&
-  //         newSkillRow.name.indexOf("pilot") < 0 &&
-  //         newSkillRow.name.indexOf("gcw_currency") < 0 &&
-  //         newSkills[parentSkillName] != undefined &&
-  //         newSkills[parentSkillName].trees != undefined
-  //       ) {
-  //         if (
-  //           newSkills[parentSkillName].trees.length &&
-  //           newSkills[parentSkillName].trees[treeBaseIndex].length
-  //         ) {
-  //           newSkills[parentSkillName].trees[treeBaseIndex][skillIndex] =
-  //             newSkillRow;
-
-  //           //Update number fields so math works later
-  //           newSkills[parentSkillName].trees[treeBaseIndex][
-  //             skillIndex
-  //           ].points_required = parseInt(newSkillRow.points_required);
-  //           newSkills[parentSkillName].trees[treeBaseIndex][skillIndex].xp_cap =
-  //             parseInt(newSkillRow.xp_cap);
-  //           newSkills[parentSkillName].trees[treeBaseIndex][
-  //             skillIndex
-  //           ].xp_cost = parseInt(newSkillRow.xp_cost);
-  //           newSkills[parentSkillName].trees[treeBaseIndex][
-  //             skillIndex
-  //           ].money_required = parseInt(newSkillRow.money_required);
-
-  //           newSkills[parentSkillName].trees[treeBaseIndex][
-  //             skillIndex
-  //           ].skill_mods =
-  //             newSkills[parentSkillName].trees[treeBaseIndex][
-  //               skillIndex
-  //             ].skill_mods.split(",");
-
-  //           newSkills[parentSkillName].trees[treeBaseIndex][
-  //             skillIndex
-  //           ].skill_mods.forEach(function (mod) {
-  //             let modName = mod.split("=")[0];
-  //             let modValue = mod.split("=")[1];
-
-  //             if (
-  //               newSkills[parentSkillName].trees[treeBaseIndex][skillIndex]
-  //                 .mods == undefined
-  //             ) {
-  //               newSkills[parentSkillName].trees[treeBaseIndex][
-  //                 skillIndex
-  //               ].mods = {};
-  //             }
-  //             if (modName != "" && modName != undefined && !isNaN(modValue)) {
-  //               newSkills[parentSkillName].trees[treeBaseIndex][
-  //                 skillIndex
-  //               ].mods[modName] = parseFloat(modValue);
-  //             }
-  //           });
-  //         }
-
-  //         switch (newSkillRow.graph_type) {
-  //           case "fourByFour":
-  //             if (newSkillRow.name.slice(-2) == "04") {
-  //               treeBaseIndex++;
-  //               skillIndex = 0;
-  //             } else {
-  //               skillIndex++;
-  //             }
-  //             break;
-  //           case "oneByFour":
-  //             skillIndex++;
-  //             break;
-  //           case "pyramid":
-  //             skillIndex++;
-  //             break;
-  //           default:
-  //             if (newSkillRow.name.slice(-2) == "04") {
-  //               treeBaseIndex++;
-  //               skillIndex = 0;
-  //             } else {
-  //               skillIndex++;
-  //             }
-  //             break;
-  //         }
-  //       }
-  //     }
-  //   }
-  // });
-
-  return newSkills;
-}
-
-function buildEliteProfessions(skillData) {
-  let eliteProfessionPrerequisites = {};
-
-  for (const skillName in skillData.skills) {
-    let skill = skillData.skills[skillName];
-    if (skill.novice.skills_required.length) {
-      skill.novice.skills_required.forEach(function (prereqSkill) {
-        if (eliteProfessionPrerequisites[prereqSkill] == undefined) {
-          eliteProfessionPrerequisites[prereqSkill] = [skill.name];
-        } else if (
-          !eliteProfessionPrerequisites[prereqSkill].includes(skill.name)
-        ) {
-          eliteProfessionPrerequisites[prereqSkill].push(skill.name);
-        }
-
-        if (eliteProfessionPrerequisites[skill.name] == undefined) {
-          eliteProfessionPrerequisites[skill.name] = [prereqSkill];
-        } else if (
-          !eliteProfessionPrerequisites[skill.name].includes(prereqSkill)
-        ) {
-          eliteProfessionPrerequisites[skill.name].push(prereqSkill);
-        }
-      });
-    }
-  }
-
-  return eliteProfessionPrerequisites;
 }
