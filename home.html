@@ -16,17 +16,15 @@
     <main>      
         <div class="professionContainer">
             <span class="smallTitle">Professions</span>
-            <!-- <div class="listContainer"> -->
                 <ul id="listProfessions"></ul>
-            <!-- </div>             -->
         </div>
 
-        <div id="skillPlannerContainer">
+        <div class="skillPlannerContainer">
             <div class="selectProfessions">
             </div>
             <div class="skillTitleHeader">
-                <div class="skillName">
-                    Marksman
+                <div id="skillName" class="skillName">
+                    Profession Name
                 </div>
                 <div class="resetButtonContainer">
                     <div id="resetButton" class="resetButton">
@@ -37,57 +35,45 @@
 
             <div class="skillPlannerBody">                
                 <div class="topMasterSkills">
-                    <div class="topMasterEliteSkillsText">
-                        <span>Bounty Hunter</span>
-                        <span>Commando</span>
-                    </div>
+                    <div id="topMasterEliteSkillsText" class="topMasterEliteSkillsText"></div>
                 </div>
 
                 <div class="masterSkillBox">
-                    <span class="largeSkillBox masterSkillBoxLabel">Marksman</span>
+                    <div id="masterSkillBox" class="largeSkillBox masterSkillBoxLabel">Master</div>
                 </div>
 
-                <div class="toEliteSkills1 eliteSkillsText" data-elite-col="0">
-                    <span>Rifleman</span>
-                </div>
-                <div class="toEliteSkills2 eliteSkillsText" data-elite-col="1">
-                    <span>Pistoleer</span>
-                    <span>Smuggler</span>
-                </div>
-                <div class="toEliteSkills3 eliteSkillsText" data-elite-col="2">
-                    <span>Carbineer</span>
-                </div>
-                <div class="toEliteSkills4 eliteSkillsText" data-elite-col="3">
-                    <span>Squad Leader</span>
-                </div>
+                <div id="toEliteSkills1" class="toEliteSkills1 eliteSkillsText" data-elite-col="0"></div>
+                <div id="toEliteSkills2" class="toEliteSkills2 eliteSkillsText" data-elite-col="1"></div>
+                <div id="toEliteSkills3" class="toEliteSkills3 eliteSkillsText" data-elite-col="2"></div>
+                <div id="toEliteSkills4" class="toEliteSkills4 eliteSkillsText" data-elite-col="3"></div>
 
-                <div class="skillbox_1_1 professionSkillBox" data-row="0" data-col="0">Rifles 1</div>
-                <div class="skillbox_2_1 professionSkillBox" data-row="1" data-col="0">Rifles 2</div>
-                <div class="skillbox_3_1 professionSkillBox" data-row="2" data-col="0">Rifles 3</div>
-                <div class="skillbox_4_1 professionSkillBox" data-row="3" data-col="0">Rifles 4</div>
+                <div class="skillbox_1_1 professionSkillBox" data-row="0" data-col="0">Tree 1 Skill 1</div>
+                <div class="skillbox_2_1 professionSkillBox" data-row="1" data-col="0">Tree 1 Skill 2</div>
+                <div class="skillbox_3_1 professionSkillBox" data-row="2" data-col="0">Tree 1 Skill 3</div>
+                <div class="skillbox_4_1 professionSkillBox" data-row="3" data-col="0">Tree 1 Skill 4</div>
 
-                <div class="skillbox_1_2 professionSkillBox" data-row="0" data-col="1">Pistol 1</div>
-                <div class="skillbox_2_2 professionSkillBox" data-row="1" data-col="1">Pistol 2</div>
-                <div class="skillbox_3_2 professionSkillBox" data-row="2" data-col="1">Pistol 3</div>
-                <div class="skillbox_4_2 professionSkillBox" data-row="3" data-col="1">Pistol 4</div>
+                <div class="skillbox_1_2 professionSkillBox" data-row="0" data-col="1">Tree 2 Skill 1</div>
+                <div class="skillbox_2_2 professionSkillBox" data-row="1" data-col="1">Tree 2 Skill 2</div>
+                <div class="skillbox_3_2 professionSkillBox" data-row="2" data-col="1">Tree 2 Skill 3</div>
+                <div class="skillbox_4_2 professionSkillBox" data-row="3" data-col="1">Tree 2 Skill 4</div>
 
-                <div class="skillbox_1_3 professionSkillBox" data-row="0" data-col="2">Carbine 1</div>
-                <div class="skillbox_2_3 professionSkillBox" data-row="1" data-col="2">Carbine 2</div>
-                <div class="skillbox_3_3 professionSkillBox" data-row="2" data-col="2">Carbine 3</div>
-                <div class="skillbox_4_3 professionSkillBox" data-row="3" data-col="2">Carbine 4</div>
+                <div class="skillbox_1_3 professionSkillBox" data-row="0" data-col="2">Tree 3 Skill 1</div>
+                <div class="skillbox_2_3 professionSkillBox" data-row="1" data-col="2">Tree 3 Skill 2</div>
+                <div class="skillbox_3_3 professionSkillBox" data-row="2" data-col="2">Tree 3 Skill 3</div>
+                <div class="skillbox_4_3 professionSkillBox" data-row="3" data-col="2">Tree 3 Skill 4</div>
 
-                <div class="skillbox_1_4 professionSkillBox" data-row="0" data-col="3">Ranged 1</div>
-                <div class="skillbox_2_4 professionSkillBox" data-row="1" data-col="3">Ranged 2</div>
-                <div class="skillbox_3_4 professionSkillBox" data-row="2" data-col="3">Ranged 3</div>
-                <div class="skillbox_4_4 professionSkillBox" data-row="3" data-col="3">Ranged 4</div>
+                <div class="skillbox_1_4 professionSkillBox" data-row="0" data-col="3">Tree 4 Skill 1</div>
+                <div class="skillbox_2_4 professionSkillBox" data-row="1" data-col="3">Tree 4 Skill 2</div>
+                <div class="skillbox_3_4 professionSkillBox" data-row="2" data-col="3">Tree 4 Skill 3</div>
+                <div class="skillbox_4_4 professionSkillBox" data-row="3" data-col="3">Tree 4 Skill 4</div>
 
                 <div class="noviceSkillBox">
-                    <span class="largeSkillBox noviceSkillBoxLabel">Novice Marksman</span>
+                    <div id="noviceSkillBox" class="largeSkillBox noviceSkillBoxLabel">Novice</div>
                 </div>
 
                 <div class="prerequesiteSkills">
                     <div class="prerequesitSkillsText">
-                        <span>Artisan</span>
+                        <span></span>
                     </div>
                 </div>
 
@@ -116,23 +102,8 @@
                         </thead>
                     </table>
                 </div>
-                <!-- <div class="commandsSchematicClass">
-                    <span class="listHeader">Abilities Granted</span>
-                    <ul id="listCommands">
-                    </ul>
-                </div> -->
-                <!-- <div class="commandsSchematicClass">
-                    <span class="listHeader">Schematics Acquired (Coming Soon)</span>
-                    <ul id="listSchematics">
-                    </ul>
-                </div>                 -->
             </div>
-        </div>
-
-        
-
-
-
+        </div>   
         <div class="rightSideOfPage">
             <div class="rightTablesContainer">
                 <span class="smallTitle">Skill Mods</span>
@@ -154,20 +125,6 @@
                     <ul id="listCommands">
                     </ul>
                 </div>
-
-                <!-- <span class="smallTitle" style="color: #fffffa">Experience Required</span>
-                <div class="experienceRequired">                
-                    <table id="tableExperienceRequired" class="rightTables">
-                        <thead>
-                            <tr>
-                                <th class="tableHeaders" data-table-id="tableExperienceRequired">Type</th>
-                                <th class="tableHeaders" data-table-id="tableExperienceRequired">Amount</th>
-                            </tr>
-                        <tbody>                     
-                        </tbody>
-                        </thead>
-                    </table>
-                </div> -->
             </div>
 
         </div>

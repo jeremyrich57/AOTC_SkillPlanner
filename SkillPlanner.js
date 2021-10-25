@@ -11,7 +11,7 @@ xhr.onload = function () {
 };
 xhr.send();
 
-function SkillPlanner(SKILL_DATA) {
+function SkillPlanner(SKILL_DATA) { console.log('test SKILL_DATA: ', SKILL_DATA);
   const skillPlanner = this;
   skillPlanner.rawData = SKILL_DATA;
   skillPlanner.skillData = {};
