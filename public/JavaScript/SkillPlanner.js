@@ -126,6 +126,13 @@ function SkillPlanner(skillPlannerData) {
     let listItem = document.querySelector(
       "[data-skill-name='" + professionName + "']"
     );
+
+    noviceSkillBox.removeEventListener("mouseenter", tooltipEnter, true);
+    masterSkillBox.removeEventListener("mouseenter", tooltipEnter, true);
+    skillTreeBoxes.forEach((x) =>
+      x.removeEventListener("mouseenter", tooltipEnter, true)
+    );
+
     document.getElementById("skillName").innerText =
       skillData.skill_names[professionName];
 
@@ -137,6 +144,26 @@ function SkillPlanner(skillPlannerData) {
 
     noviceSkillBox.innerText = skillData.skill_names[profession.novice];
     masterSkillBox.innerText = skillData.skill_names[profession.master];
+
+    //Add novice and master tooltip here
+    //bind to named function so it can be removed on each profession click call
+    noviceSkillBox.addEventListener(
+      "mouseenter",
+      tooltipEnter.bind(this, noviceSkillBox, profession.novice)
+    );
+
+    noviceSkillBox.addEventListener("mouseleave", function tooltipExit() {
+      document.querySelectorAll(".tooltiptext").forEach((x) => x.remove());
+    });
+
+    masterSkillBox.addEventListener(
+      "mouseenter",
+      tooltipEnter.bind(this, masterSkillBox, profession.master)
+    );
+
+    masterSkillBox.addEventListener("mouseleave", function tooltipExit() {
+      document.querySelectorAll(".tooltiptext").forEach((x) => x.remove());
+    });
 
     let masterSkillLinks = document.getElementById("topMasterEliteSkillsText");
     masterSkillLinks.innerHTML = "";
@@ -189,6 +216,7 @@ function SkillPlanner(skillPlannerData) {
       let skillBoxName = profession.skillTrees[colIndex][rowIndex];
       skillBox.innerText = skillData.skill_names[skillBoxName];
 
+      //Add elite links here
       if (
         rowIndex == 3 &&
         skillPlannerData.professionLists.eliteProfessionMap[skillBoxName] !=
@@ -207,21 +235,34 @@ function SkillPlanner(skillPlannerData) {
           );
           span.addEventListener("click", function () {
             let profession = getProfessionByName(skill);
-            console.log(profession);
             clickProfession(profession);
           });
           eliteSkillsLinks.appendChild(span);
         });
       }
+
+      //Add tooltip here
+      skillBox.addEventListener(
+        "mouseenter",
+        tooltipEnter.bind(this, skillBox, skillBoxName)
+      );
+
+      skillBox.addEventListener("mouseleave", function tooltipExit() {
+        document.querySelectorAll(".tooltiptext").forEach((x) => x.remove());
+      });
     });
+
+    //Named function so event listener can be removed on each profession change
+    function tooltipEnter(skillBox, skillName) {
+      let toolTip = addToolTip(skillName);
+      skillBox.appendChild(toolTip);
+    }
   }
 
   function getProfessionByName(professionName) {
-    console.log("professionName", professionName);
     let profession;
     for (const list in skillPlannerData.professionLists) {
       let professionList = skillPlannerData.professionLists[list];
-      console.log("professionList: ", professionList);
       let professionIndex = professionList.findIndex(
         (x) => x.professionName === professionName
       );
@@ -233,5 +274,61 @@ function SkillPlanner(skillPlannerData) {
     }
 
     return profession;
+  }
+
+  function addToolTip(skillBoxName) {
+    let toolTip = document.createElement("span");
+    let skill = skillData.skills[skillBoxName];
+    let description =
+      skillData.skill_descriptions[skillBoxName] == undefined
+        ? "No description available."
+        : skillData.skill_descriptions[skillBoxName];
+    toolTip.classList.add("tooltiptext");
+
+    if (skillData.skill_titles[skillBoxName] != undefined) {
+      toolTip.innerHTML +=
+        "<span style='color:lightgreen'>(" +
+        skillData.skill_titles[skillBoxName] +
+        ")</span><br><br>";
+    }
+
+    toolTip.appendChild(document.createTextNode(description));
+
+    toolTip.innerHTML += "<br><br><b>MODS:</b> <br>";
+    for (const mod in skill.skill_mods) {
+      if (skillData.skill_mod_names[mod] != undefined) {
+        toolTip.innerHTML +=
+          skillData.skill_mod_names[mod] +
+          ": " +
+          skill.skill_mods[mod] +
+          "<br> ";
+      }
+    }
+
+    if (skill.commands.length > 0) {
+      toolTip.innerHTML += "<br><br><b>SKILLS:</b><br>";
+      skill.commands.forEach(function (command) {
+        let commandName = skillData.command_names[command.toLowerCase()];
+        if (commandName != undefined) {
+          toolTip.innerHTML += commandName + "<br>";
+        }
+      });
+    }
+
+    toolTip.innerHTML +=
+      "<br>" +
+      "<br>" +
+      "This skill requires " +
+      skill.points_required +
+      " Skill Points to Learn.";
+    toolTip.innerHTML +=
+      "<br>" +
+      "This skill requires " +
+      skill.xp_cost +
+      " of <b><i>" +
+      skillData.exp_names[skill.xp_type] +
+      "</i></b> Experience";
+
+    return toolTip;
   }
 }
