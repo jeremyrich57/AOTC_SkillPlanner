@@ -25,11 +25,12 @@ function SkillPlanner(skillPlannerData) {
   renderProfessionList();
 
   if (urlQueryParams.skills == undefined) {
-    let artisanIndex = skillPlannerData.professionLists.basicList.findIndex(
-      (x) => x.professionName === "crafting_artisan"
-    );
-    let artisan = skillPlannerData.professionLists.basicList[artisanIndex];
-    console.log("artisan", artisan);
+    // let artisanIndex = skillPlannerData.professionLists.basicList.findIndex(
+    //   (x) => x.professionName === "crafting_artisan"
+    // );
+    // let artisan = skillPlannerData.professionLists.basicList[artisanIndex];
+    // console.log("artisan", artisan);
+    let artisan = getProfessionByName("crafting_artisan");
     clickProfession(artisan);
   }
 
@@ -140,31 +141,47 @@ function SkillPlanner(skillPlannerData) {
     let masterSkillLinks = document.getElementById("topMasterEliteSkillsText");
     masterSkillLinks.innerHTML = "";
 
-    // if (
-    //   skillData.eliteProfessionPrerequisites[profession.master] != undefined
-    // ) {
-    //   skillData.eliteProfessionPrerequisites[profession.master].forEach(
-    //     function (eliteSkill) {
-    //       let span = document.createElement("span");
-    //       span.appendChild(
-    //         document.createTextNode(skillData.skill_names[eliteSkill])
-    //       );
-    //       span.addEventListener("click", function () {
-    //         clickProfession(eliteSkill);
-    //       });
-    //       masterSkillLinks.appendChild(span);
-    //     }
-    //   );
-    // }
+    if (
+      skillPlannerData.professionLists.eliteProfessionMap[profession.master] !=
+      undefined
+    ) {
+      skillPlannerData.professionLists.eliteProfessionMap[
+        profession.master
+      ].forEach(function (skill) {
+        let span = document.createElement("span");
+        span.appendChild(document.createTextNode(skillData.skill_names[skill]));
+        span.addEventListener("click", function () {
+          let profession = getProfessionByName(skill);
+          clickProfession(profession);
+        });
+        masterSkillLinks.appendChild(span);
+      });
+    }
 
-    let eliteSkillsTree1 = document.getElementById("toEliteSkills1");
-    let eliteSkillsTree2 = document.getElementById("toEliteSkills2");
-    let eliteSkillsTree3 = document.getElementById("toEliteSkills3");
-    let eliteSkillsTree4 = document.getElementById("toEliteSkills4");
-    eliteSkillsTree1.innerHTML = "";
-    eliteSkillsTree2.innerHTML = "";
-    eliteSkillsTree3.innerHTML = "";
-    eliteSkillsTree4.innerHTML = "";
+    let noviceSkillLinks = document.getElementById("prerequesitSkillsText");
+    noviceSkillLinks.innerHTML = "";
+
+    if (
+      skillPlannerData.professionLists.novicePrereqProfessionMap[
+        professionName
+      ] != undefined
+    ) {
+      skillPlannerData.professionLists.novicePrereqProfessionMap[
+        professionName
+      ].forEach(function (skill) {
+        let span = document.createElement("span");
+        span.appendChild(document.createTextNode(skillData.skill_names[skill]));
+        span.addEventListener("click", function () {
+          let profession = getProfessionByName(skill);
+          clickProfession(profession);
+        });
+        noviceSkillLinks.appendChild(span);
+      });
+    }
+
+    document
+      .querySelectorAll("div.eliteSkillsText")
+      .forEach((x) => (x.innerHTML = ""));
 
     skillTreeBoxes.forEach(function (skillBox) {
       let rowIndex = skillBox.getAttribute("data-row");
@@ -172,64 +189,49 @@ function SkillPlanner(skillPlannerData) {
       let skillBoxName = profession.skillTrees[colIndex][rowIndex];
       skillBox.innerText = skillData.skill_names[skillBoxName];
 
-      // if (
-      //   rowIndex == 3 &&
-      //   skillData.eliteProfessionPrerequisites[skillBoxName] != undefined
-      // ) {
-      //   if (colIndex == 0) {
-      //     skillData.eliteProfessionPrerequisites[skillBoxName].forEach(
-      //       function (eliteSkill) {
-      //         let span = document.createElement("span");
-      //         span.appendChild(
-      //           document.createTextNode(skillData.skill_names[eliteSkill])
-      //         );
-      //         span.addEventListener("click", function () {
-      //           clickProfession(eliteSkill);
-      //         });
-      //         eliteSkillsTree1.appendChild(span);
-      //       }
-      //     );
-      //   } else if (colIndex == 1) {
-      //     skillData.eliteProfessionPrerequisites[skillBoxName].forEach(
-      //       function (eliteSkill) {
-      //         let span = document.createElement("span");
-      //         span.appendChild(
-      //           document.createTextNode(skillData.skill_names[eliteSkill])
-      //         );
-      //         span.addEventListener("click", function () {
-      //           clickProfession(eliteSkill);
-      //         });
-      //         eliteSkillsTree2.appendChild(span);
-      //       }
-      //     );
-      //   } else if (colIndex == 2) {
-      //     skillData.eliteProfessionPrerequisites[skillBoxName].forEach(
-      //       function (eliteSkill) {
-      //         let span = document.createElement("span");
-      //         span.appendChild(
-      //           document.createTextNode(skillData.skill_names[eliteSkill])
-      //         );
-      //         span.addEventListener("click", function () {
-      //           clickProfession(eliteSkill);
-      //         });
-      //         eliteSkillsTree3.appendChild(span);
-      //       }
-      //     );
-      //   } else if (colIndex == 3) {
-      //     skillData.eliteProfessionPrerequisites[skillBoxName].forEach(
-      //       function (eliteSkill) {
-      //         let span = document.createElement("span");
-      //         span.appendChild(
-      //           document.createTextNode(skillData.skill_names[eliteSkill])
-      //         );
-      //         span.addEventListener("click", function () {
-      //           clickProfession(eliteSkill);
-      //         });
-      //         eliteSkillsTree4.appendChild(span);
-      //       }
-      //     );
-      //   }
-      // }
+      if (
+        rowIndex == 3 &&
+        skillPlannerData.professionLists.eliteProfessionMap[skillBoxName] !=
+          undefined
+      ) {
+        let eliteSkillsLinks = document.querySelector(
+          "div.eliteSkillsText[data-elite-col='" + colIndex + "']"
+        );
+        eliteSkillsLinks.innerHTML = "";
+        skillPlannerData.professionLists.eliteProfessionMap[
+          skillBoxName
+        ].forEach(function (skill) {
+          let span = document.createElement("span");
+          span.appendChild(
+            document.createTextNode(skillData.skill_names[skill])
+          );
+          span.addEventListener("click", function () {
+            let profession = getProfessionByName(skill);
+            console.log(profession);
+            clickProfession(profession);
+          });
+          eliteSkillsLinks.appendChild(span);
+        });
+      }
     });
+  }
+
+  function getProfessionByName(professionName) {
+    console.log("professionName", professionName);
+    let profession;
+    for (const list in skillPlannerData.professionLists) {
+      let professionList = skillPlannerData.professionLists[list];
+      console.log("professionList: ", professionList);
+      let professionIndex = professionList.findIndex(
+        (x) => x.professionName === professionName
+      );
+
+      if (professionIndex > -1) {
+        profession = professionList[professionIndex];
+        break;
+      }
+    }
+
+    return profession;
   }
 }
