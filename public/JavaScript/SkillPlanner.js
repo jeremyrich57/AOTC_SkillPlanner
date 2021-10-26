@@ -20,7 +20,7 @@ function SkillPlanner(skillPlannerData) {
   let currentProfessionList = [];
   const urlSearchParams = new URLSearchParams(window.location.search);
   const urlQueryParams = Object.fromEntries(urlSearchParams.entries());
-
+  let test = true;
   console.log("urlQueryParams: ", urlQueryParams);
   renderProfessionList();
 
@@ -33,6 +33,37 @@ function SkillPlanner(skillPlannerData) {
     let artisan = getProfessionByName("crafting_artisan");
     clickProfession(artisan);
   }
+
+  //Add tooltips here - needed to move them out of clickProfession() due to closure duplicating tooltips
+  //bind to named function so it can be removed on each profession click call
+  let noviceSkillBox = document.getElementById("noviceSkillBox");
+  let masterSkillBox = document.getElementById("masterSkillBox");
+  let skillTreeBoxes = document.querySelectorAll(".professionSkillBox");
+  noviceSkillBox.addEventListener(
+    "mouseenter",
+    addToolTip.bind(this, noviceSkillBox)
+  );
+
+  noviceSkillBox.addEventListener("mouseleave", function tooltipExit() {
+    document.querySelectorAll(".skillToolTip").forEach((x) => x.remove());
+  });
+
+  masterSkillBox.addEventListener(
+    "mouseenter",
+    addToolTip.bind(this, masterSkillBox)
+  );
+
+  masterSkillBox.addEventListener("mouseleave", function tooltipExit() {
+    document.querySelectorAll(".skillToolTip").forEach((x) => x.remove());
+  });
+
+  skillTreeBoxes.forEach(function (skillBox) {
+    skillBox.addEventListener("mouseenter", addToolTip.bind(this, skillBox));
+
+    skillBox.addEventListener("mouseleave", function tooltipExit() {
+      document.querySelectorAll(".skillToolTip").forEach((x) => x.remove());
+    });
+  });
 
   function renderProfessionList() {
     let ul = document.getElementById("listProfessions");
@@ -119,18 +150,13 @@ function SkillPlanner(skillPlannerData) {
   }
 
   function clickProfession(profession) {
+    console.log("profession", profession);
     let professionName = profession.professionName;
     let noviceSkillBox = document.getElementById("noviceSkillBox");
     let masterSkillBox = document.getElementById("masterSkillBox");
     let skillTreeBoxes = document.querySelectorAll(".professionSkillBox");
     let listItem = document.querySelector(
       "[data-skill-name='" + professionName + "']"
-    );
-
-    noviceSkillBox.removeEventListener("mouseenter", tooltipEnter, true);
-    masterSkillBox.removeEventListener("mouseenter", tooltipEnter, true);
-    skillTreeBoxes.forEach((x) =>
-      x.removeEventListener("mouseenter", tooltipEnter, true)
     );
 
     document.getElementById("skillName").innerText =
@@ -143,27 +169,9 @@ function SkillPlanner(skillPlannerData) {
     listItem.classList.add("activeProfession");
 
     noviceSkillBox.innerText = skillData.skill_names[profession.novice];
+    noviceSkillBox.setAttribute("skill-name", profession.novice);
     masterSkillBox.innerText = skillData.skill_names[profession.master];
-
-    //Add novice and master tooltip here
-    //bind to named function so it can be removed on each profession click call
-    noviceSkillBox.addEventListener(
-      "mouseenter",
-      tooltipEnter.bind(this, noviceSkillBox, profession.novice)
-    );
-
-    noviceSkillBox.addEventListener("mouseleave", function tooltipExit() {
-      document.querySelectorAll(".skillToolTip").forEach((x) => x.remove());
-    });
-
-    masterSkillBox.addEventListener(
-      "mouseenter",
-      tooltipEnter.bind(this, masterSkillBox, profession.master)
-    );
-
-    masterSkillBox.addEventListener("mouseleave", function tooltipExit() {
-      document.querySelectorAll(".skillToolTip").forEach((x) => x.remove());
-    });
+    masterSkillBox.setAttribute("skill-name", profession.master);
 
     let masterSkillLinks = document.getElementById("topMasterEliteSkillsText");
     masterSkillLinks.innerHTML = "";
@@ -215,6 +223,7 @@ function SkillPlanner(skillPlannerData) {
       let colIndex = skillBox.getAttribute("data-col");
       let skillBoxName = profession.skillTrees[colIndex][rowIndex];
       skillBox.innerText = skillData.skill_names[skillBoxName];
+      skillBox.setAttribute("skill-name", skillBoxName);
 
       //Add elite links here
       if (
@@ -241,22 +250,22 @@ function SkillPlanner(skillPlannerData) {
         });
       }
 
-      //Add tooltip here
-      skillBox.addEventListener(
-        "mouseenter",
-        tooltipEnter.bind(this, skillBox, skillBoxName)
-      );
+      // //Add tooltip here
+      // skillBox.addEventListener(
+      //   "mouseenter",
+      //   addToolTip.bind(this, skillBox, skillBoxName)
+      // );
 
-      skillBox.addEventListener("mouseleave", function tooltipExit() {
-        document.querySelectorAll(".skillToolTip").forEach((x) => x.remove());
-      });
+      // skillBox.addEventListener("mouseleave", function tooltipExit() {
+      //   document.querySelectorAll(".skillToolTip").forEach((x) => x.remove());
+      // });
     });
 
     //Named function so event listener can be removed on each profession change
-    function tooltipEnter(skillBox, skillName) {
-      let toolTip = addToolTip(skillName);
-      skillBox.appendChild(toolTip);
-    }
+    // function tooltipEnter(skillBox, skillName) {
+    //   let toolTip = addToolTip(skillName);
+    //   skillBox.appendChild(toolTip);
+    // }
   }
 
   function getProfessionByName(professionName) {
@@ -277,7 +286,8 @@ function SkillPlanner(skillPlannerData) {
   }
 
   //TODO: Check position of tooltip and move up if extends off screen
-  function addToolTip(skillBoxName) {
+  function addToolTip(skillBox) {
+    let skillBoxName = skillBox.getAttribute("skill-name");
     let toolTip = document
       .querySelector(".skillTooltipTemplate")
       .cloneNode(true);
@@ -354,6 +364,6 @@ function SkillPlanner(skillPlannerData) {
     toolTip.style.display = "flex";
     toolTip.style.flexDirection = "column";
 
-    return toolTip;
+    skillBox.appendChild(toolTip);
   }
 }
