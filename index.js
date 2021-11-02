@@ -197,6 +197,39 @@ function buildProfessionLists(skillData) {
         switch (currentProfession.parent) {
           case "prequel":
             jediProfessionList.push(currentProfession);
+            //Add elite profession link map
+            skillData.skills[currentProfession.novice].skills_required.forEach(
+              function (prereqProfession) {
+                if (eliteProfessionMap[prereqProfession] == undefined) {
+                  eliteProfessionMap[prereqProfession] = [
+                    currentProfession.professionName,
+                  ];
+                } else {
+                  eliteProfessionMap[prereqProfession].push(
+                    currentProfession.professionName
+                  );
+                }
+
+                //Add pre req profession map
+                let basicProfession =
+                  skillData.skills[prereqProfession].professionName;
+                if (
+                  novicePrereqProfessionMap[currentProfession.professionName] ==
+                  undefined
+                ) {
+                  novicePrereqProfessionMap[currentProfession.professionName] =
+                    [basicProfession];
+                } else if (
+                  !novicePrereqProfessionMap[
+                    currentProfession.professionName
+                  ].includes(basicProfession)
+                ) {
+                  novicePrereqProfessionMap[
+                    currentProfession.professionName
+                  ].push(basicProfession);
+                }
+              }
+            );
             break;
           case "force_sensitive":
             forceSensitiveProfessionList.push(currentProfession);

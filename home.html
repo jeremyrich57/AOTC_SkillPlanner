@@ -1,9 +1,9 @@
-<html>
+<!DOCTYPE html>
 
 <head>
     <title>AOTC Skill Planner</title>
     <link rel="stylesheet" type="text/css" href="/css/skillPlanner.css" />
-    <script src="https://unpkg.com/vue@3.0.5"></script>
+    <script src="https://unpkg.com/vue@3.2.20"></script>
 </head>
 
 <body>
@@ -60,13 +60,14 @@
                 </div>
 
                 <div class="skillPlannerBody">
-                    <div class="topMasterSkills">
-                        <div id="topMasterEliteSkillsText" class="topMasterEliteSkillsText">
-                            <span v-for="profession in
-                                skillPlannerData.professionLists.eliteProfessionMap[currentSelectedProfession.master]"
-                                @click="clickProfession(getProfessionByName(profession))">
-                                {{skillData.skill_names[profession]}}</span>
-                        </div>
+                    <div class="topMasterSkills topMasterEliteSkillsText" :style="[skillPlannerData.professionLists.eliteProfessionMap[currentSelectedProfession.master] != undefined && 
+                        skillPlannerData.professionLists.eliteProfessionMap[currentSelectedProfession.master].length > 4
+                        ? {'flex-wrap': 'wrap'} : '']">
+                        <span v-for="profession in
+                        skillPlannerData.professionLists.eliteProfessionMap[currentSelectedProfession.master]"
+                            @click="clickProfession(getProfessionByName(profession))">
+                            {{skillData.skill_names[profession]}}
+                        </span>
                     </div>
 
                     <div class="masterSkillBox">
@@ -329,24 +330,6 @@
             </span>
             <span>Version 1.0 - Created by Rytech (Sorry not a designer - Improved Design Eventually!)</span>
         </footer>
-    </div>
-
-    <div class="skillTooltipTemplate tooltiptext" style="display: none;">
-        <span class="tooltipSkillTitleText skillTitle">({title})</span>
-        <span class="tooltipDescription">{description}</span>
-        <span class="tooltipMods">
-            <b>MODS:</b>
-            <br>
-            {mods}
-        </span>
-        <span class="tooltipSkills">
-            <b>SKILLS:</b>
-            <br>
-            {skills}
-        </span>
-        <span class="tooltipSkillPoints">This skill requires {points} Skill Points to learn.</span>
-        <span class="tooltipExperience">This skill requires {number} of {type} experience</span>
-
     </div>
 </body>
 

@@ -264,6 +264,18 @@ function createSkillPlanner(skillPlannerData) {
       },
       clickSkillBox(skillName) {
         let skill = skillPlannerVM.skillData.skills[skillName];
+        let professionName = skill.professionName;
+        let profession = skillPlannerVM.getProfessionByName(professionName);
+        let professionNoviceSkill =
+          skillPlannerVM.skillData.skills[profession.novice];
+        let precludedSkillsFound = professionNoviceSkill.preclusion_skills.some(
+          (x) => skillPlannerVM.currentSelectedSkills.includes(x)
+        );
+
+        if (precludedSkillsFound) {
+          return;
+        }
+
         if (!skillPlannerVM.currentSelectedSkills.includes(skillName)) {
           let skillsToAdd = [skillName];
           let skillsIndex = 0;
