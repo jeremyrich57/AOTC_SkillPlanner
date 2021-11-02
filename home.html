@@ -3,156 +3,353 @@
 <head>
     <title>AOTC Skill Planner</title>
     <link rel="stylesheet" type="text/css" href="/css/skillPlanner.css" />
+    <script src="https://unpkg.com/vue@3.0.5"></script>
 </head>
 
 <body>
-    <div class="mainDiv">
-    <header>
-        <h1>AOTC Skill Planner</h1>
-        <div class="websiteDiv">
-            <a id="linkToAOTC" href="https://www.swg-aotc.com/">AOTC Website</a>
-        </div>
-    </header>
-    <main>      
-        <div class="professionContainer">
-            <span class="smallTitle">Professions</span>
-                <ul id="listProfessions"></ul>
-        </div>
+    <div id="app" class="mainDiv">
 
-        <div class="skillPlannerContainer">
-            <div class="selectProfessions">
+        <header>
+            <h1>AOTC Skill Planner</h1>
+            <div class="websiteDiv">
+                <a id="linkToAOTC" href="https://www.swg-aotc.com/">AOTC Website</a>
             </div>
-            <div class="skillTitleHeader">
-                <div id="skillName" class="skillName">
-                    Profession Name
+        </header>
+        <main>
+            <div class="professionContainer">
+                <span class="smallTitle">Professions</span>
+                <ul id="listProfessions">
+                    <li v-for="profession in basicProfessions" :class="[{ activeProfession: currentSelectedProfession.name == profession.name }, {
+                        selectedProfession: currentSelectedProfessions.includes(profession.professionName)}]"
+                        @click="clickProfession(profession)">
+                        {{profession.name}}
+                    </li>
+                    <hr />
+                    <li v-for="profession in eliteProfessions" :class="[{ activeProfession: currentSelectedProfession.name == profession.name }, {
+                        selectedProfession: currentSelectedProfessions.includes(profession.professionName)}]"
+                        @click="clickProfession(profession)">
+                        {{profession.name}}
+                    </li>
+                    <hr />
+                    <li v-for="profession in jediProfessions" :class="[{ activeProfession: currentSelectedProfession.name == profession.name }, {
+                        selectedProfession: currentSelectedProfessions.includes(profession.professionName)}]"
+                        @click="clickProfession(profession)">
+                        {{profession.name}}
+                    </li>
+                    <hr />
+                    <li v-for="profession in forceProfessions" :class="[{ activeProfession: currentSelectedProfession.name == profession.name }, {
+                        selectedProfession: currentSelectedProfessions.includes(profession.professionName)}]"
+                        @click="clickProfession(profession)">
+                        {{profession.name}}
+                    </li>
+                </ul>
+            </div>
+
+            <div class="skillPlannerContainer">
+                <div class="selectProfessions">
                 </div>
-                <div class="resetButtonContainer">
-                    <div id="resetButton" class="resetButton">
-                        Reset
+                <div class="skillTitleHeader">
+                    <div id="skillName" class="skillName">
+                        {{currentSelectedProfession.name}}
                     </div>
-                </div>
-            </div>
-
-            <div class="skillPlannerBody">                
-                <div class="topMasterSkills">
-                    <div id="topMasterEliteSkillsText" class="topMasterEliteSkillsText"></div>
-                </div>
-
-                <div class="masterSkillBox">
-                    <div id="masterSkillBox" class="largeSkillBox masterSkillBoxLabel">Master</div>
-                </div>
-
-                <div id="toEliteSkills1" class="toEliteSkills1 eliteSkillsText" data-elite-col="0"></div>
-                <div id="toEliteSkills2" class="toEliteSkills2 eliteSkillsText" data-elite-col="1"></div>
-                <div id="toEliteSkills3" class="toEliteSkills3 eliteSkillsText" data-elite-col="2"></div>
-                <div id="toEliteSkills4" class="toEliteSkills4 eliteSkillsText" data-elite-col="3"></div>
-
-                <div class="skillbox_1_1 professionSkillBox" data-row="0" data-col="0">Tree 1 Skill 1</div>
-                <div class="skillbox_2_1 professionSkillBox" data-row="1" data-col="0">Tree 1 Skill 2</div>
-                <div class="skillbox_3_1 professionSkillBox" data-row="2" data-col="0">Tree 1 Skill 3</div>
-                <div class="skillbox_4_1 professionSkillBox" data-row="3" data-col="0">Tree 1 Skill 4</div>
-
-                <div class="skillbox_1_2 professionSkillBox" data-row="0" data-col="1">Tree 2 Skill 1</div>
-                <div class="skillbox_2_2 professionSkillBox" data-row="1" data-col="1">Tree 2 Skill 2</div>
-                <div class="skillbox_3_2 professionSkillBox" data-row="2" data-col="1">Tree 2 Skill 3</div>
-                <div class="skillbox_4_2 professionSkillBox" data-row="3" data-col="1">Tree 2 Skill 4</div>
-
-                <div class="skillbox_1_3 professionSkillBox" data-row="0" data-col="2">Tree 3 Skill 1</div>
-                <div class="skillbox_2_3 professionSkillBox" data-row="1" data-col="2">Tree 3 Skill 2</div>
-                <div class="skillbox_3_3 professionSkillBox" data-row="2" data-col="2">Tree 3 Skill 3</div>
-                <div class="skillbox_4_3 professionSkillBox" data-row="3" data-col="2">Tree 3 Skill 4</div>
-
-                <div class="skillbox_1_4 professionSkillBox" data-row="0" data-col="3">Tree 4 Skill 1</div>
-                <div class="skillbox_2_4 professionSkillBox" data-row="1" data-col="3">Tree 4 Skill 2</div>
-                <div class="skillbox_3_4 professionSkillBox" data-row="2" data-col="3">Tree 4 Skill 3</div>
-                <div class="skillbox_4_4 professionSkillBox" data-row="3" data-col="3">Tree 4 Skill 4</div>
-
-                <div class="noviceSkillBox">
-                    <div id="noviceSkillBox" class="largeSkillBox noviceSkillBoxLabel">Novice</div>
-                </div>
-
-                <div class="prerequesiteSkills">
-                    <div id="prerequesitSkillsText" class="prerequesitSkillsText"></div>
-                </div>
-
-                <div class="skillPointsRemaining">
-                    <div id="skillPointsNumbers">
-                        <div>
-                            250/250
+                    <div class="resetButtonContainer">
+                        <div id="resetButton" class="resetButton" @click="resetPlanner">
+                            Reset
                         </div>
                     </div>
-                    <div id="skillPointsBar">
+                </div>
+
+                <div class="skillPlannerBody">
+                    <div class="topMasterSkills">
+                        <div id="topMasterEliteSkillsText" class="topMasterEliteSkillsText">
+                            <span v-for="profession in
+                                skillPlannerData.professionLists.eliteProfessionMap[currentSelectedProfession.master]"
+                                @click="clickProfession(getProfessionByName(profession))">
+                                {{skillData.skill_names[profession]}}</span>
+                        </div>
                     </div>
-                </div>                
-            </div>
 
-            <div class="experienceRequiredDiv">
-                <span class="smallTitle" style="color: #fffffa">Experience Required</span>
-                <div class="experienceRequired">
-                    <table id="tableExperienceRequired" class="rightTables">
-                        <thead>
-                            <tr>
-                                <th class="tableHeaders" data-table-id="tableExperienceRequired">Type</th>
-                                <th class="tableHeaders" data-table-id="tableExperienceRequired">Amount</th>
+                    <div class="masterSkillBox">
+                        <div id="masterSkillBox" class="professionSkillBox largeSkillBox masterSkillBoxLabel"
+                            :class="{ active: currentSelectedSkills.includes(currentSelectedProfession.master) }"
+                            @mouseover="showSkillTooltip.master = true" @mouseleave="showSkillTooltip.master = false"
+                            @click="clickSkillBox(currentSelectedProfession.master)">
+                            {{skillData.skill_names[currentSelectedProfession.master]}}
+                            <div v-if="showSkillTooltip.master" class="tooltiptext">
+                                <span v-if="skillData.skill_titles[currentSelectedProfession.master] != undefined"
+                                    class="tooltipSkillTitleText
+                                    skillTitle">({{skillData.skill_titles[currentSelectedProfession.master]}})</span>
+                                <span
+                                    class="tooltipDescription">{{skillData.skill_descriptions[currentSelectedProfession.master]}}</span>
+                                <span class="tooltipMods"
+                                    v-if="Object.keys(skillData.skills[currentSelectedProfession.master].skill_mods).length">
+                                    <b>MODS:</b>
+                                    <br>
+                                    <div
+                                        v-for="(mod, modName, index) in skillData.skills[currentSelectedProfession.master].skill_mods">
+                                        <span v-if="skillData.skill_mod_names[modName] != undefined">
+                                            {{skillData.skill_mod_names[modName]}}: {{mod}}
+                                            <br>
+                                        </span>
+
+                                    </div>
+                                </span>
+                                <span class="tooltipSkills"
+                                    v-if="Object.keys(skillData.skills[currentSelectedProfession.master].commands).length">
+                                    <b>SKILLS:</b>
+                                    <div v-for="command in skillData.skills[currentSelectedProfession.master].commands">
+                                        <span class="skillsColor"
+                                            v-if="skillData.command_names[command.toLowerCase()] != undefined">
+                                            {{skillData.command_names[command.toLowerCase()]}}
+                                            <br>
+                                        </span>
+
+                                    </div>
+                                </span>
+                                <span class="tooltipSkillPoints">This skill requires
+                                    <b>{{skillData.skills[currentSelectedProfession.master].points_required}}</b> Skill
+                                    Points
+                                    to
+                                    learn.</span>
+                                <span class="tooltipExperience">This skill requires
+                                    <b>{{skillData.skills[currentSelectedProfession.master].xp_cost}}</b> of
+                                    <b>{{skillData.exp_names[skillData.skills[currentSelectedProfession.master].xp_type]}}</b>
+                                    experience</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <template
+                        v-if="currentSelectedProfession.skillTrees != undefined && currentSelectedProfession.skillTrees.length"
+                        v-for="(tree, indexTree) in currentSelectedProfession.skillTrees">
+                        <div class="eliteSkillsText" data-elite-col="0"
+                            :class="{ ['toEliteSkills' + (indexTree + 1)]: true }">
+                            <span v-if="tree[3] != undefined"
+                                v-for="skill in skillPlannerData.professionLists.eliteProfessionMap[tree[3]]"
+                                @click="clickProfession(getProfessionByName(skill))">
+                                {{skillData.skill_names[skill]}}
+                            </span></div>
+                        <div v-for="(skill, indexSkill) in tree" class="professionSkillBox"
+                            :class="{ ['skillbox_' + indexSkill + '_' + indexTree]: true, active: currentSelectedSkills.includes(skill) }"
+                            @click="clickSkillBox(skill)" @mouseover="showSkillTooltip[skill] = true"
+                            @mouseleave="showSkillTooltip[skill] = false">
+                            {{skillData.skill_names[skill]}}
+                            <div v-if="showSkillTooltip[skill]" class="tooltiptext">
+                                <span v-if="skillData.skill_titles[skill] != undefined"
+                                    class="tooltipSkillTitleText skillTitle">({{skillData.skill_titles[skill]}})</span>
+                                <span class="tooltipDescription">{{skillData.skill_descriptions[skill]}}</span>
+                                <span class="tooltipMods" v-if="Object.keys(skillData.skills[skill].skill_mods).length">
+                                    <b>MODS:</b>
+                                    <br>
+                                    <div v-for="(mod, modName, index) in skillData.skills[skill].skill_mods">
+                                        <span v-if="skillData.skill_mod_names[modName] != undefined">
+                                            {{skillData.skill_mod_names[modName]}}: {{mod}}
+                                            <br>
+                                        </span>
+
+                                    </div>
+                                </span>
+                                <span class="tooltipSkills" v-if="Object.keys(skillData.skills[skill].commands).length">
+                                    <b>SKILLS:</b>
+                                    <div v-for="command in skillData.skills[skill].commands">
+                                        <span class="skillsColor"
+                                            v-if="skillData.command_names[command.toLowerCase()] != undefined">
+                                            {{skillData.command_names[command.toLowerCase()]}}
+                                            <br>
+                                        </span>
+
+                                    </div>
+                                </span>
+                                <span class="tooltipSkillPoints">This skill requires
+                                    <b>{{skillData.skills[skill].points_required}}</b> Skill Points to
+                                    learn.</span>
+                                <span class="tooltipExperience">This skill requires
+                                    <b>{{skillData.skills[skill].xp_cost}}</b> of
+                                    <b>{{skillData.exp_names[skillData.skills[skill].xp_type]}}</b>
+                                    experience</span>
+                            </div>
+                        </div>
+                    </template>
+
+                    <div class="noviceSkillBox">
+                        <div id="noviceSkillBox" class="professionSkillBox largeSkillBox noviceSkillBoxLabel"
+                            :class="{ active: currentSelectedSkills.includes(currentSelectedProfession.novice) }"
+                            @click="clickSkillBox(currentSelectedProfession.novice)"
+                            @mouseover="showSkillTooltip.novice = true" @mouseleave="showSkillTooltip.novice = false">
+                            {{skillData.skill_names[currentSelectedProfession.novice]}}
+                            <div v-if="showSkillTooltip.novice" class="tooltiptext">
+                                <span v-if="skillData.skill_titles[currentSelectedProfession.novice] != undefined"
+                                    class="tooltipSkillTitleText
+                                    skillTitle">({{skillData.skill_titles[currentSelectedProfession.novice]}})</span>
+                                <span
+                                    class="tooltipDescription">{{skillData.skill_descriptions[currentSelectedProfession.novice]}}</span>
+                                <span class="tooltipMods"
+                                    v-if="Object.keys(skillData.skills[currentSelectedProfession.novice].skill_mods).length">
+                                    <b>MODS:</b>
+                                    <br>
+                                    <div v-for="(mod, modName, index) in
+                                        skillData.skills[currentSelectedProfession.novice].skill_mods">
+                                        <span v-if="skillData.skill_mod_names[modName] != undefined">
+                                            {{skillData.skill_mod_names[modName]}}: {{mod}}
+                                            <br>
+                                        </span>
+
+                                    </div>
+                                </span>
+                                <span class="tooltipSkills"
+                                    v-if="Object.keys(skillData.skills[currentSelectedProfession.novice].commands).length">
+                                    <b>SKILLS:</b>
+                                    <div v-for="command in skillData.skills[currentSelectedProfession.novice].commands">
+                                        <span class="skillsColor"
+                                            v-if="skillData.command_names[command.toLowerCase()] != undefined">
+                                            {{skillData.command_names[command.toLowerCase()]}}
+                                            <br>
+                                        </span>
+
+                                    </div>
+                                </span>
+                                <span class="tooltipSkillPoints">This skill requires
+                                    <b>{{skillData.skills[currentSelectedProfession.novice].points_required}}</b> Skill
+                                    Points
+                                    to
+                                    learn.</span>
+                                <span class="tooltipExperience">This skill requires
+                                    <b>{{skillData.skills[currentSelectedProfession.novice].xp_cost}}</b> of
+                                    <b>{{skillData.exp_names[skillData.skills[currentSelectedProfession.novice].xp_type]}}</b>
+                                    experience</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="prerequesiteSkills">
+                        <div id="prerequesitSkillsText" class="prerequesitSkillsText">
+                            <span
+                                v-for="profession in
+                                skillPlannerData.professionLists.novicePrereqProfessionMap[currentSelectedProfession.professionName]"
+                                @click="clickProfession(getProfessionByName(profession))">
+                                {{skillData.skill_names[profession]}}</span>
+                        </div>
+                    </div>
+
+                    <div class="skillPointsRemaining">
+                        <div id="skillPointsNumbers">
+                            {{skillPointsRemaining}}/{{maxSkillPoints}}
+                        </div>
+                        <div id="skillPointsBar" :style="{'width': skillPointsBarWidth}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="experienceRequiredDiv">
+                    <span class="smallTitle" style="color: #fffffa">Experience Required</span>
+                    <div class="experienceRequired">
+                        <table id="tableExperienceRequired" class="rightTables">
+                            <thead>
+                                <tr>
+                                    <th class="tableHeaders" data-table-id="tableExperienceRequired"
+                                        @click="experienceSortDirection = !experienceSortDirection">Type
+                                        {{experienceSortDirectionArrow}}</th>
+                                    <th class="tableHeaders" data-table-id="tableExperienceRequired">Amount</th>
+                                </tr>
+                            <tbody>
+                            </tbody>
+                            <tr v-for="xpType in experienceRequired" :title="xpType.description">
+                                <td>{{xpType.name}}</td>
+                                <td>{{xpType.value}}</td>
                             </tr>
-                        <tbody>
-                        </tbody>
-                        </thead>
-                    </table>
+                            </thead>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>   
-        <div class="rightSideOfPage">
-            <div class="rightTablesContainer">
-                <span class="smallTitle">Skill Mods</span>
-                <div class="skillMods">
-                    <table id="tableSkillMods" class="rightTables">
-                        <thead>
-                            <tr>
-                                <th class="tableHeaders" data-table-id="tableSkillMods">Name</th>
-                                <th class="tableHeaders" data-table-id="tableSkillMods">Value</th>
+            <div class="rightSideOfPage">
+                <div class="rightTablesContainer">
+                    <span class="smallTitle">Skill Mods</span>
+                    <div class="tableContainer">
+                        <table id="tableSkillMods" class="rightTables">
+                            <thead>
+                                <tr>
+                                    <th class="tableHeaders" data-table-id="tableSkillMods"
+                                        @click="skillModsSortDirection = !skillModsSortDirection">Name
+                                        {{skillModsSortDirectionArrow}}</th>
+                                    <th class="tableHeaders" data-table-id="tableSkillMods">Value</th>
+                                </tr>
+                            <tbody>
+                            </tbody>
+                            <tr v-for="mod in skillMods" :title="mod.description">
+                                <td>{{mod.name}}</td>
+                                <td>{{mod.value}}</td>
                             </tr>
-                        <tbody>
-                        </tbody>
-                        </thead>
-                    </table>
+                            </thead>
+                        </table>
+                    </div>
+
+                    <span class="smallTitle">Abilities Granted</span>
+                    <div class="tableContainer">
+                        <table id="abilitiesGranted" class="rightTables">
+                            <thead>
+                                <tr>
+                                    <th @click="abilitiesGrantedSortDirection = !abilitiesGrantedSortDirection"
+                                        class="tableHeaders" data-table-id="tableSkillMods">Name
+                                        {{abilitiesGrantedSortDirectionArrow}}</th>
+                                </tr>
+                            <tbody>
+                                <tr v-for="ability in abilitiesGranted" :title="ability.description">
+                                    <td>{{ability.name}}</td>
+                                </tr>
+                            </tbody>
+                            </thead>
+                        </table>
+                    </div>
+                    <span class="smallTitle">Certifications Granted</span>
+                    <div class="tableContainer">
+                        <table id="abilitiesGranted" class="rightTables">
+                            <thead>
+                                <tr>
+                                    <th @click="certificationSortDirection = !certificationSortDirection"
+                                        class="tableHeaders" data-table-id="tableSkillMods">Name
+                                        {{certificationsSortDirectionArrow}}</th>
+                                </tr>
+                            <tbody>
+                                <tr v-for="cert in certificationsGranted" :title="cert.description">
+                                    <td>{{cert.name}}</td>
+                                </tr>
+                            </tbody>
+                            </thead>
+                        </table>
+                    </div>
                 </div>
 
-                <span class="smallTitle">Abilities Granted</span>
-                <div class="commandsContainer">
-                    <ul id="listCommands">
-                    </ul>
-                </div>
             </div>
+        </main>
+        <footer>
+            <span>
+                We are in no way affiliated with Sony Online Entertainment, Lucas Arts
+                or any other legal owners of Star Wars Galaxies related material.
+            </span>
+            <span>Version 1.0 - Created by Rytech (Sorry not a designer - Improved Design Eventually!)</span>
+        </footer>
+    </div>
 
-        </div>
-    </main>
-    <footer>
-        <span>
-            We are in no way affiliated with Sony Online Entertainment, Lucas Arts
-            or any other legal owners of Star Wars Galaxies related material.
+    <div class="skillTooltipTemplate tooltiptext" style="display: none;">
+        <span class="tooltipSkillTitleText skillTitle">({title})</span>
+        <span class="tooltipDescription">{description}</span>
+        <span class="tooltipMods">
+            <b>MODS:</b>
+            <br>
+            {mods}
         </span>
-        <span>Version 1.0 - Created by Rytech (Sorry not a designer - Improved Design Eventually!)</span>
-    </footer>
-</div>
+        <span class="tooltipSkills">
+            <b>SKILLS:</b>
+            <br>
+            {skills}
+        </span>
+        <span class="tooltipSkillPoints">This skill requires {points} Skill Points to learn.</span>
+        <span class="tooltipExperience">This skill requires {number} of {type} experience</span>
 
-<div class="skillTooltipTemplate tooltiptext" style="display: none;">
-    <span class="tooltipSkillTitleText skillTitle">({title})</span>
-    <span class="tooltipDescription">{description}</span>
-    <span class="tooltipMods">
-        <b>MODS:</b>
-        <br>
-        {mods}
-    </span>
-    <span class="tooltipSkills">
-        <b>SKILLS:</b>
-        <br>
-        {skills}
-    </span>
-    <span class="tooltipSkillPoints">This skill requires {points} Skill Points to learn.</span>
-    <span class="tooltipExperience">This skill requires {number} of {type} experience</span>
-</div>
+    </div>
 </body>
+
 
 <script src="/JavaScript/SkillPlanner.js"></script>
 

@@ -173,6 +173,7 @@ function buildProfessionLists(skillData) {
   let skillTree = [];
   let eliteProfessionMap = {}; //Keep track of what elite professions to show on clicking a basic one
   let novicePrereqProfessionMap = {};
+  let treeIndex = 1;
 
   for (const skillName in skillData.skills) {
     let skill = skillData.skills[skillName];
@@ -184,6 +185,7 @@ function buildProfessionLists(skillData) {
       currentProfession.skillTrees = [];
       currentProfession.professionName = skill.professionName;
       currentProfession.parent = skill.parent;
+      currentProfession.name = skillData.skill_names[skill.professionName];
       currentProfessionName = skill.professionName;
     } else if (skill.professionName == currentProfession.professionName) {
       if (skill.name.includes("novice")) {
@@ -475,8 +477,12 @@ function buildProfessionLists(skillData) {
         if (skill.parent == currentProfession.professionName) {
           skillTree = [skill.name];
         } else if (skill.parent == previousSkillName) {
+          skill.treeIndex = treeIndex;
           skillTree.push(skill.name);
           if (skill.name.includes("04")) {
+            if (skillTree.length > 4) {
+              skillTree = skillTree.slice(0, 3);
+            }
             currentProfession.skillTrees.push(skillTree);
           }
         }
@@ -506,13 +512,7 @@ function buildProfessionLists(skillData) {
     } else if (b.professionName == "prequel_basic") {
       return 1;
     } else {
-      return skillData.skill_names[a.professionName] >
-        skillData.skill_names[b.professionName]
-        ? 1
-        : skillData.skill_names[a.professionName] <
-          skillData.skill_names[b.professionName]
-        ? -1
-        : 0;
+      return a.name > b.name ? 1 : a.name < b.name ? -1 : 0;
     }
   }
 

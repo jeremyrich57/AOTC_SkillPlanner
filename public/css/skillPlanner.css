@@ -3,6 +3,7 @@
   --planner-bg-color: #048da7;
   --planner-main-color: #a5fbfb;
   --skillTitle: #00cc00;
+  --skillsColor: #ffbb00;
 }
 
 * {
@@ -157,10 +158,10 @@ footer span {
     "topMasterSkills topMasterSkills topMasterSkills topMasterSkills"
     "masterSkillBox masterSkillBox masterSkillBox masterSkillBox"
     "toEliteSkills1 toEliteSkills2 toEliteSkills3 toEliteSkills4"
-    "skillbox_4_1 skillbox_4_2 skillbox_4_3 skillbox_4_4"
-    "skillbox_3_1 skillbox_3_2 skillbox_3_3 skillbox_3_4"
-    "skillbox_2_1 skillbox_2_2 skillbox_2_3 skillbox_2_4"
-    "skillbox_1_1 skillbox_1_2 skillbox_1_3 skillbox_1_4"
+    "skillbox_3_0 skillbox_3_1 skillbox_3_2 skillbox_3_3"
+    "skillbox_2_0 skillbox_2_1 skillbox_2_2 skillbox_2_3"
+    "skillbox_1_0 skillbox_1_1 skillbox_1_2 skillbox_1_3"
+    "skillbox_0_0 skillbox_0_1 skillbox_0_2 skillbox_0_3"
     "noviceSkillBox noviceSkillBox noviceSkillBox noviceSkillBox"
     "prerequesiteSkills prerequesiteSkills prerequesiteSkills prerequesiteSkills"
     "skillPointsRemaining skillPointsRemaining skillPointsRemaining skillPointsRemaining";
@@ -234,8 +235,20 @@ footer span {
 }
 
 /* Skill Boxes */
-.skillbox_1_4 {
-  grid-area: skillbox_1_4;
+.skillbox_0_3 {
+  grid-area: skillbox_0_3;
+}
+
+.skillbox_0_2 {
+  grid-area: skillbox_0_2;
+}
+
+.skillbox_0_1 {
+  grid-area: skillbox_0_1;
+}
+
+.skillbox_0_0 {
+  grid-area: skillbox_0_0;
 }
 
 .skillbox_1_3 {
@@ -250,8 +263,8 @@ footer span {
   grid-area: skillbox_1_1;
 }
 
-.skillbox_2_4 {
-  grid-area: skillbox_2_4;
+.skillbox_1_0 {
+  grid-area: skillbox_1_0;
 }
 
 .skillbox_2_3 {
@@ -266,8 +279,8 @@ footer span {
   grid-area: skillbox_2_1;
 }
 
-.skillbox_3_4 {
-  grid-area: skillbox_3_4;
+.skillbox_2_0 {
+  grid-area: skillbox_2_0;
 }
 
 .skillbox_3_3 {
@@ -282,20 +295,8 @@ footer span {
   grid-area: skillbox_3_1;
 }
 
-.skillbox_4_4 {
-  grid-area: skillbox_4_4;
-}
-
-.skillbox_4_3 {
-  grid-area: skillbox_4_3;
-}
-
-.skillbox_4_2 {
-  grid-area: skillbox_4_2;
-}
-
-.skillbox_4_1 {
-  grid-area: skillbox_4_1;
+.skillbox_3_0 {
+  grid-area: skillbox_3_0;
 }
 
 .noviceSkillBox {
@@ -333,6 +334,7 @@ footer span {
 #skillPointsBar {
   position: absolute;
   background: #02ab2e;
+  width: 100%;
   /* For stripes similar to game
   background: repeating-linear-gradient(
     to right,
@@ -485,6 +487,12 @@ footer span {
   padding-right: 2px;
 }
 
+.rightTablesContainer {
+  display: flex;
+  flex-direction: column;
+  height: 90%;
+}
+
 .rightTables {
   color: var(--planner-main-color);
   /* border: 1px solid var(--planner-main-color); */
@@ -492,6 +500,7 @@ footer span {
   border-radius: 5px;
   position: relative;
   border-collapse: collapse;
+  width: 100%;
   /* background-color: #006074; */
 }
 
@@ -568,7 +577,7 @@ footer span {
 }
 
 #tableExperienceRequired {
-  max-height: 250px;
+  max-height: 350px;
 }
 
 #tableExperienceRequired th {
@@ -585,7 +594,8 @@ footer span {
 } */
 
 .tooltiptext {
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
   font-size: 0.75rem;
   width: 500px;
   min-height: 75px;
@@ -610,15 +620,6 @@ footer span {
   padding: 8px 2px;
 }
 
-.resetButtonContainer {
-  /* grid-area: resetButtonContainer;
-  display: flex;
-  align-self: flex-end; */
-  /* padding-right: 15px; */
-  /* position: absolute;
-  right: 15px; */
-}
-
 .resetButton {
   display: flex;
   justify-content: center;
@@ -640,21 +641,10 @@ footer span {
   background-color: rgb(255, 62, 62);
 }
 
-.skillMods::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
-}
-
-.skillMods::-webkit-scrollbar-thumb {
-  background: var(--planner-main-color);
-  border-radius: 5px;
-  box-shadow: inset 2px 2px 2px hsla(0, 0%, 100%, 0.25),
-    inset -2px -2px 2px rgba(0, 0, 0, 0.25);
-}
-
-.skillMods::-webkit-scrollbar-track {
-  background: linear-gradient(90deg, var(--planner-main-color), var(--planner-main-color) 1px, var(--main-bg-color) 0, var(--main-bg-color));
-  /* background: var(--main-bg-color); */
+.resetButton:active {
+  transform: translate(2px, 2px);
+  background-color: rgb(151, 0, 0);
+  box-shadow: none;
 }
 
 .experienceRequired::-webkit-scrollbar {
@@ -684,9 +674,8 @@ footer span {
   height: 150px;
 }
 
-.commandsContainer {
+.tableContainer {
   color: white;
-  text-shadow: 1px 2px black;
   border: 1px solid var(--planner-main-color);
   flex: 1;
   /* margin: 10px; */
@@ -694,37 +683,25 @@ footer span {
   border-radius: 6px;
   position: relative;
   overflow: auto;
-  height: 300px;
+  min-width: 250px;
+  margin-bottom: 15px;
 }
 
-.commandsContainer::-webkit-scrollbar {
+.tableContainer::-webkit-scrollbar {
   width: 5px;
   height: 5px;
 }
 
-.commandsContainer::-webkit-scrollbar-thumb {
+.tableContainer::-webkit-scrollbar-thumb {
   background: var(--planner-main-color);
   border-radius: 5px;
   box-shadow: inset 2px 2px 2px hsla(0, 0%, 100%, 0.25),
     inset -2px -2px 2px rgba(0, 0, 0, 0.25);
 }
 
-.commandsContainer::-webkit-scrollbar-track {
+.tableContainer::-webkit-scrollbar-track {
   background: linear-gradient(90deg, var(--planner-main-color), var(--planner-main-color) 1px, var(--main-bg-color) 0, var(--main-bg-color));
   /* background: var(--main-bg-color); */
-}
-
-.commandsContainer ul {
-  list-style: none;
-  margin: 5px 5px 0 -30px;
-}
-
-.commandsContainer li {
-  display: block;
-  border-bottom: 1px solid #404040;
-  padding: 5px;
-  color: var(--planner-main-color);
-  /* width: 100%; */
 }
 
 .listHeader {
@@ -741,7 +718,7 @@ footer span {
 }
 
 .experienceRequiredDiv {
-  height: 150px;
+  height: 250px;
   width: 100%;
   display: flex;
   flex-direction: column;
@@ -761,4 +738,8 @@ footer span {
   color: var(--skillTitle);
   font-weight: bold;
   font-size: 1.1em;
+}
+
+.skillsColor {
+  color: var(--skillsColor);
 }
