@@ -46,6 +46,38 @@ function createSkillPlanner(skillPlannerData) {
           }
         });
 
+        let professionSkills = [];
+        currentSelectedProfessions.some(function (professionName) {
+          let profession = skillPlannerVM.getProfessionByName(professionName);
+          if (
+            skillPlannerVM.currentSelectedSkills.includes(profession.master)
+          ) {
+            professionSkills.push(profession.master);
+          } else {
+            let skillName = professionName;
+            let trees = [];
+            profession.skillTrees.some(function (tree, index) {
+              let skillCount = 0;
+              tree.some(function (skill) {
+                if (skillPlannerVM.currentSelectedSkills.includes(skill)) {
+                  skillCount++;
+                }
+              });
+              trees.push(skillCount);
+            });
+
+            professionSkills.push(skillName + ":" + trees.join(""));
+          }
+        });
+
+        console.log("professionSkills", professionSkills.join(","));
+        console.log("skills blank", professionSkills.join(",") == "");
+        if (professionSkills.join(",") != "") {
+          history.replaceState({}, "", "?skills=" + professionSkills.join(","));
+        } else {
+          history.replaceState({}, "", "?");
+        }
+
         return currentSelectedProfessions;
       },
       skillPointsRemaining: function () {
@@ -355,8 +387,10 @@ function createSkillPlanner(skillPlannerData) {
 
   const urlSearchParams = new URLSearchParams(window.location.search);
   const urlQueryParams = Object.fromEntries(urlSearchParams.entries());
-  if (urlQueryParams.skills == undefined) {
+  console.log("urlQueryParams", urlQueryParams);
+  if (urlQueryParams.skills == undefined || urlQueryParams.skills == "") {
     let artisan = skillPlannerVM.getProfessionByName("crafting_artisan");
     skillPlannerVM.clickProfession(artisan);
+  } else {
   }
 }

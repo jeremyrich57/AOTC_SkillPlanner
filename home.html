@@ -47,6 +47,11 @@
 
             <div class="skillPlannerContainer">
                 <div class="selectProfessions">
+                    <div class="selectedProfessionBox" v-for="professionName in currentSelectedProfessions">
+                        {{skillData.skill_names[professionName]}}
+                        <div class="cancelSelectedProfessionBox"
+                            @click="clickSkillBox(getProfessionByName(professionName).novice)">X</div>
+                    </div>
                 </div>
                 <div class="skillTitleHeader">
                     <div id="skillName" class="skillName">
