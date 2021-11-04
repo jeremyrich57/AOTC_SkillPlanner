@@ -75,12 +75,14 @@ function createSkillPlanner(skillPlannerData) {
           }
         });
 
-        console.log("professionSkills", professionSkills.join(","));
-        console.log("skills blank", professionSkills.join(",") == "");
         if (professionSkills.join(",") != "") {
           history.replaceState({}, "", "?skills=" + professionSkills.join(","));
         } else {
           history.replaceState({}, "", "?");
+        }
+
+        if (this.currentSelectedSkills.length > 0 && this.shareURL != "") {
+          this.shareURL = window.location.href;
         }
 
         return currentSelectedProfessions;
@@ -388,10 +390,8 @@ function createSkillPlanner(skillPlannerData) {
       },
       clickShareBuild() {
         if (skillPlannerVM.currentSelectedSkills.length > 0) {
-          let shareURL = window.location.href;
-          skillPlannerVM.shareURL = shareURL;
-
-          navigator.clipboard.writeText(shareURL).then(
+          this.shareURL = window.location.href;
+          navigator.clipboard.writeText(skillPlannerVM.shareURL).then(
             function () {
               /* clipboard successfully set */
               skillPlannerVM.copyClipboardMessage = "URL Copied to Clipboard!";
