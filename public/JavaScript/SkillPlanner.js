@@ -11,6 +11,8 @@ xhr.onload = function () {
 xhr.send();
 
 function createSkillPlanner(skillPlannerData) {
+  const urlSearchParams = new URLSearchParams(window.location.search);
+  const urlQueryParams = Object.fromEntries(urlSearchParams.entries());
   console.log("onload skillPlanner data: ", skillPlannerData);
   const sortArrowAscending = String.fromCharCode(9650);
   const sortArrowDescending = String.fromCharCode(9660);
@@ -66,7 +68,7 @@ function createSkillPlanner(skillPlannerData) {
               trees.push(skillCount);
             });
 
-            professionSkills.push(skillName + ":" + trees.join(""));
+            professionSkills.push(skillName + ":" + trees.join("-"));
           }
         });
 
@@ -385,12 +387,48 @@ function createSkillPlanner(skillPlannerData) {
 
   const skillPlannerVM = app.mount("#app");
 
-  const urlSearchParams = new URLSearchParams(window.location.search);
-  const urlQueryParams = Object.fromEntries(urlSearchParams.entries());
-  console.log("urlQueryParams", urlQueryParams);
+  //Allow builds to be shared
   if (urlQueryParams.skills == undefined || urlQueryParams.skills == "") {
     let artisan = skillPlannerVM.getProfessionByName("crafting_artisan");
     skillPlannerVM.clickProfession(artisan);
   } else {
+    let urlSkills = urlQueryParams.skills.split(",");
+    let startingProfession;
+    urlSkills.some(function (skillString) {
+      let skillStringSkills = skillString.split(":");
+      let professionName = skillStringSkills[0];
+
+      if (
+        professionName.split("_")[professionName.split("_").length - 1] ==
+        "master"
+      ) {
+        let skill = skillPlannerVM.skillData.skills[professionName];
+
+        if (startingProfession == undefined) {
+          startingProfession = skillPlannerVM.getProfessionByName(
+            skill.professionName
+          );
+        }
+
+        skillPlannerVM.clickSkillBox(professionName);
+      } else {
+        let profession = skillPlannerVM.getProfessionByName(professionName);
+
+        if (startingProfession == undefined) {
+          startingProfession = profession;
+        }
+
+        let treeSkillNumbers = skillStringSkills[1].split("-");
+        treeSkillNumbers.some(function (skillNumber, index) {
+          skillNumber = skillNumber * 1;
+          if (skillNumber > 0) {
+            let skillName = profession.skillTrees[index][skillNumber - 1];
+            skillPlannerVM.clickSkillBox(skillName);
+          }
+        });
+      }
+    });
+
+    skillPlannerVM.clickProfession(startingProfession);
   }
 }
