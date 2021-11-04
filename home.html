@@ -277,6 +277,15 @@
                 </div>
             </div>
             <div class="rightSideOfPage">
+                <div class="themeContainer">
+                    <div style="display: flex; align-items: center;">
+                        <h3>Change Theme:</h3>
+                        <select class="dropdown" @change="onthemechange($event)">
+                            <option v-for="(theme, index) in themes" :value="index">{{theme.name}}</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div class="rightTablesContainer">
                     <span class="smallTitle">Skill Mods</span>
                     <div class="tableContainer">

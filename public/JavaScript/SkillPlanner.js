@@ -1,4 +1,4 @@
-var xhr = new XMLHttpRequest();
+const xhr = new XMLHttpRequest();
 xhr.open("GET", "/api/getSkillData");
 xhr.onload = function () {
   if (xhr.status === 200) {
@@ -37,6 +37,47 @@ function createSkillPlanner(skillPlannerData) {
         shareURL: "",
         showCopyToast: false,
         copyClipboardMessage: "URL Copied to Clipboard!",
+        themes: [
+          {
+            name: "Classic",
+            value: "classic",
+            colors: {
+              __main_bg_color: "#00404c",
+              __planner_bg_color: "#048da7",
+              __planner_main_color: "#a5fbfb",
+              __text_color: "#a5fbfb",
+              __skillbox_default_color: "#006074",
+              __skillbox_active_color: "#02ab2e",
+              __skillbox_highlight_color: "#26672a",
+            },
+          },
+          {
+            name: "Dark",
+            value: "dark",
+            colors: {
+              __main_bg_color: "#00404c",
+              __planner_bg_color: "#048da7",
+              __planner_main_color: "#a5fbfb",
+              __text_color: "#a5fbfb",
+              __skillbox_default_color: "#006074",
+              __skillbox_active_color: "#02ab2e",
+              __skillbox_highlight_color: "#26672a",
+            },
+          },
+          {
+            name: "Windu",
+            value: "windu",
+            colors: {
+              __main_bg_color: "#20153a",
+              __planner_bg_color: "#452d78",
+              __planner_main_color: "#b678fc",
+              __text_color: "#ebc6ff",
+              __skillbox_default_color: "#5d3bb7",
+              __skillbox_active_color: "#98c541",
+              __skillbox_highlight_color: "#528c20",
+            },
+          },
+        ],
       };
     },
     computed: {
@@ -416,12 +457,26 @@ function createSkillPlanner(skillPlannerData) {
           setTimeout(() => (skillPlannerVM.showCopyToast = false), 3000);
         }
       },
+      onthemechange(event) {
+        let themeIndex = event.target.value;
+
+        if (this.themes[themeIndex] != undefined) {
+          let root = document.documentElement;
+          for (const property in this.themes[themeIndex].colors) {
+            let rootProperty = property.replace(/[_]/g, (m) => "-");
+            root.style.setProperty(
+              rootProperty,
+              this.themes[themeIndex].colors[property]
+            );
+          }
+        }
+      },
     },
   });
 
   const skillPlannerVM = app.mount("#app");
 
-  //Allow builds to be shared
+  //Allow builds be loaded based on URL
   if (urlQueryParams.skills == undefined || urlQueryParams.skills == "") {
     let artisan = skillPlannerVM.getProfessionByName("crafting_artisan");
     skillPlannerVM.clickProfession(artisan);

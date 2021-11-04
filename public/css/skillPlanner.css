@@ -2,8 +2,12 @@
   --main-bg-color: #00404c;
   --planner-bg-color: #048da7;
   --planner-main-color: #a5fbfb;
+  --text-color: #a5fbfb;
   --skillTitle: #00cc00;
   --skillsColor: #ffbb00;
+  --skillbox-default-color: #006074;
+  --skillbox-active-color: #02ab2e;
+  --skillbox-highlight-color: #26672a;
 }
 
 * {
@@ -43,7 +47,7 @@ header {
 }
 
 header h1 {
-  color: var(--planner-main-color);
+  color: var(--text-color);
   text-shadow: 1px 2px black;
 }
 
@@ -56,15 +60,15 @@ header h1 {
 }
 
 .websiteDiv a:link {
-  color: var(--planner-main-color);
+  color: var(--text-color);
 }
 
 .websiteDiv a:visited {
-  color: var(--planner-main-color);
+  color: var(--text-color);
 }
 
 .websiteDiv a:hover {
-  color: #006074;
+  color: var(--skillbox-default-color);
 }
 
 .professionContainer {
@@ -84,7 +88,7 @@ header h1 {
 .rightSideOfPage {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   background-color: var(--main-bg-color);
   padding-left: 25px;
@@ -99,7 +103,7 @@ footer {
   width: 100%;
   justify-items: center;
   background-color: var(--planner-bg-color);
-  color: var(--planner-main-color);
+  color: var(--text-color);
 }
 
 footer span {
@@ -121,10 +125,10 @@ footer span {
   justify-content: center;
   width: 125px;
   height: 40px;
-  background-color: #02ab2e;
+  background-color: var(--skillbox-active-color);
   margin-right: 25px;
   position: relative;
-  color: var(--planner-main-color);
+  color: var(--text-color);
   text-shadow: 2px 2px black;
   cursor: pointer;
   border-radius: 0px 8px 0px 8px;
@@ -134,7 +138,7 @@ footer span {
 }
 
 .selectedProfessionBox:hover {
-  background-color: #26672a;
+  background-color: var(--skillbox-highlight-color);
 }
 
 .cancelSelectedProfessionBox {
@@ -187,7 +191,7 @@ footer span {
 /* Skill Planner Grid */
 .skillName {
   font-size: 2.5rem;
-  color: var(--planner-main-color);
+  color: var(--text-color);
   text-shadow: 2px 1px black;
   flex: 1;
 }
@@ -309,7 +313,7 @@ footer span {
   grid-area: skillPointsRemaining;
   display: flex;
   /* place-items: center; */
-  background-color: #006074;
+  background-color: var(--skillbox-default-color);
   position: relative;
   height: 24px;
 }
@@ -352,10 +356,10 @@ footer span {
   width: 35%;
   /* height: 90%; */
   /* height: 4rem; */
-  background-color: #006074;
+  background-color: var(--skillbox-default-color);
   cursor: pointer;
   border-radius: 0px 8px 0px 8px;
-  color: var(--planner-main-color);
+  color: var(--text-color);
   /* display: inline-grid;
   place-items: center; */
   display: flex;
@@ -367,43 +371,38 @@ footer span {
 }
 
 .largeSkillBox:hover {
-  background-color: #26672a;
+  background-color: var(--skillbox-highlight-color);
 }
 
 .largeSkillBox.active {
   transition: background-color 0.5s ease;
-  background-color: #02ab2e;
+  background-color: var(--skillbox-active-color);
 }
 
 .professionSkillBox {
-  /* background-color: #02ab2e; */
-  background-color: #006074;
+  background-color: var(--skillbox-default-color);
   cursor: pointer;
   border-radius: 0px 8px 0px 8px;
-  color: var(--planner-main-color);
-  /* display: inline-grid;
-  place-items: center; */
+  color: var(--text-color);
   display: flex;
   justify-content: center;
   text-align: center;
   align-items: center;
   position: relative;
   border: 1px solid black;
-  /* height: 4rem; */
-  /* padding: 15px 0; */
 }
 
 .professionSkillBox:hover {
-  background-color: #26672a;
+  background-color: var(--skillbox-highlight-color);
 }
 
 .professionSkillBox.active {
   transition: background-color 0.5s ease;
-  background-color: #02ab2e;
+  background-color: var(--skillbox-active-color);
 }
 
 .topMasterEliteSkillsText {
-  color: var(--planner-main-color);
+  color: var(--text-color);
   display: flex;
   justify-content: space-evenly;
   width: 100%;
@@ -416,7 +415,7 @@ footer span {
 }
 
 .prerequesitSkillsText {
-  color: var(--planner-main-color);
+  color: var(--text-color);
   display: flex;
   justify-content: space-evenly;
   width: 50%;
@@ -429,7 +428,7 @@ footer span {
 }
 
 .eliteSkillsText {
-  color: var(--planner-main-color);
+  color: var(--text-color);
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
@@ -452,7 +451,7 @@ footer span {
   background-color: var(--planner-bg-color);
   padding: 5px 0;
   border-radius: 6px;
-  border: 1px solid var(--planner-main-color);
+  border: 1px solid var(--text-color);
   min-width: 150px;
 }
 
@@ -495,20 +494,18 @@ footer span {
 
 .rightTables {
   color: var(--planner-main-color);
-  /* border: 1px solid var(--planner-main-color); */
   border: 1px solid black;
   border-radius: 5px;
   position: relative;
   border-collapse: collapse;
   width: 100%;
-  /* background-color: #006074; */
 }
 
 .rightTables th {
   position: sticky;
   top: -1px;
-  background-color: #006074;
-  color: var(--planner-main-color);
+  background-color: var(--skillbox-default-color);
+  color: var(--text-color);
   text-align: left;
   font-weight: bold;
   padding: 2px 3px;
@@ -549,17 +546,6 @@ footer span {
   max-height: 500px;
 }
 
-/* #tableSkillMods th {
-  position: sticky;
-  top: -10px;
-  background-color: #006074;
-  color: var(--planner-main-color);
-}
-
-#tableSkillMods tr {
-  border-bottom: 1px solid var(--planner-main-color);
-} */
-
 .experienceRequired {
   display: flex;
   flex-direction: column;
@@ -583,8 +569,8 @@ footer span {
 #tableExperienceRequired th {
   position: sticky;
   top: -1px;
-  background-color: #006074;
-  color: var(--planner-main-color);
+  background-color: var(--skillbox-default-color);
+  color: var(--text-color);
 }
 
 /* .professionSkillBox {
@@ -708,7 +694,7 @@ footer span {
   display: block;
   /* position: absolute;
   top: 1px; */
-  background-color: #006074;
+  background-color: var(--skillbox-default-color);
   width: 99%;
   border-radius: 4px 4px 0 0;
   border-bottom: 1px solid black;
@@ -796,4 +782,18 @@ footer span {
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
+}
+
+.themeContainer {
+  color: var(--text-color);
+}
+
+.dropdown {
+  margin-left: 5px;
+  padding: 4px;
+  border-radius: 6px;
+  background-color: var(--planner-bg-color);
+  color: var(--text-color);
+  font-weight: bold;
+  font-size: 1.1em;
 }
