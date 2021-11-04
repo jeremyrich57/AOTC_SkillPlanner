@@ -747,7 +747,6 @@ footer span {
 .shareBuildContainer {
   width: 100%;
   display: flex;
-  justify-content: flex-end;
   padding: 8px 0;
   position: relative;
 }
@@ -777,13 +776,12 @@ footer span {
   color: #505050;
   background-color: var(--planner-main-color);
   font-style: italic;
-  position: absolute;
-  transform: translateX(100%);
+
 }
 
 .toast {
   position: absolute;
-  transform: translate(100%, 2rem);
+  transform: translate(50%, 2rem);
   background-color: white;
   border: 1px solid var(--planner-bg-color);
   padding: 8px;

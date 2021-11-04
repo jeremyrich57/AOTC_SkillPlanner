@@ -281,6 +281,7 @@ function createSkillPlanner(skillPlannerData) {
     methods: {
       resetPlanner() {
         skillPlannerVM.currentSelectedSkills = [];
+        skillPlannerVM.shareURL = "";
       },
       clickProfession(profession) {
         skillPlannerVM.currentSelectedProfession = profession;
@@ -401,12 +402,18 @@ function createSkillPlanner(skillPlannerData) {
               console.log(
                 "Clipboard copy not supported. Please copy manually."
               );
-
+              skillPlannerVM.showCopyToast = true;
               skillPlannerVM.copyClipboardMessage =
                 "Clipboard copy not supported. Please copy manually.";
               setTimeout(() => (skillPlannerVM.showCopyToast = false), 3000);
             }
           );
+        } else {
+          skillPlannerVM.shareURL = "";
+          skillPlannerVM.copyClipboardMessage =
+            "Please select skills before copying.";
+          skillPlannerVM.showCopyToast = true;
+          setTimeout(() => (skillPlannerVM.showCopyToast = false), 3000);
         }
       },
     },
