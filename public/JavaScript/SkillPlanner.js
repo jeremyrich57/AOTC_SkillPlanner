@@ -34,6 +34,9 @@ function createSkillPlanner(skillPlannerData) {
         experienceSortDirection: true,
         tooltipActive: false,
         showSkillTooltip: {},
+        shareURL: "",
+        showCopyToast: false,
+        copyClipboardMessage: "URL Copied to Clipboard!",
       };
     },
     computed: {
@@ -380,6 +383,30 @@ function createSkillPlanner(skillPlannerData) {
             skillPlannerVM.currentSelectedSkills.filter(
               (x) => !skillsToRemove.includes(x)
             );
+        }
+      },
+      clickShareBuild() {
+        if (skillPlannerVM.currentSelectedSkills.length > 0) {
+          let shareURL = window.location.href;
+          skillPlannerVM.shareURL = shareURL;
+
+          navigator.clipboard.writeText(shareURL).then(
+            function () {
+              /* clipboard successfully set */
+              skillPlannerVM.copyClipboardMessage = "URL Copied to Clipboard!";
+              skillPlannerVM.showCopyToast = true;
+              setTimeout(() => (skillPlannerVM.showCopyToast = false), 3000);
+            },
+            function () {
+              console.log(
+                "Clipboard copy not supported. Please copy manually."
+              );
+
+              skillPlannerVM.copyClipboardMessage =
+                "Clipboard copy not supported. Please copy manually.";
+              setTimeout(() => (skillPlannerVM.showCopyToast = false), 3000);
+            }
+          );
         }
       },
     },

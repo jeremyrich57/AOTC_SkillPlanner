@@ -743,3 +743,59 @@ footer span {
 .skillsColor {
   color: var(--skillsColor);
 }
+
+.shareBuildContainer {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px 0;
+  position: relative;
+}
+
+.shareBuildButton {
+  background-color: var(--planner-bg-color);
+  border: 1px solid var(--main-bg-color);
+  padding: 8px;
+  border-radius: 0 8px 0 8px;
+  color: var(--planner-main-color);
+  font-weight: bold;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.shareBuildButton:hover {
+  background-color: var(--planner-main-color);
+  border: 1px solid var(--main-bg-color);
+  color: var(--planner-bg-color);
+}
+
+.shareBuildInput {
+  padding: 4px;
+  display: block;
+  border: 1px solid #ccc;
+  width: 50%;
+  color: #505050;
+  background-color: var(--planner-main-color);
+  font-style: italic;
+  position: absolute;
+  transform: translateX(100%);
+}
+
+.toast {
+  position: absolute;
+  transform: translate(100%, 2rem);
+  background-color: white;
+  border: 1px solid var(--planner-bg-color);
+  padding: 8px;
+  font-style: italic;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.75s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
