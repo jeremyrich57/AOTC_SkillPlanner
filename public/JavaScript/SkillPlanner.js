@@ -392,43 +392,52 @@ function createSkillPlanner(skillPlannerData) {
     let artisan = skillPlannerVM.getProfessionByName("crafting_artisan");
     skillPlannerVM.clickProfession(artisan);
   } else {
-    let urlSkills = urlQueryParams.skills.split(",");
-    let startingProfession;
-    urlSkills.some(function (skillString) {
-      let skillStringSkills = skillString.split(":");
-      let professionName = skillStringSkills[0];
+    try {
+      let urlSkills = urlQueryParams.skills.split(",");
+      let startingProfession;
+      urlSkills.some(function (skillString) {
+        let skillStringSkills = skillString.split(":");
+        let professionName = skillStringSkills[0];
 
-      if (
-        professionName.split("_")[professionName.split("_").length - 1] ==
-        "master"
-      ) {
-        let skill = skillPlannerVM.skillData.skills[professionName];
+        if (
+          professionName.split("_")[professionName.split("_").length - 1] ==
+          "master"
+        ) {
+          let skill = skillPlannerVM.skillData.skills[professionName];
 
-        if (startingProfession == undefined) {
-          startingProfession = skillPlannerVM.getProfessionByName(
-            skill.professionName
-          );
-        }
-
-        skillPlannerVM.clickSkillBox(professionName);
-      } else {
-        let profession = skillPlannerVM.getProfessionByName(professionName);
-
-        if (startingProfession == undefined) {
-          startingProfession = profession;
-        }
-
-        let treeSkillNumbers = skillStringSkills[1].split("-");
-        treeSkillNumbers.some(function (skillNumber, index) {
-          skillNumber = skillNumber * 1;
-          if (skillNumber > 0) {
-            let skillName = profession.skillTrees[index][skillNumber - 1];
-            skillPlannerVM.clickSkillBox(skillName);
+          if (startingProfession == undefined) {
+            startingProfession = skillPlannerVM.getProfessionByName(
+              skill.professionName
+            );
           }
-        });
-      }
-    });
 
-    skillPlannerVM.clickProfession(startingProfession);
+          skillPlannerVM.clickSkillBox(professionName);
+        } else {
+          let profession = skillPlannerVM.getProfessionByName(professionName);
+
+          if (startingProfession == undefined) {
+            startingProfession = profession;
+          }
+
+          let treeSkillNumbers = skillStringSkills[1].split("-");
+          treeSkillNumbers.some(function (skillNumber, index) {
+            skillNumber = skillNumber * 1;
+            if (skillNumber > 0) {
+              let skillName = profession.skillTrees[index][skillNumber - 1];
+              skillPlannerVM.clickSkillBox(skillName);
+            }
+          });
+        }
+      });
+
+      skillPlannerVM.clickProfession(startingProfession);
+    } catch (e) {
+      console.warn(
+        "URL provided is not a valid build sequence. Please use the one provided by either copying the URL manually or clicking Share Build button."
+      );
+
+      let artisan = skillPlannerVM.getProfessionByName("crafting_artisan");
+      skillPlannerVM.clickProfession(artisan);
+    }
   }
 }
