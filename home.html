@@ -47,7 +47,7 @@
 
             <div class="skillPlannerContainer">
                 <div class="shareBuildContainer">
-                    <button class="shareBuildButton" @click="clickShareBuild">Share Build</button>
+                    <button class="mainButton" @click="clickShareBuild">Share Build</button>
                     <input class="shareBuildInput" disabled v-model="shareURL" v-if="shareURL != ''" />
                     <transition name="fade">
                         <div class="toast" v-if="showCopyToast">{{copyClipboardMessage}}</div>
@@ -283,6 +283,19 @@
                         <select class="dropdown" @change="onthemechange($event)">
                             <option v-for="(theme, index) in themes" :value="index">{{theme.name}}</option>
                         </select>
+                        <button class="plus-button" title="Create New Theme!" @click="clickCreateTheme"></button>
+                    </div>
+
+                    <div v-if="showThemeCreation" class="themeCreationContainer">
+                        <h3>Select colors for you new theme!</h3>
+                        <div v-for="(color, key) in themes[themeIndex].colors" class="colorRow">
+                            <label for="head">{{key}}</label>
+                            <input type="color" v-model="color" @input="themeColorChange($event, key)">
+                        </div>
+                        <div class="themeCreationButtons">
+                            <button class="cancelButton" @click="clickCancelTheme">Cancel</button>
+                            <button class="applyButton">Apply</button>
+                        </div>
                     </div>
                 </div>
 

@@ -37,47 +37,56 @@ function createSkillPlanner(skillPlannerData) {
         shareURL: "",
         showCopyToast: false,
         copyClipboardMessage: "URL Copied to Clipboard!",
+        showThemeCreation: false,
+        currentTheme: {},
+        newTheme: {},
+        updateTheme: false,
+        //theme colors have underscores so they can be replaced later with dashes to update CSS variables later
         themes: [
           {
             name: "Classic",
             value: "classic",
             colors: {
               __main_bg_color: "#00404c",
-              __planner_bg_color: "#048da7",
-              __planner_main_color: "#a5fbfb",
+              __planner_main_color: "#048da7",
+              __planner_border_color: "#a5fbfb",
               __text_color: "#a5fbfb",
               __skillbox_default_color: "#006074",
               __skillbox_active_color: "#02ab2e",
               __skillbox_highlight_color: "#26672a",
             },
+            update: true,
           },
           {
             name: "Dark",
             value: "dark",
             colors: {
               __main_bg_color: "#00404c",
-              __planner_bg_color: "#048da7",
-              __planner_main_color: "#a5fbfb",
+              __planner_main_color: "#048da7",
+              __planner_border_color: "#a5fbfb",
               __text_color: "#a5fbfb",
               __skillbox_default_color: "#006074",
               __skillbox_active_color: "#02ab2e",
               __skillbox_highlight_color: "#26672a",
             },
+            update: true,
           },
           {
-            name: "Windu",
+            name: "Windu Purple",
             value: "windu",
             colors: {
               __main_bg_color: "#20153a",
-              __planner_bg_color: "#452d78",
-              __planner_main_color: "#b678fc",
+              __planner_main_color: "#452d78",
+              __planner_border_color: "#b678fc",
               __text_color: "#ebc6ff",
               __skillbox_default_color: "#5d3bb7",
               __skillbox_active_color: "#98c541",
               __skillbox_highlight_color: "#528c20",
             },
+            update: true,
           },
         ],
+        themeIndex: 0,
       };
     },
     computed: {
@@ -459,16 +468,54 @@ function createSkillPlanner(skillPlannerData) {
       },
       onthemechange(event) {
         let themeIndex = event.target.value;
+        this.themeIndex = themeIndex;
 
         if (this.themes[themeIndex] != undefined) {
-          let root = document.documentElement;
-          for (const property in this.themes[themeIndex].colors) {
-            let rootProperty = property.replace(/[_]/g, (m) => "-");
-            root.style.setProperty(
-              rootProperty,
-              this.themes[themeIndex].colors[property]
-            );
-          }
+          this.currentTheme = this.themes[themeIndex];
+          // this.currentTheme.update = !this.currentTheme.update;
+          this.updateTheme = !this.updateTheme;
+          console.log("change themes");
+        }
+      },
+      clickCreateTheme() {
+        this.showThemeCreation = !this.showThemeCreation;
+
+        let newTheme = {
+          name: "temp",
+          value: "temp",
+          colors: {},
+        };
+        for (const color in this.themes[this.themeIndex].colors) {
+          newTheme.colors[color] = this.themes[this.themeIndex].colors[color];
+        }
+        console.log("newTheme", newTheme);
+
+        this.newTheme = newTheme;
+      },
+      clickCancelTheme() {
+        this.showThemeCreation = false;
+        this.currentTheme = this.themes[this.themeIndex];
+        // this.currentTheme.update = !this.currentTheme.update;
+        this.updateTheme = !this.updateTheme;
+      },
+      themeColorChange(event, key) {
+        let newColor = event.target.value;
+        this.newTheme.colors[key] = newColor;
+        this.currentTheme = this.newTheme;
+        // this.currentTheme.update = !this.currentTheme.update;
+        this.updateTheme = !this.updateTheme;
+      },
+    },
+    watch: {
+      updateTheme: function () {
+        console.log("watch theme update");
+        let root = document.documentElement;
+        for (const property in this.currentTheme.colors) {
+          let rootProperty = property.replace(/[_]/g, (m) => "-");
+          root.style.setProperty(
+            rootProperty,
+            this.currentTheme.colors[property]
+          );
         }
       },
     },
