@@ -58,16 +58,30 @@ function createSkillPlanner(skillPlannerData) {
             update: true,
           },
           {
-            name: "Dark",
+            name: "Dark Jedi",
             value: "dark",
             colors: {
-              __main_bg_color: "#00404c",
-              __planner_main_color: "#048da7",
-              __planner_border_color: "#a5fbfb",
-              __text_color: "#a5fbfb",
-              __skillbox_default_color: "#006074",
-              __skillbox_active_color: "#02ab2e",
-              __skillbox_highlight_color: "#26672a",
+              __main_bg_color: "#2B2B2B",
+              __planner_main_color: "#1A1A1A",
+              __planner_border_color: "#990000",
+              __text_color: "#FF0000",
+              __skillbox_default_color: "#454545",
+              __skillbox_active_color: "#EDEDED",
+              __skillbox_highlight_color: "#EDEDED",
+            },
+            update: true,
+          },
+          {
+            name: "Light Jedi",
+            value: "light",
+            colors: {
+              __main_bg_color: "#8A8A8A",
+              __planner_main_color: "#FFFFFF",
+              __planner_border_color: "#FFD700",
+              __text_color: "#404040",
+              __skillbox_default_color: "#DEDEDE",
+              __skillbox_active_color: "#FFD700",
+              __skillbox_highlight_color: "#FFEE90",
             },
             update: true,
           },
@@ -87,6 +101,48 @@ function createSkillPlanner(skillPlannerData) {
           },
         ],
         themeIndex: 0,
+        userThemes: [
+          {
+            name: "test1",
+            value: "test1",
+            colors: {
+              __main_bg_color: "#00404c",
+              __planner_main_color: "#048da7",
+              __planner_border_color: "#a5fbfb",
+              __text_color: "#a5fbfb",
+              __skillbox_default_color: "#006074",
+              __skillbox_active_color: "#02ab2e",
+              __skillbox_highlight_color: "#26672a",
+            },
+          },
+          {
+            name: "test2",
+            value: "test2",
+            colors: {
+              __main_bg_color: "#00404c",
+              __planner_main_color: "#048da7",
+              __planner_border_color: "#a5fbfb",
+              __text_color: "#a5fbfb",
+              __skillbox_default_color: "#006074",
+              __skillbox_active_color: "#02ab2e",
+              __skillbox_highlight_color: "#26672a",
+            },
+          },
+          {
+            name: "test3",
+            value: "test3",
+            colors: {
+              __main_bg_color: "#00404c",
+              __planner_main_color: "#048da7",
+              __planner_border_color: "#a5fbfb",
+              __text_color: "#a5fbfb",
+              __skillbox_default_color: "#006074",
+              __skillbox_active_color: "#02ab2e",
+              __skillbox_highlight_color: "#26672a",
+            },
+          },
+        ],
+        newUserThemeName: "",
       };
     },
     computed: {
@@ -504,6 +560,9 @@ function createSkillPlanner(skillPlannerData) {
         this.currentTheme = this.newTheme;
         // this.currentTheme.update = !this.currentTheme.update;
         this.updateTheme = !this.updateTheme;
+      },
+      userThemeNameInputChange() {
+        console.log("this.newUserThemeName", this.newUserThemeName);
       },
     },
     watch: {

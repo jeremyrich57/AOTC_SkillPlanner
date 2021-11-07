@@ -287,12 +287,23 @@
                     </div>
 
                     <div v-if="showThemeCreation" class="themeCreationContainer">
-                        <h3>Select colors for you new theme!</h3>
+                        <h3>Select colors for your new theme!</h3>
+                        <div style="display: flex; align-items: center;">
+                            <span style="padding-right: 4px; font-weight: bold;">Name:</span>
+                            <input name="userThemeSelection" list="userThemeSelection" class="dataLists"
+                                @input="userThemeNameInputChange" v-model="newUserThemeName" />
+                            <datalist id="userThemeSelection">
+                                <option v-for="(theme, index) in userThemes" :value="theme.name"></option>
+                            </datalist>
+                        </div>
+
                         <div v-for="(color, key) in themes[themeIndex].colors" class="colorRow">
                             <label for="head">{{key}}</label>
                             <input type="color" v-model="color" @input="themeColorChange($event, key)">
                         </div>
                         <div class="themeCreationButtons">
+                            <button class="deleteButton"
+                                v-if="userThemes.find(x => x.name == newUserThemeName)">Delete</button>
                             <button class="cancelButton" @click="clickCancelTheme">Cancel</button>
                             <button class="applyButton">Apply</button>
                         </div>
