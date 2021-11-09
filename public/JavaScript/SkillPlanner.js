@@ -490,7 +490,6 @@ function createSkillPlanner(skillPlannerData) {
       onthemechange(event) {
         let themeIndex = -1;
         if (event.target.value == "addtheme") {
-          console.log("create new theme index", this.themeIndex);
           this.clickCreateTheme();
         } else {
           if (Number.isInteger(event.target.value * 1)) {
@@ -592,8 +591,7 @@ function createSkillPlanner(skillPlannerData) {
         let themeName = this.newUserThemeName;
         this.themes = this.themes.filter((x) => x.name != themeName);
         this.userThemes = this.userThemes.filter((x) => x.name != themeName);
-        console.log("this.themeIndex", this.themeIndex);
-        console.log("this.validThemeIndex", this.validThemeIndex);
+
         if (this.themeIndex == this.validThemeIndex) {
           this.themeIndex = 0;
           this.currentTheme = this.themes[this.themeIndex];
@@ -607,7 +605,16 @@ function createSkillPlanner(skillPlannerData) {
           JSON.stringify(this.userThemes)
         );
       },
-      onThemeInputChange(e) {},
+      onThemeInputChange(e) {
+        let themeName = e.target.value;
+        let themeIndex = this.themes.findIndex((x) => x.name == themeName);
+
+        if (themeIndex >= 0) {
+          this.validThemeIndex = themeIndex;
+          this.currentTheme = this.themes[themeIndex];
+          this.updateTheme = !this.updateTheme;
+        }
+      },
     },
     watch: {
       updateTheme: function () {
@@ -628,7 +635,6 @@ function createSkillPlanner(skillPlannerData) {
             CURRENT_THEME_NAME_LOCAL_STORAGE,
             this.currentTheme.name
           );
-          console.log("save theme name", this.currentTheme.name);
         }
       },
       showThemeCreation: function () {
