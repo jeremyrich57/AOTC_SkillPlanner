@@ -16,6 +16,8 @@ function createSkillPlanner(skillPlannerData) {
   console.log("onload skillPlanner data: ", skillPlannerData);
   const sortArrowAscending = String.fromCharCode(9650);
   const sortArrowDescending = String.fromCharCode(9660);
+  const USER_THEMES_LOCAL_STORAGE = "aotc_userThemes";
+  const CURRENT_THEME_NAME_LOCAL_STORAGE = "aotc_currentThemeName";
   const app = Vue.createApp({
     data() {
       return {
@@ -548,11 +550,30 @@ function createSkillPlanner(skillPlannerData) {
               (x) => x.name == this.newTheme.name
             );
             this.themes[updateThemeIndex] = this.newTheme;
+            this.themeIndex = updateThemeIndex;
+
+            updateThemeIndex = this.userThemes.findIndex(
+              (x) => x.name == this.newTheme.name
+            );
+
+            if (updateThemeIndex >= 0) {
+              this.userThemes[updateThemeIndex] = this.newTheme;
+            }
           } else {
             this.themes.push(this.newTheme);
             this.themeIndex = this.themes.length - 1;
             this.userThemes.push(this.newTheme);
           }
+
+          localStorage.setItem(
+            USER_THEMES_LOCAL_STORAGE,
+            JSON.stringify(this.userThemes)
+          );
+
+          localStorage.setItem(
+            CURRENT_THEME_NAME_LOCAL_STORAGE,
+            this.currentTheme.name
+          );
 
           this.showThemeCreation = false;
           this.newUserThemeName = "";
@@ -571,9 +592,22 @@ function createSkillPlanner(skillPlannerData) {
         let themeName = this.newUserThemeName;
         this.themes = this.themes.filter((x) => x.name != themeName);
         this.userThemes = this.userThemes.filter((x) => x.name != themeName);
+        console.log("this.themeIndex", this.themeIndex);
+        console.log("this.validThemeIndex", this.validThemeIndex);
+        if (this.themeIndex == this.validThemeIndex) {
+          this.themeIndex = 0;
+          this.currentTheme = this.themes[this.themeIndex];
+          this.updateTheme = !this.updateTheme;
+        }
         this.showDeleteThemeToast = true;
         setTimeout(() => (skillPlannerVM.showDeleteThemeToast = false), 3000);
+
+        localStorage.setItem(
+          USER_THEMES_LOCAL_STORAGE,
+          JSON.stringify(this.userThemes)
+        );
       },
+      onThemeInputChange(e) {},
     },
     watch: {
       updateTheme: function () {
@@ -589,6 +623,12 @@ function createSkillPlanner(skillPlannerData) {
               this.currentTheme.colors[property]
             );
           }
+
+          localStorage.setItem(
+            CURRENT_THEME_NAME_LOCAL_STORAGE,
+            this.currentTheme.name
+          );
+          console.log("save theme name", this.currentTheme.name);
         }
       },
       showThemeCreation: function () {
@@ -613,6 +653,28 @@ function createSkillPlanner(skillPlannerData) {
   });
 
   const skillPlannerVM = app.mount("#app");
+
+  if (typeof Storage !== "undefined") {
+    if (localStorage.getItem(USER_THEMES_LOCAL_STORAGE)) {
+      let userThemes = JSON.parse(
+        localStorage.getItem(USER_THEMES_LOCAL_STORAGE)
+      );
+      skillPlannerVM.userThemes = userThemes;
+      skillPlannerVM.themes = skillPlannerVM.themes.concat(userThemes);
+    }
+
+    if (localStorage.getItem(CURRENT_THEME_NAME_LOCAL_STORAGE)) {
+      let themeIndex = skillPlannerVM.themes.findIndex(
+        (x) => x.name == localStorage.getItem(CURRENT_THEME_NAME_LOCAL_STORAGE)
+      );
+
+      if (themeIndex >= 0) {
+        skillPlannerVM.currentTheme = skillPlannerVM.themes[themeIndex];
+        skillPlannerVM.themeIndex = themeIndex;
+        skillPlannerVM.updateTheme = !skillPlannerVM.updateTheme;
+      }
+    }
+  }
 
   //Allow builds be loaded based on URL
   if (urlQueryParams.skills == undefined || urlQueryParams.skills == "") {

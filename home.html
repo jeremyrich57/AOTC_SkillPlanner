@@ -294,7 +294,8 @@
                         <div style="display: flex; align-items: center;">
                             <span style="padding-right: 4px; font-weight: bold;">Name:</span>
                             <input name="userThemeSelection" list="userThemeSelection" class="dataLists"
-                                @input="onthemechange($event)" v-model="newUserThemeName" ref="newThemeNameInput" />
+                                @input="onThemeInputChange($event)" v-model="newUserThemeName"
+                                ref="newThemeNameInput" />
                             <datalist id="userThemeSelection">
                                 <option v-for="(theme, index) in userThemes" :value="theme.name"></option>
                             </datalist>
