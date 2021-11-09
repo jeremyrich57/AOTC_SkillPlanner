@@ -40,7 +40,7 @@ function createSkillPlanner(skillPlannerData) {
         showThemeCreation: false,
         currentTheme: {},
         newTheme: {},
-        updateTheme: false,
+        updateTheme: false, //This is watched so UI knows to update colors when theme is changed or in process of editing new theme
         //theme colors have underscores so they can be replaced later with dashes to update CSS variables later
         themes: [
           {
@@ -101,48 +101,11 @@ function createSkillPlanner(skillPlannerData) {
           },
         ],
         themeIndex: 0,
-        userThemes: [
-          {
-            name: "test1",
-            value: "test1",
-            colors: {
-              __main_bg_color: "#00404c",
-              __planner_main_color: "#048da7",
-              __planner_border_color: "#a5fbfb",
-              __text_color: "#a5fbfb",
-              __skillbox_default_color: "#006074",
-              __skillbox_active_color: "#02ab2e",
-              __skillbox_highlight_color: "#26672a",
-            },
-          },
-          {
-            name: "test2",
-            value: "test2",
-            colors: {
-              __main_bg_color: "#00404c",
-              __planner_main_color: "#048da7",
-              __planner_border_color: "#a5fbfb",
-              __text_color: "#a5fbfb",
-              __skillbox_default_color: "#006074",
-              __skillbox_active_color: "#02ab2e",
-              __skillbox_highlight_color: "#26672a",
-            },
-          },
-          {
-            name: "test3",
-            value: "test3",
-            colors: {
-              __main_bg_color: "#00404c",
-              __planner_main_color: "#048da7",
-              __planner_border_color: "#a5fbfb",
-              __text_color: "#a5fbfb",
-              __skillbox_default_color: "#006074",
-              __skillbox_active_color: "#02ab2e",
-              __skillbox_highlight_color: "#26672a",
-            },
-          },
-        ],
+        userThemes: [],
         newUserThemeName: "",
+        showThemeNameToast: false,
+        showDeleteThemeToast: false,
+        validThemeIndex: 0, //Used to track valid theme indexes when user selects Add New and can revert back after closing
       };
     },
     computed: {
@@ -499,7 +462,7 @@ function createSkillPlanner(skillPlannerData) {
           this.shareURL = window.location.href;
           navigator.clipboard.writeText(skillPlannerVM.shareURL).then(
             function () {
-              /* clipboard successfully set */
+              //clipboard successfully set
               skillPlannerVM.copyClipboardMessage = "URL Copied to Clipboard!";
               skillPlannerVM.showCopyToast = true;
               setTimeout(() => (skillPlannerVM.showCopyToast = false), 3000);
@@ -523,58 +486,127 @@ function createSkillPlanner(skillPlannerData) {
         }
       },
       onthemechange(event) {
-        let themeIndex = event.target.value;
-        this.themeIndex = themeIndex;
+        let themeIndex = -1;
+        if (event.target.value == "addtheme") {
+          console.log("create new theme index", this.themeIndex);
+          this.clickCreateTheme();
+        } else {
+          if (Number.isInteger(event.target.value * 1)) {
+            themeIndex = event.target.value;
+            this.validThemeIndex = themeIndex;
+          } else {
+            themeIndex = this.themes.findIndex(
+              (x) => x.name == event.target.value
+            );
+          }
 
-        if (this.themes[themeIndex] != undefined) {
-          this.currentTheme = this.themes[themeIndex];
-          // this.currentTheme.update = !this.currentTheme.update;
-          this.updateTheme = !this.updateTheme;
-          console.log("change themes");
+          if (this.themes[themeIndex] != undefined) {
+            this.themeIndex = themeIndex;
+            this.currentTheme = this.themes[themeIndex];
+            this.updateTheme = !this.updateTheme;
+          }
         }
       },
       clickCreateTheme() {
         this.showThemeCreation = !this.showThemeCreation;
+        this.newUserThemeName = "";
 
         let newTheme = {
           name: "temp",
           value: "temp",
           colors: {},
         };
-        for (const color in this.themes[this.themeIndex].colors) {
-          newTheme.colors[color] = this.themes[this.themeIndex].colors[color];
+
+        let currentValidThemeIndex = 0;
+        if (this.themeIndex != this.validThemeIndex) {
+          currentValidThemeIndex = this.validThemeIndex;
         }
-        console.log("newTheme", newTheme);
+
+        for (const color in this.themes[currentValidThemeIndex].colors) {
+          newTheme.colors[color] =
+            this.themes[currentValidThemeIndex].colors[color];
+        }
 
         this.newTheme = newTheme;
       },
       clickCancelTheme() {
         this.showThemeCreation = false;
+
+        if (this.themeIndex != this.validThemeIndex) {
+          this.themeIndex = this.validThemeIndex;
+        }
         this.currentTheme = this.themes[this.themeIndex];
-        // this.currentTheme.update = !this.currentTheme.update;
         this.updateTheme = !this.updateTheme;
+      },
+      clickApplyTheme() {
+        if (this.newUserThemeName != "") {
+          this.newTheme.name = this.newUserThemeName;
+          this.newTheme.value = this.newUserThemeName;
+
+          if (this.themes.find((x) => x.name == this.newTheme.name)) {
+            let updateThemeIndex = this.themes.findIndex(
+              (x) => x.name == this.newTheme.name
+            );
+            this.themes[updateThemeIndex] = this.newTheme;
+          } else {
+            this.themes.push(this.newTheme);
+            this.themeIndex = this.themes.length - 1;
+            this.userThemes.push(this.newTheme);
+          }
+
+          this.showThemeCreation = false;
+          this.newUserThemeName = "";
+        } else {
+          this.showThemeNameToast = true;
+          setTimeout(() => (skillPlannerVM.showThemeNameToast = false), 3000);
+        }
       },
       themeColorChange(event, key) {
         let newColor = event.target.value;
         this.newTheme.colors[key] = newColor;
         this.currentTheme = this.newTheme;
-        // this.currentTheme.update = !this.currentTheme.update;
         this.updateTheme = !this.updateTheme;
       },
-      userThemeNameInputChange() {
-        console.log("this.newUserThemeName", this.newUserThemeName);
+      deleteTheme() {
+        let themeName = this.newUserThemeName;
+        this.themes = this.themes.filter((x) => x.name != themeName);
+        this.userThemes = this.userThemes.filter((x) => x.name != themeName);
+        this.showDeleteThemeToast = true;
+        setTimeout(() => (skillPlannerVM.showDeleteThemeToast = false), 3000);
       },
     },
     watch: {
       updateTheme: function () {
-        console.log("watch theme update");
-        let root = document.documentElement;
-        for (const property in this.currentTheme.colors) {
-          let rootProperty = property.replace(/[_]/g, (m) => "-");
-          root.style.setProperty(
-            rootProperty,
-            this.currentTheme.colors[property]
-          );
+        if (
+          this.currentTheme != undefined &&
+          this.currentTheme.colors != undefined
+        ) {
+          let root = document.documentElement;
+          for (const property in this.currentTheme.colors) {
+            let rootProperty = property.replace(/[_]/g, (m) => "-");
+            root.style.setProperty(
+              rootProperty,
+              this.currentTheme.colors[property]
+            );
+          }
+        }
+      },
+      showThemeCreation: function () {
+        if (this.showThemeCreation) {
+          document.addEventListener("keydown", handleKeypress);
+        } else {
+          document.removeEventListener("keydown", handleKeypress);
+        }
+
+        function handleKeypress(e) {
+          if (e.key === "Escape") {
+            if (
+              skillPlannerVM.showThemeCreation != undefined &&
+              skillPlannerVM.showThemeCreation
+            ) {
+              skillPlannerVM.clickCancelTheme();
+            }
+          }
         }
       },
     },

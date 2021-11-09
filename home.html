@@ -280,10 +280,13 @@
                 <div class="themeContainer">
                     <div style="display: flex; align-items: center;">
                         <h3>Change Theme:</h3>
-                        <select class="dropdown" @change="onthemechange($event)">
+                        <select class="dropdown" @change="onthemechange($event)" ref="themeChangeSelect"
+                            v-model="themeIndex">
                             <option v-for="(theme, index) in themes" :value="index">{{theme.name}}</option>
+                            <option disabled>-----------</option>
+                            <option style=" font-weight: bolder;" value="addtheme">Add/Edit Theme</option>
                         </select>
-                        <button class="plus-button" title="Create New Theme!" @click="clickCreateTheme"></button>
+                        <!-- <button class="plus-button" title="Create New Theme!" @click="clickCreateTheme"></button> -->
                     </div>
 
                     <div v-if="showThemeCreation" class="themeCreationContainer">
@@ -291,21 +294,33 @@
                         <div style="display: flex; align-items: center;">
                             <span style="padding-right: 4px; font-weight: bold;">Name:</span>
                             <input name="userThemeSelection" list="userThemeSelection" class="dataLists"
-                                @input="userThemeNameInputChange" v-model="newUserThemeName" />
+                                @input="onthemechange($event)" v-model="newUserThemeName" ref="newThemeNameInput" />
                             <datalist id="userThemeSelection">
                                 <option v-for="(theme, index) in userThemes" :value="theme.name"></option>
                             </datalist>
+                            <button class="clear-button"
+                                @click="newUserThemeName = ''; this.$refs['newThemeNameInput'].focus()"
+                                title="Clear Name"></button>
+                            <transition name="fade">
+                                <div class="toast" v-if="showThemeNameToast">Please enter theme name</div>
+                            </transition>
                         </div>
 
-                        <div v-for="(color, key) in themes[themeIndex].colors" class="colorRow">
-                            <label for="head">{{key}}</label>
+                        <div v-for="(color, key) in themes[validThemeIndex].colors" class="colorRow">
+                            <!-- Remove underscores, then split and join back up to capitalize first letter of words -->
+                            <label for="head"
+                                style="font-style:
+                                italic;">{{key.replace("__", "").replace(/\_/g, " ").split(" ").map(x => { return x[0].toUpperCase() + x.substring(1)}).join(" ")}}</label>
                             <input type="color" v-model="color" @input="themeColorChange($event, key)">
                         </div>
                         <div class="themeCreationButtons">
-                            <button class="deleteButton"
-                                v-if="userThemes.find(x => x.name == newUserThemeName)">Delete</button>
+                            <div class="toast" style="position: absolute; left: 0;" v-if="showDeleteThemeToast">Theme
+                                deleted!
+                            </div>
+                            <button class="deleteButton" v-if="userThemes.find(x => x.name == newUserThemeName)"
+                                @click="deleteTheme">Delete</button>
                             <button class="cancelButton" @click="clickCancelTheme">Cancel</button>
-                            <button class="applyButton">Apply</button>
+                            <button class="applyButton" @click="clickApplyTheme">Apply</button>
                         </div>
                     </div>
                 </div>
@@ -374,7 +389,7 @@
                 We are in no way affiliated with Sony Online Entertainment, Lucas Arts
                 or any other legal owners of Star Wars Galaxies related material.
             </span>
-            <span>Version 1.0 - Created by Rytech (Sorry not a designer - Improved Design Eventually!)</span>
+            <span>Version 2.0 - Created by Rytech (Sorry not a designer - Improved Design Eventually!)</span>
         </footer>
     </div>
 </body>

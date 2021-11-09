@@ -79,7 +79,7 @@ header h1 {
   height: 100%;
   padding-right: 25px;
   padding-left: 20px;
-  overflow: auto;
+  overflow-x: hidden;
   margin-bottom: 5px;
   margin-top: 5px;
   min-height: 0;
@@ -96,7 +96,7 @@ header h1 {
   padding-right: 20px;
   min-height: 0;
   min-width: 0;
-  overflow: auto;
+  overflow: hidden;
 }
 
 footer {
@@ -153,6 +153,8 @@ footer span {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  margin: 0 6px;
+
 }
 
 .skillPlannerBody {
@@ -174,9 +176,10 @@ footer span {
   gap: 3px 5px;
   border-radius: 6px;
   padding: 15px 5px;
+
   background-color: var(--planner-main-color);
-  width: 800px;
-  height: 400px;
+  min-height: 400px;
+  max-width: 800px;
   border: 1px solid var(--planner-border-color);
   margin-top: 20px;
 }
@@ -390,6 +393,7 @@ footer span {
   align-items: center;
   position: relative;
   border: 1px solid black;
+  min-height: 3em;
 }
 
 .professionSkillBox:hover {
@@ -452,7 +456,7 @@ footer span {
   padding: 5px 0;
   border-radius: 6px;
   border: 1px solid var(--text-color);
-  min-width: 150px;
+  /* min-width: 150px; */
 }
 
 #listProfessions li {
@@ -490,6 +494,7 @@ footer span {
   display: flex;
   flex-direction: column;
   height: 90%;
+  width: 100%;
 }
 
 .rightTables {
@@ -669,7 +674,7 @@ footer span {
   border-radius: 6px;
   position: relative;
   overflow: auto;
-  min-width: 250px;
+  /* min-width: 250px; */
   margin-bottom: 15px;
 }
 
@@ -776,11 +781,12 @@ footer span {
 
 .toast {
   position: absolute;
-  transform: translate(50%, 2rem);
+  transform: translateY(2rem);
   background-color: white;
   border: 1px solid var(--planner-main-color);
   padding: 8px;
   font-style: italic;
+  color: black;
 }
 
 .fade-enter-active,
@@ -840,6 +846,44 @@ footer span {
   width: 1em;
 }
 
+.clear-button {
+  border: 2px solid #404040;
+  background-color: #404040;
+  font-size: 0.75rem;
+  border-radius: 999px;
+  position: relative;
+  margin: 0 4px;
+  cursor: pointer;
+  padding: 0.75em;
+  transform: rotate(45deg);
+}
+
+.clear-button:after,
+.clear-button:before {
+  content: "";
+  display: block;
+  background-color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.clear-button:before {
+  height: 1.25em;
+  width: 0.25em;
+}
+
+.clear-button:after {
+  height: 0.25em;
+  width: 1.25em;
+}
+
+.clear-button:hover {
+  background-color: var(--red-button-color);
+  border: 2px solid var(--red-button-color);
+}
+
 .themeCreationContainer {
   position: absolute;
   border: 1px solid var(--planner-border-color);
@@ -865,6 +909,7 @@ footer span {
   display: flex;
   justify-content: flex-end;
   padding: 8px 0;
+  position: relative;
 }
 
 .applyButton {
