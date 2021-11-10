@@ -60,18 +60,6 @@ header h1 {
   padding-right: 50px;
 }
 
-.websiteDiv a:link {
-  color: var(--text-color);
-}
-
-.websiteDiv a:visited {
-  color: var(--text-color);
-}
-
-.websiteDiv a:hover {
-  color: var(--skillbox-default-color);
-}
-
 .professionContainer {
   display: flex;
   flex-direction: column;
@@ -105,6 +93,7 @@ footer {
   justify-items: center;
   background-color: var(--planner-main-color);
   color: var(--text-color);
+  position: relative;
 }
 
 footer span {
@@ -115,6 +104,7 @@ footer span {
   display: flex;
   align-items: flex-end;
   justify-content: left;
+  flex-wrap: wrap;
   width: 100%;
   max-width: 1000px;
   min-height: 70px;
@@ -128,6 +118,7 @@ footer span {
   height: 40px;
   background-color: var(--skillbox-active-color);
   margin-right: 25px;
+  margin-top: 16px;
   position: relative;
   color: var(--text-color);
   cursor: pointer;
@@ -522,7 +513,7 @@ footer span {
 }
 
 .rightTables td {
-  text-shadow: 1px 2px black;
+  text-shadow: 1px 1px black;
   padding: 4px 5px;
 }
 
@@ -955,4 +946,54 @@ footer span {
   width: 100%;
   padding: 4px;
   margin: 4px 0;
+}
+
+.links {
+  color: var(--text-color);
+}
+
+.links:visited {
+  color: var(--text-color);
+}
+
+.links:hover {
+  color: var(--skillbox-default-color);
+}
+
+.feedbackForm {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--planner-border-color);
+  background-color: var(--planner-main-color);
+  transform: translateY(-100%);
+  right: 0;
+  top: 0;
+  position: absolute;
+  min-width: 500px;
+  min-height: 400px;
+}
+
+.feedbackForm textarea {
+  flex: 1;
+  margin: 16px;
+  resize: none;
+}
+
+.feedbackTitle {
+  padding: 8px;
+  text-align: center;
+  font-size: 2rem;
+  background-color: var(--skillbox-active-color);
+  color: var(--text-color);
+  border-bottom: 1px solid var(--planner-border-color);
+}
+
+.feedbackSubmitButtonContainer {
+  text-align: center;
+  padding: 8px;
+}
+
+.feedbackSubmitButtonContainer button {
+  width: 65%;
+  background-color: var(--red-button-color);
 }
