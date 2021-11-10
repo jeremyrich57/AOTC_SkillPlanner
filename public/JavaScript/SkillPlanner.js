@@ -18,6 +18,7 @@ function createSkillPlanner(skillPlannerData) {
   const sortArrowDescending = String.fromCharCode(9660);
   const USER_THEMES_LOCAL_STORAGE = "aotc_userThemes";
   const CURRENT_THEME_NAME_LOCAL_STORAGE = "aotc_currentThemeName";
+
   const app = Vue.createApp({
     data() {
       return {
@@ -108,6 +109,8 @@ function createSkillPlanner(skillPlannerData) {
         showThemeNameToast: false,
         showDeleteThemeToast: false,
         validThemeIndex: 0, //Used to track valid theme indexes when user selects Add New and can revert back after closing
+        undoSkillsStack: [], //TODO: add undo/redo functionality
+        redoSkillsStack: [],
       };
     },
     computed: {
@@ -458,6 +461,11 @@ function createSkillPlanner(skillPlannerData) {
               (x) => !skillsToRemove.includes(x)
             );
         }
+
+        // skillPlannerVM.undoSkillsStack.push([
+        //   ...skillPlannerVM.currentSelectedSkills,
+        // ]);
+        // skillPlannerVM.redoSkillsStack = [];
       },
       clickShareBuild() {
         if (skillPlannerVM.currentSelectedSkills.length > 0) {
@@ -591,12 +599,10 @@ function createSkillPlanner(skillPlannerData) {
         let themeName = this.newUserThemeName;
         this.themes = this.themes.filter((x) => x.name != themeName);
         this.userThemes = this.userThemes.filter((x) => x.name != themeName);
-
-        if (this.themeIndex == this.validThemeIndex) {
-          this.themeIndex = 0;
-          this.currentTheme = this.themes[this.themeIndex];
-          this.updateTheme = !this.updateTheme;
-        }
+        this.themeIndex = 0;
+        this.currentTheme = this.themes[this.themeIndex];
+        this.updateTheme = !this.updateTheme;
+        this.validThemeIndex = this.themeIndex;
         this.showDeleteThemeToast = true;
         setTimeout(() => (skillPlannerVM.showDeleteThemeToast = false), 3000);
 
@@ -635,24 +641,6 @@ function createSkillPlanner(skillPlannerData) {
             CURRENT_THEME_NAME_LOCAL_STORAGE,
             this.currentTheme.name
           );
-        }
-      },
-      showThemeCreation: function () {
-        if (this.showThemeCreation) {
-          document.addEventListener("keydown", handleKeypress);
-        } else {
-          document.removeEventListener("keydown", handleKeypress);
-        }
-
-        function handleKeypress(e) {
-          if (e.key === "Escape") {
-            if (
-              skillPlannerVM.showThemeCreation != undefined &&
-              skillPlannerVM.showThemeCreation
-            ) {
-              skillPlannerVM.clickCancelTheme();
-            }
-          }
         }
       },
     },
@@ -733,6 +721,44 @@ function createSkillPlanner(skillPlannerData) {
 
       let artisan = skillPlannerVM.getProfessionByName("crafting_artisan");
       skillPlannerVM.clickProfession(artisan);
+    }
+  }
+
+  document.addEventListener("keydown", handleKeypress);
+
+  function handleKeypress(e) {
+    if (e.key === "Escape") {
+      if (
+        skillPlannerVM.showThemeCreation != undefined &&
+        skillPlannerVM.showThemeCreation
+      ) {
+        skillPlannerVM.clickCancelTheme();
+      }
+    } else if (e.key == "z" && e.ctrlKey) {
+      // if (skillPlannerVM.undoSkillsStack.length) {
+      //   let latestSkills;
+      //   if (skillPlannerVM.redoSkillsStack.length == 0) {
+      //     latestSkills = skillPlannerVM.undoSkillsStack.pop();
+      //     skillPlannerVM.redoSkillsStack.push(latestSkills);
+      //   }
+      //   latestSkills = skillPlannerVM.undoSkillsStack.pop();
+      //   skillPlannerVM.redoSkillsStack.push(latestSkills);
+      //   skillPlannerVM.currentSelectedSkills = latestSkills;
+      //   console.log(
+      //     "skillPlannerVM.redoSkillsStack undo",
+      //     skillPlannerVM.redoSkillsStack
+      //   );
+      // }
+    } else if (e.key == "y" && e.ctrlKey) {
+      // console.log(
+      //   "skillPlannerVM.redoSkillsStack",
+      //   skillPlannerVM.redoSkillsStack
+      // );
+      // if (skillPlannerVM.redoSkillsStack.length) {
+      //   let latestSkills = skillPlannerVM.redoSkillsStack.shift();
+      //   console.log("latestSkills", latestSkills);
+      //   skillPlannerVM.currentSelectedSkills = latestSkills;
+      // }
     }
   }
 }
