@@ -686,14 +686,6 @@ function createSkillPlanner(skillPlannerData) {
           professionName.split("_")[professionName.split("_").length - 1] ==
           "master"
         ) {
-          let skill = skillPlannerVM.skillData.skills[professionName];
-
-          if (startingProfession == undefined) {
-            startingProfession = skillPlannerVM.getProfessionByName(
-              skill.professionName
-            );
-          }
-
           skillPlannerVM.clickSkillBox(professionName);
         } else {
           let profession = skillPlannerVM.getProfessionByName(professionName);
@@ -701,6 +693,9 @@ function createSkillPlanner(skillPlannerData) {
           if (startingProfession == undefined) {
             startingProfession = profession;
           }
+
+          let noviceProfessionName = profession.novice;
+          skillPlannerVM.clickSkillBox(noviceProfessionName);
 
           let treeSkillNumbers = skillStringSkills[1].split("-");
           treeSkillNumbers.some(function (skillNumber, index) {
