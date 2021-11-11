@@ -1,5 +1,4 @@
 const express = require("express");
-// const skill_data = require("./public/JavaScript/Skill_Data");
 const app = express();
 const { readFile } = require("fs").promises;
 const fs = require("fs");
