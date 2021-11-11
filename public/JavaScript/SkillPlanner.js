@@ -13,7 +13,7 @@ xhr.send();
 function createSkillPlanner(skillPlannerData) {
   const urlSearchParams = new URLSearchParams(window.location.search);
   const urlQueryParams = Object.fromEntries(urlSearchParams.entries());
-  //console.log("onload skillPlanner data: ", skillPlannerData);
+  // console.log("onload skillPlanner data: ", skillPlannerData);
   const sortArrowAscending = String.fromCharCode(9650);
   const sortArrowDescending = String.fromCharCode(9660);
   const USER_THEMES_LOCAL_STORAGE = "aotc_userThemes";

@@ -561,11 +561,9 @@ function buildProfessionLists(skillData) {
         } else if (skill.parent == previousSkillName) {
           skill.treeIndex = treeIndex;
           skillTree.push(skill.name);
+
           if (skill.name.includes("04")) {
-            if (skillTree.length > 4) {
-              skillTree = skillTree.slice(0, 3);
-            }
-            currentProfession.skillTrees.push(skillTree);
+            currentProfession.skillTrees.push(skillTree.slice(0, 4)); //for some reason politician keeps getting 2 random skills added to the last tree despite not having matching parents. This just removes them
           }
         }
       }
