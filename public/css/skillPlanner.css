@@ -167,7 +167,7 @@ footer span {
   gap: 3px 5px;
   border-radius: 6px;
   padding: 15px 5px;
-
+  box-shadow: 3px 3px 4px black;
   background-color: var(--planner-main-color);
   min-height: 400px;
   max-width: 800px;
@@ -448,6 +448,7 @@ footer span {
   border-radius: 6px;
   border: 1px solid var(--text-color);
   /* min-width: 150px; */
+  box-shadow: 3px 3px 4px black;
 }
 
 #listProfessions li {
@@ -556,6 +557,7 @@ footer span {
   /* max-height: 300px; */
   /* padding: 5px 10px; */
   overflow: auto;
+  box-shadow: 3px 3px 4px black;
 }
 
 #tableExperienceRequired {
@@ -667,6 +669,7 @@ footer span {
   overflow: auto;
   /* min-width: 250px; */
   margin-bottom: 15px;
+  box-shadow: 3px 3px 4px black;
 }
 
 .tableContainer::-webkit-scrollbar {
@@ -970,6 +973,7 @@ footer span {
   top: 0;
   position: absolute;
   width: 500px;
+  box-shadow: 3px 3px 4px black;
 }
 
 .feedbackForm textarea {
