@@ -3,14 +3,13 @@ const express = require("express");
 const app = express();
 const { readFile } = require("fs").promises;
 const fs = require("fs");
-// const csv = require("csv-parser");
 const { SlowBuffer } = require("buffer");
-// const skillCSV = require("./public/csv/skills.csv");
 const csv = require("csvtojson");
-// const AdmZip = require("adm-zip"); //TODO: remove
-const table = require("table").table;
+const nodemailer = require("nodemailer");
 
 app.use(express.static("public"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 app.listen(process.env.PORT || 3000, () =>
   console.log(`App avaiable on http://localhost:3000`)
@@ -42,6 +41,56 @@ fs.readFile("./public/tre/aotc_03.tre", "utf-8", (err, data) => {
   // let buffer = Buffer.from(data, "base64");
   // let text = buffer.toString("utf-8");
   // console.log(text);
+});
+
+app.post("/api/sendEmail", async (req, res) => {
+  try {
+    var transporter = nodemailer.createTransport({
+      service: "gmail",
+      host: "smtp.gmail.com",
+      auth: {
+        user: "aotskillplanner@gmail.com",
+        pass: "skillplanner",
+      },
+    });
+
+    let theme = "";
+    if (req.body.theme != "") {
+      let themeObject = JSON.parse(req.body.theme);
+      console.log("themeObject", themeObject);
+      let themeColors = "";
+      for (let color in themeObject.colors) {
+        themeColors +=
+          color +
+          ": " +
+          themeObject.colors[color] +
+          " <input type='color' value='" +
+          themeObject.colors[color] +
+          "'  /><br>";
+      }
+      theme += `<b>Theme Name:</b> ${themeObject.name} <br><b>Colors:</b><br> ${themeColors}`;
+    }
+
+    let mailHTML = `<b>Type:</b> ${req.body.type} <br><b>Feedback:</b> ${req.body.feedback} <br><br>${theme}`;
+
+    var mailOptions = {
+      from: "aotskillplanner@gmail.com",
+      to: "aotskillplanner@gmail.com",
+      subject: `AOTC Feedback From - ${req.body.subject}`,
+      html: mailHTML,
+    };
+
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent: " + info.response);
+        res.send();
+      }
+    });
+  } catch (e) {
+    res.send();
+  }
 });
 
 app.get("/api/getSkillData", async (req, res) => {

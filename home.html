@@ -391,12 +391,36 @@
                 or any other legal owners of Star Wars Galaxies related material.
             </span>
             <span>Version 2.0 - Created by Rytech (Sorry not a designer - Improved Design Eventually!)</span>
-            <a class="links" style="position: absolute; top: 8px; right: 8px;" href="#">Send Feedback</a>
-            <div class="feedbackForm">
-                <div class="feedbackTitle">Feedback</div>
-                <textarea rows="10" resize="false" placeholder="Enter feedback here..."></textarea>
-                <div class="feedbackSubmitButtonContainer">
-                    <button class="applyButton">Submit</button>
+            <a class="links" style="position: absolute; top: 8px; right: 8px;" href="#"
+                @click="sendFeedback = !sendFeedback">Send
+                Feedback</a>
+            <div class="feedbackForm" v-if="sendFeedback" ref="feedbackForm">
+                <div class="feedbackTitle" @mousedown="dragMouseDown">Feedback</div>
+                <div class="closeFeedbackForm" @click="sendFeedback = false">X</div>
+                <div style="flex: 1; padding: 8px; display: flex; flex-direction: column;">
+                    <label>Type</label>
+                    <div style="display: flex;">
+                        <select v-model="feedbackSelectType">
+                            <option>Feedback</option>
+                            <option>Bug</option>
+                            <option>Add Theme</option>
+                            <option>Other</option>
+                        </select>
+                        <div v-if="feedbackSelectType == 'Add Theme' && userThemes.length">
+                            <label>Theme</label>
+                            <select v-model="feedbackAddTheme">
+                                <option v-for="(theme, index) in userThemes" :value="theme.name">{{theme.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <label>Subject</label>
+                    <input v-model="feedbackInputSubject" placeholder="Subject..." />
+                    <label>Feedback</label>
+                    <textarea v-model="feedbackTextareaFeedback" rows="10" resize="false"
+                        placeholder="Enter feedback here..."></textarea>
+                    <div class="feedbackSubmitButtonContainer">
+                        <button class="applyButton" @click="clickSubmitFeedback">Submit</button>
+                    </div>
                 </div>
             </div>
         </footer>

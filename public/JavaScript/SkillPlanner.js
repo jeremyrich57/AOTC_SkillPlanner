@@ -111,6 +111,16 @@ function createSkillPlanner(skillPlannerData) {
         validThemeIndex: 0, //Used to track valid theme indexes when user selects Add New and can revert back after closing
         undoSkillsStack: [], //TODO: add undo/redo functionality
         redoSkillsStack: [],
+        feedbackSelectType: "Feedback",
+        feedbackInputSubject: "",
+        feedbackTextareaFeedback: "",
+        sendFeedback: false,
+        feedbackFormPositions: {
+          clientX: undefined,
+          clientY: undefined,
+          movementX: 0,
+          movementY: 0,
+        },
       };
     },
     computed: {
@@ -621,6 +631,70 @@ function createSkillPlanner(skillPlannerData) {
           this.updateTheme = !this.updateTheme;
         }
       },
+      clickSubmitFeedback() {
+        const params = {
+          type: skillPlannerVM.feedbackSelectType,
+          subject: skillPlannerVM.feedbackInputSubject,
+          feedback: skillPlannerVM.feedbackTextareaFeedback,
+        };
+        if (skillPlannerVM.feedbackAddTheme == undefined) {
+          params.theme = "";
+        } else {
+          let theme = skillPlannerVM.userThemes.find(
+            (x) => x.name == skillPlannerVM.feedbackAddTheme
+          );
+          params.theme = JSON.stringify(theme);
+        }
+        console.log("params", params);
+        if (params.feedback == "" && params.theme == undefined) {
+          alert("Please provide feedback before submitting");
+          return;
+        }
+
+        const http = new XMLHttpRequest();
+        http.open("POST", "/api/sendEmail");
+        http.setRequestHeader("Content-type", "application/json");
+
+        http.onload = function () {
+          console.log("http", http);
+          if (http.readyState == 4 && http.status == 200) {
+            console.log("Send email successful");
+          } else {
+            console.log("Request failed.  Returned status of " + xhr.status);
+          }
+        };
+        http.send(JSON.stringify(params));
+      },
+      dragMouseDown: function (event) {
+        event.preventDefault();
+        // get the mouse cursor position at startup:
+        this.feedbackFormPositions.clientX = event.clientX;
+        this.feedbackFormPositions.clientY = event.clientY;
+        document.onmousemove = this.elementDrag;
+        document.onmouseup = this.closeDragElement;
+      },
+      elementDrag: function (event) {
+        event.preventDefault();
+        this.feedbackFormPositions.movementX =
+          this.feedbackFormPositions.clientX - event.clientX;
+        this.feedbackFormPositions.movementY =
+          this.feedbackFormPositions.clientY - event.clientY;
+        this.feedbackFormPositions.clientX = event.clientX;
+        this.feedbackFormPositions.clientY = event.clientY;
+        // set the element's new position:
+        this.$refs.feedbackForm.style.top =
+          this.$refs.feedbackForm.offsetTop -
+          this.feedbackFormPositions.movementY +
+          "px";
+        this.$refs.feedbackForm.style.left =
+          this.$refs.feedbackForm.offsetLeft -
+          this.feedbackFormPositions.movementX +
+          "px";
+      },
+      closeDragElement() {
+        document.onmouseup = null;
+        document.onmousemove = null;
+      },
     },
     watch: {
       updateTheme: function () {
@@ -723,7 +797,9 @@ function createSkillPlanner(skillPlannerData) {
 
   function handleKeypress(e) {
     if (e.key === "Escape") {
-      if (
+      if (skillPlannerVM.sendFeedback) {
+        skillPlannerVM.sendFeedback = false;
+      } else if (
         skillPlannerVM.showThemeCreation != undefined &&
         skillPlannerVM.showThemeCreation
       ) {
