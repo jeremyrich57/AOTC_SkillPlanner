@@ -126,6 +126,7 @@ footer span {
   padding: 5px;
   text-align: center;
   transition: background-color 0.5s ease;
+  box-shadow: 3px 3px 4px black;
 }
 
 .selectedProfessionBox:hover {
