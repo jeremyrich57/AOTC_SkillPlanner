@@ -297,7 +297,7 @@
                                 @input="onThemeInputChange($event)" v-model="newUserThemeName"
                                 ref="newThemeNameInput" />
                             <datalist id="userThemeSelection">
-                                <option v-for="(theme, index) in userThemes" :value="theme.name"></option>
+                                <option v-for="(theme, index) in themes" :value="theme.name"></option>
                             </datalist>
                             <button class="clear-button"
                                 @click="newUserThemeName = ''; this.$refs['newThemeNameInput'].focus()"
@@ -393,7 +393,10 @@
             <span>Version 2.0 - Created by Rytech (Sorry not a designer - Improved Design Eventually!)</span>
             <a class="links" style="position: absolute; top: 8px; right: 8px;" href="#"
                 @click="sendFeedback = !sendFeedback">Send
-                Feedback</a>
+                Feedback
+            </a>
+            <div v-if="showFeedbackSubmittedToast" class="toast" style="position: absolute; right: 10px; top: -2rem;">
+                Feedback submitted!</div>
             <div class="feedbackForm" v-if="sendFeedback" ref="feedbackForm">
                 <div class="feedbackTitle" @mousedown="dragMouseDown">Feedback</div>
                 <div class="closeFeedbackForm" @click="sendFeedback = false">X</div>

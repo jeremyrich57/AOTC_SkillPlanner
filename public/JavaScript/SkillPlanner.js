@@ -115,6 +115,7 @@ function createSkillPlanner(skillPlannerData) {
         feedbackInputSubject: "",
         feedbackTextareaFeedback: "",
         sendFeedback: false,
+        showFeedbackSubmittedToast: false,
         feedbackFormPositions: {
           clientX: undefined,
           clientY: undefined,
@@ -645,7 +646,7 @@ function createSkillPlanner(skillPlannerData) {
           );
           params.theme = JSON.stringify(theme);
         }
-        console.log("params", params);
+
         if (params.feedback == "" && params.theme == undefined) {
           alert("Please provide feedback before submitting");
           return;
@@ -656,11 +657,18 @@ function createSkillPlanner(skillPlannerData) {
         http.setRequestHeader("Content-type", "application/json");
 
         http.onload = function () {
-          console.log("http", http);
           if (http.readyState == 4 && http.status == 200) {
-            console.log("Send email successful");
+            skillPlannerVM.showFeedbackSubmittedToast = true;
+            skillPlannerVM.sendFeedback = false;
+            setTimeout(
+              () => (skillPlannerVM.showFeedbackSubmittedToast = false),
+              3000
+            );
           } else {
             console.log("Request failed.  Returned status of " + xhr.status);
+            alert(
+              "Feedback failed to send. Please let Rytech know in AOTC discord."
+            );
           }
         };
         http.send(JSON.stringify(params));
