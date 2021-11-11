@@ -13,7 +13,7 @@ xhr.send();
 function createSkillPlanner(skillPlannerData) {
   const urlSearchParams = new URLSearchParams(window.location.search);
   const urlQueryParams = Object.fromEntries(urlSearchParams.entries());
-  // console.log("onload skillPlanner data: ", skillPlannerData);
+  console.log("onload skillPlanner data: ", skillPlannerData);
   const sortArrowAscending = String.fromCharCode(9650);
   const sortArrowDescending = String.fromCharCode(9660);
   const USER_THEMES_LOCAL_STORAGE = "aotc_userThemes";
@@ -760,6 +760,11 @@ function createSkillPlanner(skillPlannerData) {
           professionName.split("_")[professionName.split("_").length - 1] ==
           "master"
         ) {
+          if (startingProfession == undefined) {
+            startingProfession = skillPlannerVM.getProfessionByName(
+              professionName.replace("_master", "")
+            );
+          }
           skillPlannerVM.clickSkillBox(professionName);
         } else {
           let profession = skillPlannerVM.getProfessionByName(professionName);
@@ -767,6 +772,7 @@ function createSkillPlanner(skillPlannerData) {
           if (startingProfession == undefined) {
             startingProfession = profession;
           }
+          skillPlannerVM.clickProfession(startingProfession);
 
           let noviceProfessionName = profession.novice;
           skillPlannerVM.clickSkillBox(noviceProfessionName);
