@@ -31,6 +31,20 @@ main {
   justify-content: center;
   min-height: 0;
   min-width: 0;
+  position: relative;
+}
+
+.loadingOverlay {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+  background-color: var(--main-bg-color);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-color);
+  font-size: 4rem;
 }
 
 .mainDiv {
@@ -67,7 +81,7 @@ header h1 {
   height: 100%;
   padding-right: 25px;
   padding-left: 20px;
-  overflow-x: hidden;
+  overflow: hidden;
   margin-bottom: 5px;
   margin-top: 5px;
   min-height: 0;
@@ -104,10 +118,10 @@ footer span {
   display: flex;
   align-items: flex-end;
   justify-content: left;
-  flex-wrap: wrap;
+  /* flex-wrap: wrap; */
   width: 100%;
   max-width: 1000px;
-  min-height: 70px;
+  /* min-height: 70px; */
 }
 
 .selectedProfessionBox {
@@ -170,7 +184,7 @@ footer span {
   padding: 15px 5px;
   box-shadow: 3px 3px 4px black;
   background-color: var(--planner-main-color);
-  min-height: 400px;
+  /* min-height: 400px; */
   max-width: 800px;
   border: 1px solid var(--planner-border-color);
   margin-top: 20px;
@@ -450,6 +464,8 @@ footer span {
   border: 1px solid var(--text-color);
   /* min-width: 150px; */
   box-shadow: 3px 3px 4px black;
+  overflow: auto;
+  margin-bottom: 1rem;
 }
 
 #listProfessions li {
@@ -481,6 +497,22 @@ footer span {
 #listProfessions li.selectedProfession::before {
   content: ">>";
   padding-right: 2px;
+}
+
+#listProfessions::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+#listProfessions::-webkit-scrollbar-thumb {
+  background: var(--planner-border-color);
+  border-radius: 5px;
+  box-shadow: inset 2px 2px 2px hsla(0, 0%, 100%, 0.25),
+    inset -2px -2px 2px rgba(0, 0, 0, 0.25);
+}
+
+#listProfessions::-webkit-scrollbar-track {
+  background: linear-gradient(90deg, var(--planner-border-color), var(--planner-border-color) 1px, var(--main-bg-color) 0, var(--main-bg-color));
 }
 
 .rightTablesContainer {
@@ -554,7 +586,7 @@ footer span {
   min-width: 350px;
   /* max-width: 400px; */
   /* width: 90%; */
-  height: 200px;
+  min-height: 150px;
   /* max-height: 300px; */
   /* padding: 5px 10px; */
   overflow: auto;
@@ -646,7 +678,6 @@ footer span {
 
 .experienceRequired::-webkit-scrollbar-track {
   background: linear-gradient(90deg, var(--planner-border-color), var(--planner-border-color) 1px, var(--main-bg-color) 0, var(--main-bg-color));
-  /* background: var(--main-bg-color); */
 }
 
 .commandsAndSchematicsContainer {

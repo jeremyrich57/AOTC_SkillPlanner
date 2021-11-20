@@ -726,6 +726,9 @@ function createSkillPlanner(skillPlannerData) {
         }
       },
     },
+    mounted: function () {
+      this.$refs.loadingOverlay.style.display = "none";
+    },
   });
 
   const skillPlannerVM = app.mount("#app");
@@ -780,7 +783,6 @@ function createSkillPlanner(skillPlannerData) {
           if (startingProfession == undefined) {
             startingProfession = profession;
           }
-          skillPlannerVM.clickProfession(startingProfession);
 
           let noviceProfessionName = profession.novice;
           skillPlannerVM.clickSkillBox(noviceProfessionName);
